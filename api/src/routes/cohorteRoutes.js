@@ -5,7 +5,7 @@ const {
  const router = require("express").Router();
  
  router
-   .route("/cohorte")
+   .route("/")
    .post((req, res) => {
       createCohorte(req.body)
          .then((user) => res.status(201).json(user))
@@ -14,4 +14,6 @@ const {
    .get((req,res) =>{
        res.send("Hola")
    })
+
+
  module.exports = router;
