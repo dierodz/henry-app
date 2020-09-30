@@ -33,7 +33,7 @@ export const startLoginWithEmailAndPassword = (username, password) => {
    };
 };
 
-export const signInWithToken = (token) => {
+export const startSignInWithToken = (token) => {
    initialize();
 
    return async (dispatch) => {
@@ -53,7 +53,7 @@ export const signInWithToken = (token) => {
    };
 };
 
-export const signInWithGoogle = () => {
+export const startSignInWithGoogle = () => {
    initialize();
 
    if (window) {
@@ -61,7 +61,7 @@ export const signInWithGoogle = () => {
    }
 };
 
-export const signInWithGithub = () => {
+export const startSsignInWithGithub = () => {
    initialize();
 
    if (window) {
