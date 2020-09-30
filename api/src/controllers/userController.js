@@ -66,8 +66,39 @@ const getUserById = async (id) => {
    return sendUserId.dataValues;
 };
 
+const getUserByEmail = async (email) => {
+   const userEmail = User.findOne({ where: { email } });
+   const sendUserEmail = { ...userEmail };
+   delete sendUserEmail.password;
+   delete sendUserEmail.googleId;
+   delete sendUserEmail.githubId;
+
+   return sendUserEmail.dataValues;
+};
+const getByGoogleID = async (googleId) => {
+   const userGoogle = User.findOne({ where: { googleId } });
+   const googleIdUser = { ...userGoogle };
+   delete googleIdUser.password;
+   delete googleIdUser.googleId;
+   delete googleIdUser.githubId;
+
+   return googleIdUser.dataValues;
+};
+const getBygithubID = async (githubId) => {
+   const userGithub = User.findOne({ where: { githubId } });
+   const githubIdUser = { ...userGithub };
+   delete githubIdUser.password;
+   delete githubIdUser.googleId;
+   delete githubIdUser.githubId;
+
+   return githubIdUser.dataValues;
+};
+
 module.exports = {
    createUser,
    getAllUsers,
    getUserById,
+   getUserByEmail,
+   getByGoogleID,
+   getBygithubID,
 };
