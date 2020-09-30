@@ -1,3 +1,4 @@
+import { useUser } from "hooks";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthRouter from "./AuthRouter";
@@ -7,6 +8,8 @@ import UserScreen from "../pages/user/UserScreen";
 import Header from "../components/Header/Header.js";
 
 const AppRouter = () => {
+  const { initialize } = useUser()
+  initialize()
    return (
       <Router>
          <Route path="/" render={() => <Header />} />
