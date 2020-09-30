@@ -59,6 +59,29 @@ const createUser = async ({
    return sendUser.dataValues;
 };
 
+const upDateUser = async (id, user) => {
+   const userdb = await User.findOne({ where: { id } });
+   const {
+      giveName,
+      familyName,
+      nickName,
+      email,
+      photoUrl,
+      password,
+      role,
+   } = user;
+
+   return await userdb.update({
+      giveName,
+      familyName,
+      nickName,
+      email,
+      photoUrl,
+      password,
+      role,
+   });
+};
+
 const getAllUsers = async () => {
    const users = await User.findAll({ include: [Roles] });
    const copyUsers = [...users];
@@ -138,4 +161,5 @@ module.exports = {
    getByGoogleID,
    getBygithubID,
    deleteUserById,
+   upDateUser,
 };
