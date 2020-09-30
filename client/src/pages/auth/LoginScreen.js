@@ -15,7 +15,9 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useFormik } from "formik";
-
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,29 +42,33 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
 export default function LoginScreen() {
   const classes = useStyles();
+  const [visibilityPass, setVisibilityPass] = React.useState(false);
   
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validate() {
+    validate:(values)=>{
+      setVisibilityPass(false)
       const errors = {};
-      if (formik.touched.email && !formik.values.email) {
+      if (!values.email) {
         errors.email = "Required";
       } else if (
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formik.values.email)
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
       ) {
         errors.email = "Invalid email address";
       }
-      if (formik.touched.password && !formik.values.password) {
+      if (!values.password) {
         errors.password = "Required";
-      } else if (formik.values.password.length <= 8) {
+      } else if (values.password.length <= 8) {
         errors.password = "Must be more than 8 characters";
       }
-      return errors;},
+      return errors;
+    },
     onSubmit: async (values) => {
       alert(values.email + values.password)
       //descomentar al conectar
@@ -73,6 +79,10 @@ export default function LoginScreen() {
       } catch { } */
     }
   });
+
+  const handleClickShowPassword = () => {
+    setVisibilityPass(!visibilityPass);
+  };
 
 
   return (
@@ -96,8 +106,10 @@ export default function LoginScreen() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={formik.values.email}
             onChange={formik.handleChange}
             error={formik.errors.email?true:false}
+            helperText={formik.errors.email?"Introduce un email valido":null}
           />
           <TextField
             variant="outlined"
@@ -106,12 +118,27 @@ export default function LoginScreen() {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={visibilityPass? 'text' : 'password'}
             id="password"
             autoComplete="current-password"
+            value={formik.values.password}
             onChange={formik.handleChange}
             error={formik.errors.password?true:false}
-          />
+            helperText={formik.errors.password?"Debes ingresar más de 8 caracteres":null}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {visibilityPass ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          ></TextField>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Recordarme"
