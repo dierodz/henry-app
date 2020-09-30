@@ -55,16 +55,18 @@ export const startSignInWithToken = (token) => {
 
 export const startSignInWithGoogle = () => {
    initialize();
-
-   if (window) {
-      window.location = `${process.env.REACT_APP_API}/auth/google`;
-   }
+   return async (dispatch) => {
+      if (window) {
+         window.location = `${process.env.REACT_APP_API}/auth/google`;
+      }
+   };
 };
 
 export const startSsignInWithGithub = () => {
    initialize();
-
-   if (window) {
-      window.location = `${process.env.REACT_APP_API}/auth/github`;
-   }
+   return async (dispatch) => {
+      if (window) {
+         window.location = `${process.env.REACT_APP_API}/auth/github`;
+      }
+   };
 };

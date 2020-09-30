@@ -1,3 +1,4 @@
+import { login, logout } from "actions/auth";
 import Axios from "axios";
 import { useCallback, useEffect, useMemo } from "react";
 import { useLocalStorage } from "react-use";
@@ -32,38 +33,66 @@ export default function useUser() {
    }, [localUser]);
 
    const signOut = useCallback(() => {
-      removeLocalUser();
+      return async (dispatch) => {
+         dispatch(logout());
+         removeLocalUser();
+      };
    }, [removeLocalUser]);
 
    async function loginWithEmail(username, password) {
-      try {
-         const result = await Axios.post("/auth/email", { username, password });
-         if (result.data) setLocalUser(result.data);
-      } catch {}
+      return async (dispatch) => {
+         try {
+            const { data } = await Axios.post("/auth/email", {
+               username,
+               password,
+            });
+
+            if (data) {
+               const { user, token } = data;
+
+               setLocalUser({ token, user });
+               dispatch(login(user.id, user, token));
+            }
+         } catch ({ data }) {
+            console.log(data);
+         }
+      };
    }
 
    async function signInWithToken(token) {
       token = token.split("#")[0];
-      try {
-         const result = await Axios.get("/auth/me", {
-            headers: { Authorization: `Bearer ${token}` },
-         });
-         if (result.data) {
-            setLocalUser({ token, user: result.data });
+
+      return async (dispatch) => {
+         token = token.split("#")[0];
+         try {
+            const { data } = await Axios.get("/auth/me", {
+               headers: { Authorization: `Bearer ${token}` },
+            });
+            if (data) {
+               const { user, token } = data;
+               setLocalUser({ token, user });
+               dispatch(login(user.id, user, token));
+            }
+         } catch ({ data }) {
+            console.log(data);
          }
-      } catch {}
+      };
    }
 
    async function signInWithGoogle() {
-      if (window) {
-         window.location = `${process.env.REACT_APP_API}/auth/google`;
-      }
+      return async (dispatch) => {
+         if (window) {
+            window.location = `${process.env.REACT_APP_API}/auth/google`;
+         }
+      };
    }
 
    async function signInWithGithub() {
-      if (window) {
-         window.location = `${process.env.REACT_APP_API}/auth/github`;
-      }
+      return async (dispatch) => {
+         if (window) {
+            window.location = `${process.env.REACT_APP_API}/auth/github`;
+         }
+      };
    }
 
    return {
