@@ -1,4 +1,8 @@
-const { createUser, getAllUsers } = require("../controllers/userController");
+const {
+   createUser,
+   getAllUsers,
+   getUserById,
+} = require("../controllers/userController");
 
 const router = require("express").Router();
 
@@ -15,11 +19,11 @@ router
          .catch((err) => res.status(400).send(err));
    });
 
-// router
-//    .route("/:id")
-//    .delete((req, res) = {
-//     const {
-//         id
-//       } = req.params;
-//     }
+router.route("/:id").get((req, res) => {
+   const { id } = req.params;
+   getUserById(id)
+      .then((users) => res.json(users))
+      .catch((err) => res.status(400).send(err));
+});
+
 module.exports = router;
