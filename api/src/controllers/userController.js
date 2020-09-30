@@ -1,4 +1,6 @@
+
 const { User, Roles } = require("../db");
+const router = require("../routes/auth");
 
 const createUser = async ({
    giveName,
@@ -42,6 +44,22 @@ const createUser = async ({
       return e;
    }
 };
+
+const upDateUser = async (id,user) => {
+   const userdb = await User.findOne({ where: { id } });
+   const {  giveName,familyName,nickName,email,photoUrl,password,role }= user;
+
+   return await 
+   userdb.update({
+      giveName,
+      familyName,
+      nickName,
+      email,
+      photoUrl,
+      password,
+      role,
+   })
+}
 
 const getAllUsers = async () => {
    const users = await User.findAll({ include: [Roles] });
@@ -99,4 +117,5 @@ module.exports = {
    getUserByEmail,
    getByGoogleID,
    getBygithubID,
+   upDateUser,
 };
