@@ -79,7 +79,6 @@ const getByGoogleID = async (googleId) => {
    const userGoogle = User.findOne({ where: { googleId } });
    const googleIdUser = { ...userGoogle };
    delete googleIdUser.password;
-   delete googleIdUser.googleId;
    delete googleIdUser.githubId;
 
    return googleIdUser.dataValues;
@@ -89,7 +88,6 @@ const getBygithubID = async (githubId) => {
    const githubIdUser = { ...userGithub };
    delete githubIdUser.password;
    delete githubIdUser.googleId;
-   delete githubIdUser.githubId;
 
    return githubIdUser.dataValues;
 };
