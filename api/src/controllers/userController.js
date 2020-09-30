@@ -55,7 +55,19 @@ const getAllUsers = async () => {
    return copyUsers;
 };
 
+const getUserById = async (id) => {
+   const userId = await User.findOne({ where: { id } });
+
+   const sendUserId = { ...userId };
+   delete sendUserId.password;
+   delete sendUserId.googleId;
+   delete sendUserId.githubId;
+
+   return sendUserId.dataValues;
+};
+
 module.exports = {
    createUser,
    getAllUsers,
+   getUserById,
 };
