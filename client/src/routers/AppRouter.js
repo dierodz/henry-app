@@ -35,7 +35,6 @@ const AppRouter = () => {
          <div>
             <Switch>
                <PublicRoutes
-                  // Cambiar, luego, el false por una variable de autenticación
                   component={AuthRouter}
                   isAuthenticated={isLoggedIn}
                   path="/auth"

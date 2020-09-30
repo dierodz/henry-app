@@ -74,19 +74,15 @@ export default function useUser() {
    };
 
    const signInWithGoogle = () => {
-      return async (dispatch) => {
-         if (window) {
-            window.location = `${process.env.REACT_APP_API}/auth/google`;
-         }
-      };
+      if (window) {
+         window.location = `${process.env.REACT_APP_API}/auth/google`;
+      }
    };
 
    const signInWithGithub = () => {
-      return async (dispatch) => {
-         if (window) {
-            window.location = `${process.env.REACT_APP_API}/auth/github`;
-         }
-      };
+      if (window) {
+         window.location = `${process.env.REACT_APP_API}/auth/github`;
+      }
    };
 
    return {
