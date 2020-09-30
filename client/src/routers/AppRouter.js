@@ -1,16 +1,16 @@
-// import { useUser } from "hooks";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import AuthRouter from "./AuthRouter";
 import PublicRoutes from "./PublicRoutes";
-import { startSignInWithToken } from "dispatchers/authDispatch";
+import { useUser } from "hooks";
+import { logout } from "actions/auth";
 
 const AppRouter = () => {
    const dispatch = useDispatch();
    const [isLoggedIn, setIsLoggedIn] = useState(false);
    const { authenticated } = useSelector((state) => state.auth);
-   const token = localStorage.getItem("userToken");
+   const { initialize, signInWithToken, localUser } = useUser();
 
    useEffect(() => {
       if (authenticated) {
@@ -21,10 +21,14 @@ const AppRouter = () => {
    }, [authenticated]);
 
    useEffect(() => {
-      if (token) {
-         dispatch(startSignInWithToken(token));
+      if (localUser && localUser.token) {
+         initialize(localUser);
+         dispatch(signInWithToken(localUser.token));
+      } else {
+         initialize();
+         dispatch(logout());
       }
-   }, [dispatch, token]);
+   }, [dispatch, localUser, signInWithToken, initialize]);
 
    return (
       <Router>
