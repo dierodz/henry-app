@@ -13,6 +13,8 @@ import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import NavBar from "../NavBar/NavBar";
+import { Link } from "react-router-dom";
+import "../../styles/components/Header.scss";
 
 const useStyles = makeStyles((theme) => ({
    grow: {
@@ -80,8 +82,12 @@ export default function Header() {
       setMobileMoreAnchorEl(event.currentTarget);
    };
 
-   const openMenu = () => {
-      document.querySelector(".sidebar").classList.add("open");
+   const openMenu = (e) => {
+      if (!document.querySelector(".sidebar").classList[1]) {
+         document.querySelector(".sidebar").classList.add("open");
+      } else {
+         document.querySelector(".sidebar").classList.remove("open");
+      }
    };
 
    const menuId = "primary-search-account-menu";
@@ -95,8 +101,7 @@ export default function Header() {
          open={isMenuOpen}
          onClose={handleMenuClose}
       >
-         <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
-         <MenuItem onClick={handleMenuClose}>Mi cuenta</MenuItem>
+         <div className="userMenu"></div>
       </Menu>
    );
 
@@ -155,9 +160,9 @@ export default function Header() {
                >
                   <MenuIcon />
                </IconButton>
-               <Typography className={classes.title} variant="h6" noWrap>
-                  Henry-App
-               </Typography>
+               <Link to="/">
+                  <img src="/Imagenes/logoHenry.png" />
+               </Link>
                <div className={classes.grow} />
                <div className={classes.sectionDesktop}>
                   <IconButton aria-label="show 4 new mails" color="inherit">
