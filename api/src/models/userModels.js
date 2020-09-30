@@ -35,10 +35,13 @@ module.exports = function (sequelize, Datatypes) {
         email: {
             type: Datatypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
                 notEmpty: false,
                 isEmail: true,
+
             },
+            
             set(value){
                 this.setDataValue('email', value.trim().toLowerCase())
             },
@@ -48,26 +51,17 @@ module.exports = function (sequelize, Datatypes) {
             validate: {
                 notEmpty: false,
             },
-            set(value){
-                this.setDataValue('googleId', value.trim().toLowerCase())
-            },
         },
         githubId:{
             type: Datatypes.STRING,
             validate: {
                 notEmpty: false,
             },
-            set(value){
-                this.setDataValue('githubId', value.trim().toLowerCase())
-            },
         },
         photoUrl:{
             type: Datatypes.STRING,
             validate: {
                 notEmpty: false,
-            },
-            set(value){
-                this.setDataValue('photoUrl', value.trim())
             },
         },
         password: {

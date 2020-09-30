@@ -3,6 +3,7 @@ module.exports = function(sequelize, DataTypes){
         role : {
             type: DataTypes.ENUM('instructor','pm','alumno','staff'),
             allowNull: false,
+            unique: true
         }
     })
     return Roles;
