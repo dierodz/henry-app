@@ -5,26 +5,7 @@ const router = require("express").Router();
 router
    .route("/")
    .post((req, res) => {
-      const {
-         giveName,
-         familyName,
-         nickName,
-         email,
-         googleId,
-         githubId,
-         photoUrl,
-         password,
-      } = req.body;
-      createUser({
-         giveName,
-         familyName,
-         nickName,
-         email,
-         googleId,
-         githubId,
-         photoUrl,
-         password,
-      })
+      createUser(req.body)
          .then((user) => res.status(201).json(user))
          .catch((err) => res.status(400).send(err));
    })
