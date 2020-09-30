@@ -36,7 +36,7 @@ export default function useUser() {
     [removeLocalUser],
   )
 
-  async function loginWithEmail(username, password) {
+  async function signInWithEmail(username, password) {
     try {
       const result = await Axios.post('/auth/email', { username, password });
       if (result.data) setLocalUser(result.data);
@@ -74,7 +74,7 @@ export default function useUser() {
   return {
     initialize: useInitialize,
     user,
-    loginWithEmail,
+    signInWithEmail,
     signInWithGoogle,
     signInWithGithub,
     signInWithToken,

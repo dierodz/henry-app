@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,8 @@ import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import { useFormik } from "formik";
+import { useQuery, useUser } from 'hooks';
+import { useHistory } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,14 +37,21 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  icons:{
-    margin:theme.spacing(3, 0, 2)
+  icons: {
+    margin: theme.spacing(3, 0, 2)
   }
 }));
 
 export default function LoginScreen() {
   const classes = useStyles();
-  
+
+  const { signInWithEmail, signInWithGithub, signInWithGoogle, signInWithToken, user } = useUser()
+  const { token } = useQuery()
+  const { replace } = useHistory()
+
+  useEffect(() => { if (user) replace('/') }, [user, replace])
+  useEffect(() => { if (token) signInWithToken(token) }, [token, signInWithToken])
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -62,15 +71,10 @@ export default function LoginScreen() {
       } else if (formik.values.password.length <= 8) {
         errors.password = "Must be more than 8 characters";
       }
-      return errors;},
+      return errors;
+    },
     onSubmit: async (values) => {
-      alert(values.email + values.password)
-      //descomentar al conectar
-
-      /* try {
-        await loginWithEmail(values.email, values.password);
-        history.push("/");
-      } catch { } */
+      await signInWithEmail(values.email + values.password)
     }
   });
 
@@ -97,7 +101,7 @@ export default function LoginScreen() {
             autoComplete="email"
             autoFocus
             onChange={formik.handleChange}
-            error={formik.errors.email?true:false}
+            error={formik.errors.email ? true : false}
           />
           <TextField
             variant="outlined"
@@ -110,7 +114,7 @@ export default function LoginScreen() {
             id="password"
             autoComplete="current-password"
             onChange={formik.handleChange}
-            error={formik.errors.password?true:false}
+            error={formik.errors.password ? true : false}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -137,34 +141,34 @@ export default function LoginScreen() {
               </Link>
             </Grid>
           </Grid>
-          <Grid 
+          <Grid
             container
             direction="row"
             justify="space-around"
             alignItems="center">
-            <Grid 
+            <Grid
               item
               className={classes.icons}
-              >
-                <IconButton onClick={()=>alert("facebook")} color="primary" aria-label="add to shopping cart">
-                  <Icon className="fab fa-facebook" aria-hidden="true" />
-                </IconButton>
-                <IconButton onClick={()=>alert("Google")} color="primary">
-                  <Icon className="fab fa-google" aria-hidden="true" />
-                </IconButton>
+            >
+              <IconButton onClick={() => signInWithGithub()} color="primary" aria-label="add to shopping cart">
+                <Icon className="fab fa-github" aria-hidden="true" />
+              </IconButton>
+              <IconButton onClick={() => signInWithGoogle()} color="primary">
+                <Icon className="fab fa-google" aria-hidden="true" />
+              </IconButton>
             </Grid>
-           </Grid>
+          </Grid>
         </form>
       </div>
       <Box mt={8}>
         <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
+          {'Copyright © '}
           <Link color="inherit" href="https://www.soyhenry.com/">
             Henry
           </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
       </Box>
     </Container>
   );
