@@ -1,8 +1,8 @@
-import React from 'react';
-import Header from '../../components/Header/Header.js'
+import React from "react";
 
-const HomeScreen = function() {
+import NavBar from "../../components/NavBar/NavBar.js";
 
-    return (<div><Header/></div>);
-}
+const HomeScreen = function () {
+   return <div></div>;
+};
 export default HomeScreen;
