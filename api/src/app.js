@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
+const passport = require("./passport");
 
 require("./db.js");
 
@@ -26,7 +27,8 @@ server.use((req, res, next) => {
    next();
 });
 
-// ======================================
+server.use(passport.initialize());
+
 server.use("/", routes);
 
 module.exports = server;

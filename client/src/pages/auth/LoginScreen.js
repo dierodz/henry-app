@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,6 +18,8 @@ import { useFormik } from "formik";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { useQuery, useUser } from 'hooks';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,16 +39,24 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  icons:{
-    margin:theme.spacing(3, 0, 2)
+  icons: {
+    margin: theme.spacing(3, 0, 2)
   }
 }));
 
 
 export default function LoginScreen() {
   const classes = useStyles();
+
   const [visibilityPass, setVisibilityPass] = React.useState(false);
-  
+
+  const { signInWithEmail, signInWithGithub, signInWithGoogle, signInWithToken, user } = useUser()
+  const { token } = useQuery()
+  const { replace } = useHistory()
+
+  useEffect(() => { if (user) replace('/') }, [user, replace])
+  useEffect(() => { if (token) signInWithToken(token) }, [token, signInWithToken])
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -70,13 +80,7 @@ export default function LoginScreen() {
       return errors;
     },
     onSubmit: async (values) => {
-      alert(values.email + values.password)
-      //descomentar al conectar
-
-      /* try {
-        await loginWithEmail(values.email, values.password);
-        history.push("/");
-      } catch { } */
+      await signInWithEmail(values.email + values.password)
     }
   });
 
@@ -164,34 +168,34 @@ export default function LoginScreen() {
               </Link>
             </Grid>
           </Grid>
-          <Grid 
+          <Grid
             container
             direction="row"
             justify="space-around"
             alignItems="center">
-            <Grid 
+            <Grid
               item
               className={classes.icons}
-              >
-                <IconButton onClick={()=>alert("facebook")} color="primary" aria-label="add to shopping cart">
-                  <Icon className="fab fa-facebook" aria-hidden="true" />
-                </IconButton>
-                <IconButton onClick={()=>alert("Google")} color="primary">
-                  <Icon className="fab fa-google" aria-hidden="true" />
-                </IconButton>
+            >
+              <IconButton onClick={() => signInWithGithub()} color="primary" aria-label="add to shopping cart">
+                <Icon className="fab fa-github" aria-hidden="true" />
+              </IconButton>
+              <IconButton onClick={() => signInWithGoogle()} color="primary">
+                <Icon className="fab fa-google" aria-hidden="true" />
+              </IconButton>
             </Grid>
-           </Grid>
+          </Grid>
         </form>
       </div>
       <Box mt={8}>
         <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
+          {'Copyright © '}
           <Link color="inherit" href="https://www.soyhenry.com/">
             Henry
           </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
       </Box>
     </Container>
   );
