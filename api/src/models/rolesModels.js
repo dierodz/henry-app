@@ -1,10 +1,8 @@
-module.exports = function(sequelize, DataTypes){
-    const Roles = sequelize.define('roles' , {
-        role : {
-            type: DataTypes.ENUM('instructor','pm','alumno','staff'),
-            allowNull: false,
-            unique: true
-        }
-    })
-    return Roles;
-}
+module.exports = (sequelize, DataTypes) =>
+   sequelize.define("roles", {
+      role: {
+         type: DataTypes.ENUM("instructor", "pm", "alumno", "staff"),
+         allowNull: false,
+         unique: true,
+      },
+   });
