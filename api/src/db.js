@@ -3,7 +3,7 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 // ========================= Importación de modelos =========================
-
+const cohorteModel = require("./models/cohorteModel");
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -23,6 +23,7 @@ const sequelize = new Sequelize(
 // ==========================================================================
 
 // ===================== Creación de entidades en la BD =====================
+const CohorteModels = cohorteModel(sequelize, DataTypes);
 
 // =================== FIN Creación de entidades en la BD ===================
 
@@ -38,4 +39,5 @@ module.exports = {
    conn: sequelize,
    Op,
    DataTypes,
+   CohorteModels
 };
