@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) =>
-   sequelize.define("ratings", {
+   sequelize.define("scores", {
       score: {
          type: DataTypes.INTEGER,
       },
