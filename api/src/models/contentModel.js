@@ -1,8 +1,7 @@
 module.exports = (sequelize, DataTypes) =>
    sequelize.define("content", {
-      topictName: {
+      topicName: {
          type: DataTypes.STRING,
-         allowNull: false,
       },
       durationTime: {
          type: DataTypes.INTEGER,

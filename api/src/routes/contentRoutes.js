@@ -33,7 +33,8 @@ router
 router
    .route("/:id")
    .delete((req, res) => {
-      deleteTopic()
+      const { id } =req.params;   
+      deleteTopic(id)
          .then((topic) => res.status(204).json(topic))
          .catch((err) => {
             if (err.error) {

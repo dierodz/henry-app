@@ -28,10 +28,11 @@ const updateTopic = async (id, topic) => {
 // Eliminar un topic 
 const deleteTopic = async (id) => {
     const tobeDeleted = await Content.findOne({where: { id } });
-    await tobeDeleted.destoy()
-
+    await tobeDeleted.destroy()
+    
     return { message: "topic successfully removed" }
 }
+
 
 // Muestra todos los topic que hay en 'x' carrera 
 const getAllTopics = async () => {
