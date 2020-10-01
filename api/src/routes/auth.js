@@ -1,6 +1,16 @@
 const router = require("express").Router(),
   jwt = require("jsonwebtoken"),
-  passport = require("passport");
+  passport = require("passport"),
+  { getUserById } = require('../controllers/userController');
+
+router.route('/me').get(async function (req, res) {
+  if (req.user) {
+    const user = getUserById(req.user.uid)
+    res.status(200).json(user)
+  } else {
+    res.sendStatus(401)
+  }
+})
 
 router.route('/email').post(function (req, res, next) {
   passport.authenticate('local', function (err, user, info) {
@@ -38,7 +48,7 @@ router.route("/google/callback").get(function (req, res, next) {
 
 router.route("/github").get(
   passport.authenticate("github", {
-    scope: ["profile", "email"],
+    scope: ['user', 'user:email'],
   })
 );
 
