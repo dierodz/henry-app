@@ -17,7 +17,7 @@ router
    })
    .get((req, res) => {
       getAllUsers()
-         .then((users) => res.json(users))
+         .then((users) => res.json(users).status(200))
          .catch((err) => res.status(400).send(err));
    });
 
@@ -26,8 +26,8 @@ router
    .get((req, res) => {
       const { id } = req.params;
       getUserById(id)
-         .then((users) => res.json(users))
-         .catch((err) => res.status(400).send(err));
+         .then((users) => res.json(users).status(200))
+         .catch((err) => res.status(404).send(err));
    })
    .delete((req, res) => {
       deleteUserById()
@@ -36,8 +36,8 @@ router
    })
    .put((req, res) => {
       const { id } = req.params;
-      updateUser(id, req.body)
-         .then((users) => res.json(users))
+      upDateUser(id, req.body)
+         .then((users) => res.json(users).status(201))
          .catch((err) => res.status(400).send(err));
    });
 

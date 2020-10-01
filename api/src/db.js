@@ -3,10 +3,12 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 // ========================= Importación de modelos =========================
+const cohorteModel = require("./models/cohorteModel");
 const userModels = require("./models/userModels");
 const rolesModels = require("./models/rolesModels");
 const userRolesModels = require("./models/userRoles");
 const checkPointModels = require("./models/CheckPoint");
+const modulesModels = require("./models/modulesModels");
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -26,11 +28,12 @@ const sequelize = new Sequelize(
 // ==========================================================================
 
 // ===================== Creación de entidades en la BD =====================
+const Cohorte = cohorteModel(sequelize, DataTypes);
 const User = userModels(sequelize, DataTypes);
 const Roles = rolesModels(sequelize, DataTypes);
 const UserRoles = userRolesModels(sequelize, DataTypes);
 const CheckPoint = checkPointModels(sequelize, DataTypes);
-
+const Modules = modulesModels(sequelize, DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -72,8 +75,10 @@ module.exports = {
    conn: sequelize,
    Op,
    DataTypes,
+   Cohorte,
    User,
    Roles,
    createRoles,
    CheckPoint,
+   Modules
 };
