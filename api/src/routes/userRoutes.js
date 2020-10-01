@@ -3,7 +3,7 @@ const {
    getAllUsers,
    getUserById,
    deleteUserById,
-   upDateUser,
+   updateUser,
 } = require("../controllers/userController");
 
 const router = require("express").Router();
