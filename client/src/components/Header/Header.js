@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -14,6 +15,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import NavBar from "../NavBar/NavBar";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
+import useUser from "../../hooks/useUser";
 
 const useStyles = makeStyles((theme) => ({
    grow: {
@@ -57,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header() {
+   const history = useHistory();
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState(null);
    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -100,7 +103,16 @@ export default function Header() {
          open={isMenuOpen}
          onClose={handleMenuClose}
       >
-         <div className="userMenu"></div>
+         <div className="userMenu">
+            <img alt="userImg" src="/Imagenes/user.png"></img>
+            <p className="userName">Nombre Apellido</p>
+            <button className="perfilBtn" onClick={() => history.push("/user")}>
+               Perfil
+            </button>
+            <button className="logoutBtn" onClick={useUser.signOut}>
+               Cerrar sesión
+            </button>
+         </div>
       </Menu>
    );
 
@@ -160,7 +172,7 @@ export default function Header() {
                   <MenuIcon />
                </IconButton>
                <Link to="/">
-                  <img src="/Imagenes/logoHenry.png" alt="" />
+                  <img alt="logoHenry" src="/Imagenes/logoHenry.png" />
                </Link>
                <div className={classes.grow} />
                <div className={classes.sectionDesktop}>
