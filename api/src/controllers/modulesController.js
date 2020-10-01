@@ -20,7 +20,7 @@ const getModules = async()=>{
 // Controlador para crear un modulo
 const createModule = async({name, description }) => {
   const module =await Modules.create({ name, description })
-  return module.save()
+  return module
    
   
            
@@ -30,6 +30,7 @@ const createModule = async({name, description }) => {
 const editModule = async(id, name, description) =>{
    const module = await Modules.findOne({ where: { id } });
    module.update({name , description})
+   return module.save()
 
 }
 
