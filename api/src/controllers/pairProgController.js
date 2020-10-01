@@ -1,6 +1,6 @@
 const {PairProgramming} = require("../db");
 
-// Controlador para obtener todos los modulos
+// Controlador para obtener todos los grupos de Pair Programming
 const getPairGroups = async()=>{
    const pairGroups = await PairProgramming.findAll()
    if (pairGroups.length < 1) {
@@ -18,7 +18,7 @@ const getPairGroups = async()=>{
    return pairGroups;
 }
 
-// Controlador para crear un modulo
+// Controlador para crear un grupo de Pair Programming
 const createPairGroup = async({name }) => {
   const pairGroup =await PairProgramming.create({ name })
   return pairGroup
@@ -27,7 +27,7 @@ const createPairGroup = async({name }) => {
            
 };
 
-// Controlador para editar un modulo
+// Controlador para editar un grupo de Pair Programming
 const editPairGroup = async(id, name) =>{
    const pairGroup = await PairProgramming.findOne({ where: { id } });
    pairGroup.update({name})
@@ -35,7 +35,7 @@ const editPairGroup = async(id, name) =>{
 
 }
 
-// Controlador para obtener un modulo por ID 
+// Controlador para obtener un grupo de Pair Programming por ID 
 const getpairGroupsById = async (id) =>{ 
    const pairGroup = await PairProgramming.findOne({ where: { id } })
 
@@ -57,7 +57,7 @@ const getpairGroupsById = async (id) =>{
     return pairGroup;
 }
 
-// Controlador para eliminar un modulo
+// Controlador para eliminar un grupo de Pair Programming
 const deletePairGroup = async (id) => {
    const pairGroup = await PairProgramming.findOne({ where: { id } });
    await pairGroup.destroy();
