@@ -1,18 +1,10 @@
 const { Ratings } = require("../db");
 
-const createRatings = (score) => {
-	
-    return new Promise((resolve, reject) => {
-        Ratings.create({
-            score
-        })
-            .then((rating) => resolve(rating))
-            .catch((err) =>
-                reject({
-                    error: err,
-                })
-            );
-    });
+//-----controlador para crear un score, echo con promesas--------\\ 
+
+const createRatings = async (score) => {
+	 const create = Ratings.create({score})
+    return create;
 };
 
 
