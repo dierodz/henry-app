@@ -38,7 +38,7 @@ router.route("/google/callback").get(function (req, res, next) {
 
 router.route("/github").get(
   passport.authenticate("github", {
-    scope: ["profile", "email"],
+    scope: ['user', 'user:email'],
   })
 );
 

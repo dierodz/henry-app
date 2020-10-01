@@ -1,9 +1,12 @@
+const { getUserByEmail, getUserByGoogleID, updateUser, getUserByGithubID } = require("./controllers/userController");
+
 const jwt = require("jsonwebtoken"),
   passport = require("passport"),
+  splitName = require("split-human-name"),
   LocalStrategy = require("passport-local").Strategy,
   BearerStrategy = require("passport-http-bearer").Strategy,
   GoogleStrategy = require("passport-google-oauth").OAuth2Strategy,
-  GitHubStrategy = require('passport-github').Strategy;
+  GitHubStrategy = require('passport-github2').Strategy;
 
 const SECRET = process.env.AUTH_SECRET || "secret",
   GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID,
@@ -15,8 +18,7 @@ passport.use(
   new LocalStrategy(
     { usernameField: "username", passwordField: "password", session: false },
     async (username, password, done) => {
-      const user = { id: 1, email: 'test@test.com', compare: (password) => true }
-      // const user = await getOneByEmail(username);
+      const user = await getUserByEmail(username);
       if (!user)
         return done(null, false, {
           message: "Username or password is incorrect",
@@ -25,11 +27,7 @@ passport.use(
         return done(null, false, {
           message: "Username or password is incorrect",
         });
-      const { id, email } = user;
-      return done(null, {
-        id,
-        email,
-      });
+      return done(null, user);
     }
   )
 );
@@ -42,20 +40,26 @@ passport.use(
       callbackURL: `${process.env.API}/auth/google/callback`,
       session: false,
     },
-    async (token, tokenSecret, profile, done) => {
-      const user = { id: 1, email: 'test@test.com', compare: (password) => true }
-      // let user = await getOneByGoogleId(profile.id);
-      if (!user)
-        user = await createOne(
-          profile.displayName,
-          profile.emails[0].value,
-          null,
-          "GUEST",
-          profile.id,
-          null
-        );
-      const { id, email } = user;
-      return done(null, { id, email });
+    async (_token, _tokenSecret, profile, done) => {
+      let user = await getUserByGoogleID(profile.id);
+      if (!user) {
+        user = await getUserByEmail(profile.emails[0].value)
+        if (!user) {
+          return done(null, false);
+        } else {
+          await updateUser(user.id, {
+            givenName: profile.name.givenName,
+            familyName: profile.name.familyName,
+            nickName: profile.emails[0].value.split('@')[0],
+            googleId: profile.id,
+            photoUrl: profile.photos[0].value
+          })
+        }
+        user = await getUserByGoogleID(profile.id)
+        return done(null, user);
+      } else {
+        return done(null, user);
+      }
     }
   )
 );
@@ -69,19 +73,28 @@ passport.use(
       session: false,
     },
     async (token, tokenSecret, profile, done) => {
-      const user = { id: 1, email: 'test@test.com', compare: (password) => true }
+      console.log(profile)
+      let user = await getUserByGoogleID(profile.id);
       // let user = await getOneByGoogleId(profile.id);
-      if (!user)
-        user = await createOne(
-          profile.displayName,
-          profile.emails[0].value,
-          null,
-          "GUEST",
-          profile.id,
-          null
-        );
-      const { id, email } = user;
-      return done(null, { id, email });
+      if (!user) {
+        user = await getUserByEmail(profile._json.email)
+        if (!user) {
+          return done(null, false);
+        } else {
+          const { givenName, familyName } = splitName(profile._json.name)
+          await updateUser(user.id, {
+            givenName,
+            familyName,
+            nickName: profile._json.email,
+            githubId: profile.id,
+            photoUrl: profile._json.avatar_url
+          })
+        }
+        user = await getUserByGithubID(profile.id)
+        return done(null, user);
+      } else {
+        return done(null, user);
+      }
     }
   )
 );
