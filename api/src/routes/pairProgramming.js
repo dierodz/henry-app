@@ -1,10 +1,10 @@
 const {
-   getModules,
-   createModule,
-   deleteModule,
-   editModule,
-   getModulesById
-} = require("../controllers/modulesController");
+   getPairGroups,
+   createPairGroup,
+   deletePairGroup,
+   editPairGroup,
+   getpairGroupsById
+} = require("../controllers/pairProgController");
 
 const router = require("express").Router();
 
@@ -12,13 +12,13 @@ const router = require("express").Router();
 router
    .route("/")
    .get((req, res) => {
-      getModules()
-         .then((module) => res.json(module).status(200))
+      getPairGroups()
+         .then((pairGroup) => res.json(pairGroup).status(200))
          .catch((err) => res.status(400).send(err));
    })
    .post((req, res) => {
-      const {name,description} = req.body
-      createModule({name,description})
+
+      createPairGroup(req.body)
          .then((user) => res.status(201).json(user))
          .catch((err) =>res.status(400).send(err));
    })
@@ -27,22 +27,24 @@ router
    .route("/:id")
    .get((req, res) => {
       const { id } = req.params;
-      getModulesById(id)
-         .then((module) => res.json(module).status(200))
+      getpairGroupsById(id)
+         .then((pairGroup) => res.json(pairGroup).status(200))
          .catch((err) => res.status(404).send(err));
    })
    
    .put((req, res) => {
       const { id } = req.params;
-      const {name,description}=req.body
-      editModule(id, name,description)
-         .then((module) => res.json(module).status(201))
-         .catch((err) =>res.status(400).send(err));
+      const{name}= req.body
+      editPairGroup(id, name)
+         .then((pairGroup) => res.json(pairGroup).status(201))
+         .catch((err) => res.status(400).send(err));
    })
    .delete((req, res) => {
       const { id } = req.params;
-      deleteModule(id)
-         .then((module) => res.status(204).json(module))
+      deletePairGroup(id)
+         .then((pairGroup) => res.status(204).json(pairGroup))
          .catch((err) => res.status(400).send(err));
    });
+
+   
 module.exports =router;
