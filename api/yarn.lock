@@ -23,6 +23,11 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
+"@compwright/namecase@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@compwright/namecase/-/namecase-2.0.5.tgz#ca718ee2d45c891e931257616f844ca2dec505a2"
+  integrity sha512-BS30bbdi05xayUgc2wp+mePaxYFUf9/L5gxRQnv7jZ55FUapm0E6fnxzq5Ilq8rQaY251vynB+0alZnn4XSG/A==
+
 "@eslint/eslintrc@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.1.3.tgz#7d1a2b2358552cc04834c0979bd4275362e37085"
@@ -990,6 +995,11 @@ http-errors@~1.7.2:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
 
+humanparser@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/humanparser/-/humanparser-2.6.0.tgz#716ab4e24700ac27374577135e19edae79c8fc6f"
+  integrity sha512-zl7UM7dY/KKe4wlJ6h5fDumzVOCt5SVzPBtMf46r+eyAcjs2ucjGk/lFNT2dy+ZgTh8/hsZMwN2Wjb2Kjfgkgw==
+
 iconv-lite@0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -1613,10 +1623,10 @@ parseurl@~1.3.3:
   resolved "https://registry.yarnpkg.com/parseurl/-/parseurl-1.3.3.tgz#9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
   integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
 
-passport-github@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/passport-github/-/passport-github-1.1.0.tgz#8ce1e3fcd61ad7578eb1df595839e4aea12355d4"
-  integrity sha1-jOHj/NYa11eOsd9ZWDnkrqEjVdQ=
+passport-github2@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/passport-github2/-/passport-github2-0.1.12.tgz#a72ebff4fa52a35bc2c71122dcf470d1116f772c"
+  integrity sha512-3nPUCc7ttF/3HSP/k9sAXjz3SkGv5Nki84I05kSQPo01Jqq1NzJACgMblCK0fGcv9pKCG/KXU3AJRDGLqHLoIw==
   dependencies:
     passport-oauth2 "1.x.x"
 
@@ -2085,6 +2095,14 @@ slice-ansi@^2.1.0:
     ansi-styles "^3.2.0"
     astral-regex "^1.0.0"
     is-fullwidth-code-point "^2.0.0"
+
+split-human-name@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/split-human-name/-/split-human-name-2.0.1.tgz#8702d88de85563c724307d94d4649626396355ea"
+  integrity sha512-zGL7MDvTJTyVNm03lC8fOwvD5Fawk7K3AmxytmudK6e9WUn8RG8CPagOXXigOGSq+0JuNQ2Fpv9bHlujvn2GiQ==
+  dependencies:
+    "@compwright/namecase" "^2.0.5"
+    humanparser "^2.6.0"
 
 split@^1.0.0:
   version "1.0.1"
