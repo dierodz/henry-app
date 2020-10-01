@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -161,7 +160,7 @@ export default function Header() {
                   <MenuIcon />
                </IconButton>
                <Link to="/">
-                  <img src="/Imagenes/logoHenry.png" />
+                  <img src="/Imagenes/logoHenry.png" alt="" />
                </Link>
                <div className={classes.grow} />
                <div className={classes.sectionDesktop}>
