@@ -7,6 +7,7 @@ const cohorteModel = require("./models/cohorteModel");
 const userModels = require("./models/userModels");
 const rolesModels = require("./models/rolesModels");
 const userRolesModels = require("./models/userRoles");
+const scoresModels = require("./models/scoresModel");
 const contentModels = require('./models/contentModel');
 const checkPointModels = require("./models/CheckPoint");
 const modulesModels = require("./models/modulesModels");
@@ -34,6 +35,7 @@ const Cohorte = cohorteModel(sequelize, DataTypes);
 const User = userModels(sequelize, DataTypes);
 const Roles = rolesModels(sequelize, DataTypes);
 const UserRoles = userRolesModels(sequelize, DataTypes);
+const Scores = scoresModels(sequelize, DataTypes);
 const Content = contentModels(sequelize,DataTypes);
 const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Modules = modulesModels(sequelize, DataTypes);
@@ -83,6 +85,7 @@ module.exports = {
    User,
    Roles,
    createRoles,
+   Scores,
    Content,
    CheckPoint,
    Modules,
