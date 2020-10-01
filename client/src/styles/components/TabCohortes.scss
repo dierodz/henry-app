@@ -1,0 +1,45 @@
+.addIcon {
+   background: white;
+   border-style: none;
+   border-radius: 10px;
+   padding-top: 2px;
+   cursor: pointer;
+   box-shadow: 0.3px 0.3px 1px 1.5px yellow;
+}
+.addIcon:hover {
+   box-shadow: 0.3px 0.3px 1px 1px yellow;
+}
+.viewIcon {
+   background: white;
+   border-style: none;
+   border-radius: 10px;
+   padding-top: 2px;
+   cursor: pointer;
+   box-shadow: 0.3px 0.3px 1px 1px grey;
+}
+.viewIcon:hover {
+   box-shadow: 0.3px 0.3px 2px grey;
+}
+.editIcon {
+   background: yellow;
+   border-style: none;
+   border-radius: 10px;
+   padding-top: 2px;
+   cursor: pointer;
+   box-shadow: 0.3px 0.3px 1px 1px grey;
+}
+.editIcon:hover {
+   box-shadow: 0.3px 0.3px 2px grey;
+}
+.deleteIcon {
+   background: rgb(0, 0, 0);
+   border-style: none;
+   border-radius: 10px;
+   padding-top: 2px;
+   color: white;
+   cursor: pointer;
+   box-shadow: 0.3px 0.3px 1px 1px grey;
+}
+.deleteIcon:hover {
+   box-shadow: none;
+}
