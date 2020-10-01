@@ -59,7 +59,7 @@ const createUser = async ({
    return sendUser.dataValues;
 };
 
-const upDateUser = async (id, user) => {
+const updateUser = async (id, user) => {
    const userdb = await User.findOne({ where: { id } });
    const {
       giveName,
@@ -161,5 +161,5 @@ module.exports = {
    getByGoogleID,
    getBygithubID,
    deleteUserById,
-   upDateUser,
+   updateUser,
 };

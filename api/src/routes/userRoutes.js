@@ -3,7 +3,7 @@ const {
    getAllUsers,
    getUserById,
    deleteUserById,
-   upDateUser,
+   updateUser,
 } = require("../controllers/userController");
 
 const router = require("express").Router();
@@ -36,7 +36,7 @@ router
    })
    .put((req, res) => {
       const { id } = req.params;
-      upDateUser(id, req.body)
+      updateUser(id, req.body)
          .then((users) => res.json(users))
          .catch((err) => res.status(400).send(err));
    });
