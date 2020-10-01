@@ -53,16 +53,14 @@ const useStyles = makeStyles((theme) => ({
 export default function LoginScreen() {
    const dispatch = useDispatch();
    const classes = useStyles();
-
    const [visibilityPass, setVisibilityPass] = React.useState(false);
-
    const { token } = useQuery();
 
    useEffect(() => {
       if (token) {
-         signInWithToken(token);
+         dispatch(signInWithToken(token));
       }
-   }, [token]);
+   }, [dispatch, token]);
 
    const formik = useFormik({
       initialValues: {

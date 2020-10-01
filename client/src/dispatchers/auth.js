@@ -4,12 +4,12 @@ import { login, logout } from "actions/auth";
 export const signOut = () => {
    return async (dispatch) => {
       dispatch(logout());
-      localStorage.removeItem("auth");
+      localStorage.removeItem("token");
    };
 };
 
-export const useInitialize = (localUser) => {
-   // Axios.defaults.baseURL = process.env.REACT_APP_API;
+export const initialize = (localUser) => {
+   Axios.defaults.baseURL = process.env.REACT_APP_API;
 
    if (localUser && localUser.token) {
       Axios.defaults.headers.common[

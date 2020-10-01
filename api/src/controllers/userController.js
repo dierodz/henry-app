@@ -133,6 +133,11 @@ const getUserByEmail = async (email) => {
 
 const getUserByGoogleID = async (googleId) => {
    const user = await User.findOne({ where: { googleId } });
+
+   if (!user) {
+      return null;
+   }
+
    return _sendUser(user);
 };
 
