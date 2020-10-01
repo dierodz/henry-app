@@ -27,6 +27,16 @@ server.use((req, res, next) => {
    next();
 });
 
+server.all("*", function (req, res, next) {
+   passport.authenticate("bearer", function (err, user) {
+      if (err) return next(err);
+      if (user) {
+         req.user = user;
+      }
+      return next();
+   })(req, res, next);
+});
+
 server.use(passport.initialize());
 
 server.use("/", routes);
