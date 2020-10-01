@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken"),
   GoogleStrategy = require("passport-google-oauth").OAuth2Strategy,
   GitHubStrategy = require('passport-github2').Strategy;
 
-const SECRET = process.env.AUTH_SECRET || "secret",
+const SECRET = process.env.SECRET,
   GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET,
   GITHUB_APP_ID = process.env.GITHUB_APP_ID,
@@ -73,7 +73,6 @@ passport.use(
       session: false,
     },
     async (token, tokenSecret, profile, done) => {
-      console.log(profile)
       let user = await getUserByGoogleID(profile.id);
       // let user = await getOneByGoogleId(profile.id);
       if (!user) {
