@@ -23,7 +23,7 @@ const sequelize = new Sequelize(
 // ==========================================================================
 
 // ===================== Creación de entidades en la BD =====================
-const CohorteModels = cohorteModel(sequelize, DataTypes);
+const Cohorte = cohorteModel(sequelize, DataTypes);
 
 // =================== FIN Creación de entidades en la BD ===================
 
@@ -39,5 +39,5 @@ module.exports = {
    conn: sequelize,
    Op,
    DataTypes,
-   CohorteModels
+   Cohorte
 };
