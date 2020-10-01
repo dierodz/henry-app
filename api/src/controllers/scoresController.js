@@ -15,7 +15,7 @@ const getScores = async() => {
    if (scores.length < 1) {
       throw {
          name: "ApiFindError",
-         type: "Module Error",
+         type: "Search Error",
          error: {
             message: "there are no scores in the database",
             type: "data not found",
@@ -36,12 +36,12 @@ const getScoreById = async(id) => {
       throw{
         error: {
           name: "ApiFindError",
-          type: "Module Error",
+          type: "Search Error",
           errors: [
             {
               message: "there is no such score",
               type: "not found",
-              value: null,
+              code: 404
             },
           ],
         },
@@ -57,6 +57,22 @@ const getScoreById = async(id) => {
 const updateScore = async (id, score) => {
 
 	const scoreId = await Scores.findOne({ where: {id}})
+
+	if (!scoreId) {
+      throw{
+        error: {
+          name: "ApiFindError",
+          type: "Search Error",
+          errors: [
+            {
+              message: "there is no such score, impossible to update",
+              type: "not found",
+              code: 404
+            },
+          ],
+        },
+      };
+    }
 	scoreId.update({score});
 	newScore  = await scoreId.save();
 	
@@ -69,7 +85,25 @@ const updateScore = async (id, score) => {
 
 const deleteScore = async (id) => {
    const score = await Scores.findOne({ where: { id } });
+
+   if (!score) {
+      throw{
+        error: {
+          name: "ApiFindError",
+          type: "Search Error",
+          errors: [
+            {
+              message: "there is no such score, impossible to delete",
+              type: "not found",
+              code: 404
+            },
+          ],
+        },
+      };
+    }
+
    await score.destroy();
+
 
    return { message: "successfully removed" };
 };
