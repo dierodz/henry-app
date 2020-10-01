@@ -13,7 +13,7 @@ router
    .route("/")
    .get((req, res) => {
       getPairGroups()
-         .then((users) => res.json(users).status(200))
+         .then((pairGroup) => res.json(pairGroup).status(200))
          .catch((err) => res.status(400).send(err));
    })
    .post((req, res) => {
@@ -28,7 +28,7 @@ router
    .get((req, res) => {
       const { id } = req.params;
       getpairGroupsById(id)
-         .then((users) => res.json(users).status(200))
+         .then((pairGroup) => res.json(pairGroup).status(200))
          .catch((err) => res.status(404).send(err));
    })
    
@@ -36,13 +36,13 @@ router
       const { id } = req.params;
       const{name}= req.body
       editPairGroup(id, name)
-         .then((users) => res.json(users).status(201))
+         .then((pairGroup) => res.json(pairGroup).status(201))
          .catch((err) => res.status(400).send(err));
    })
    .delete((req, res) => {
       const { id } = req.params;
       deletePairGroup(id)
-         .then((users) => res.status(204).json(users))
+         .then((pairGroup) => res.status(204).json(pairGroup))
          .catch((err) => res.status(400).send(err));
    });
 

@@ -13,7 +13,7 @@ router
    .route("/")
    .get((req, res) => {
       getModules()
-         .then((users) => res.json(users).status(200))
+         .then((module) => res.json(module).status(200))
          .catch((err) => res.status(400).send(err));
    })
    .post((req, res) => {
@@ -28,7 +28,7 @@ router
    .get((req, res) => {
       const { id } = req.params;
       getModulesById(id)
-         .then((users) => res.json(users).status(200))
+         .then((module) => res.json(module).status(200))
          .catch((err) => res.status(404).send(err));
    })
    
@@ -36,13 +36,13 @@ router
       const { id } = req.params;
       const {name,description}=req.body
       editModule(id, name,description)
-         .then((users) => res.json(users).status(201))
+         .then((module) => res.json(module).status(201))
          .catch((err) =>res.status(400).send(err));
    })
    .delete((req, res) => {
       const { id } = req.params;
       deleteModule(id)
-         .then((users) => res.status(204).json(users))
+         .then((module) => res.status(204).json(module))
          .catch((err) => res.status(400).send(err));
    });
 module.exports =router;
