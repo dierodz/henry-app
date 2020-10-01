@@ -1,24 +1,24 @@
-const bcrypt =require('bcrypt');
+const bcrypt = require('bcrypt');
 
 module.exports = function (sequelize, Datatypes) {
     const User = sequelize.define('user', {
-        giveName: {
+        givenName: {
             type: Datatypes.STRING,
-            allowNull: false,
+            allowNull: true,
             validate: {
                 notEmpty: false,
             },
-            set(value){
-                this.setDataValue('giveName', value.trim().toLowerCase())
+            set(value) {
+                this.setDataValue('givenName', value.trim().toLowerCase())
             },
         },
         familyName: {
             type: Datatypes.STRING,
-            allowNull:  false,
+            allowNull: true,
             validate: {
                 notEmpty: false,
             },
-            set(value){
+            set(value) {
                 this.setDataValue('familyName', value.trim().toLowerCase())
             },
         },
@@ -28,7 +28,7 @@ module.exports = function (sequelize, Datatypes) {
             validate: {
                 notEmpty: false,
             },
-            set(value){
+            set(value) {
                 this.setDataValue('nickName', value.trim().toLowerCase())
             },
         },
@@ -41,24 +41,24 @@ module.exports = function (sequelize, Datatypes) {
                 isEmail: true,
 
             },
-            
-            set(value){
+
+            set(value) {
                 this.setDataValue('email', value.trim().toLowerCase())
             },
         },
-        googleId:{
+        googleId: {
             type: Datatypes.STRING,
             validate: {
                 notEmpty: false,
             },
         },
-        githubId:{
+        githubId: {
             type: Datatypes.STRING,
             validate: {
                 notEmpty: false,
             },
         },
-        photoUrl:{
+        photoUrl: {
             type: Datatypes.STRING,
             validate: {
                 notEmpty: false,
@@ -69,13 +69,13 @@ module.exports = function (sequelize, Datatypes) {
             validate: {
                 notEmpty: false,
             },
-            set(value){
-                const hashedPass= bcrypt.hashSync(value.trim(),10)
+            set(value) {
+                const hashedPass = bcrypt.hashSync(value.trim(), 10)
                 this.setDataValue('password', hashedPass)
             },
         }
     })
-    User.prototype.compare = function(password) {
+    User.prototype.compare = function (password) {
         return bcrypt.compareSync(password, this.password)
     }
     return User;

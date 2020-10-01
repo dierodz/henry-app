@@ -48,6 +48,7 @@ export default function useUser() {
   async function signInWithToken(token) {
     token = token.split("#")[0];
     try {
+      Axios.defaults.baseURL = process.env.REACT_APP_API
       const result = await Axios.get('/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       })
