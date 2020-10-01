@@ -9,6 +9,7 @@ const rolesModels = require("./models/rolesModels");
 const userRolesModels = require("./models/userRoles");
 const checkPointModels = require("./models/CheckPoint");
 const modulesModels = require("./models/modulesModels");
+const pairProgModels = require("./models/pairProgModels");
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -34,6 +35,7 @@ const Roles = rolesModels(sequelize, DataTypes);
 const UserRoles = userRolesModels(sequelize, DataTypes);
 const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Modules = modulesModels(sequelize, DataTypes);
+const PairProgramming = pairProgModels(sequelize, DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -80,5 +82,6 @@ module.exports = {
    Roles,
    createRoles,
    CheckPoint,
-   Modules
+   Modules,
+   PairProgramming
 };
