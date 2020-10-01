@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) =>{
             notEmpty: false
           },
           set(value) {
-            this.setDataValue("address", value.trim().toLowerCase());
+            this.setDataValue("name", value.trim().toLowerCase());
           },
       description: {
          type: DataTypes.STRING,

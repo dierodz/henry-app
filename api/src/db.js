@@ -76,5 +76,6 @@ module.exports = {
    DataTypes,
    User,
    Roles,
-   createRoles
+   createRoles,
+   Modules
 };

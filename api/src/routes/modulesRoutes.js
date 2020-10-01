@@ -20,7 +20,8 @@ router
       const {name,description} = req.body
       createModule({name,description})
          .then((user) => res.status(201).json(user))
-         .catch((err) => res.status(400).send(err));
+         .catch((err) =>{console.log(err)} )
+         // res.status(400).send(err));
    })
 
    router

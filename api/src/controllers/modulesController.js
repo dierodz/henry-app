@@ -13,8 +13,10 @@ const getModules = async()=>{
             type: "data not found",
             code: 404,
          },
-      };
+      }
+     
    }
+   return modules
 }
 
 // Controlador para crear un modulo
@@ -53,6 +55,7 @@ const getModulesById = async (id) =>{
         },
       };
     }
+    return module;
 }
 
 // Controlador para eliminar un modulo
