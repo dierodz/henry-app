@@ -1,37 +1,57 @@
 const {
-    createContent,
-    updateTopic,
-    deleteTopic,
-    getAllTopics,
- } = require("../controllers/contentController");
+   createContent,
+   updateTopic,
+   deleteTopic,
+   getAllTopics,
+} = require("../controllers/contentController");
 
- const router = require("express").Router();
+const router = require("express").Router();
 
- router
+router
    .route("/")
    .post((req, res) => {
-    createContent(req.body)
+      createContent(req.body)
          .then((topic) => res.status(201).json(topic))
-         .catch((err) => res.status(400).send(err));
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+            res.status(400).json(err);
+         });
    })
    .get((req, res) => {
-    getAllTopics()
+      getAllTopics()
          .then((topics) => res.json(topics))
-         .catch((err) => res.status(400).send(err));
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+            res.status(400).json(err);
+         });
    });
 
-   router
+router
    .route("/:id")
    .delete((req, res) => {
-    deleteTopic()
-       .then((topic) => res.status(204).json(topic))
-       .catch((err) => res.status(400).send(err));
- })
- .put((req, res) => {
-    const { id } = req.params;
-    updateTopic(id, req.body)
-       .then((topic) => res.json(topic))
-       .catch((err) => res.status(400).send(err));
- });
+      deleteTopic()
+         .then((topic) => res.status(204).json(topic))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+            res.status(400).json(err);
+         });
+   })
+   .put((req, res) => {
+      const { id } = req.params;
+      updateTopic(id, req.body)
+         .then((topic) => res.json(topic))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+            res.status(400).json(err);
+         });
+   });
 
- module.exports = router;
+module.exports = router;
