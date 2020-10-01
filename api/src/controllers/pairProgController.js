@@ -29,8 +29,8 @@ const createPairGroup = async({name }) => {
 
 // Controlador para editar un grupo de Pair Programming
 const editPairGroup = async(id, name) =>{
-   const pairGroup = await PairProgramming.findOne({ where: { id } });
-   pairGroup.update({name})
+   let pairGroup = await PairProgramming.findOne({ where: { id } });
+   pairGroup =await pairGroup.update({name})
    return pairGroup.save()
 
 }

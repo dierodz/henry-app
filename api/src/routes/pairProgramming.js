@@ -34,9 +34,11 @@ router
    
    .put((req, res) => {
       const { id } = req.params;
-      editPairGroup(id, req.body)
+      const{name}= req.body
+      editPairGroup(id, name)
          .then((users) => res.json(users).status(201))
-         .catch((err) => res.status(400).send(err));
+         // .catch((err) => res.status(400).send(err));
+         .catch((err) => console.log(err))
    })
    .delete((req, res) => {
       const { id } = req.params;

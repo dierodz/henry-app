@@ -30,8 +30,8 @@ const createModule = async({name, description }) => {
 
 // Controlador para editar un modulo
 const editModule = async(id, name, description) =>{
-   const module = await Modules.findOne({ where: { id } });
-   module.update({name , description})
+   let module = await Modules.findOne({ where: { id } });
+   module= await module.update({name , description})
    return module.save()
 
 }

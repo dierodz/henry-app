@@ -34,9 +34,11 @@ router
    
    .put((req, res) => {
       const { id } = req.params;
-      editModule(id, req.body)
+      const {name,description}=req.body
+      editModule(id, name,description)
          .then((users) => res.json(users).status(201))
-         .catch((err) => res.status(400).send(err));
+         .catch((err) => console.log(err))
+         // res.status(400).send(err));
    })
    .delete((req, res) => {
       const { id } = req.params;
