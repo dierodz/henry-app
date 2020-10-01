@@ -1,7 +1,7 @@
 const { User, Roles } = require("../db");
 
 const createUser = async ({
-   giveName,
+   givenName,
    familyName,
    nickName,
    email,
@@ -12,7 +12,7 @@ const createUser = async ({
    role,
 }) => {
    let user = await User.create({
-      giveName,
+      givenName,
       familyName,
       nickName,
       email,
@@ -62,20 +62,24 @@ const createUser = async ({
 const updateUser = async (id, user) => {
    const userdb = await User.findOne({ where: { id } });
    const {
-      giveName,
+      givenName,
       familyName,
       nickName,
       email,
+      googleId,
+      githubId,
       photoUrl,
       password,
       role,
    } = user;
 
    return await userdb.update({
-      giveName,
+      givenName,
       familyName,
       nickName,
       email,
+      googleId,
+      githubId,
       photoUrl,
       password,
       role,
@@ -128,7 +132,7 @@ const getUserByEmail = async (email) => {
    return sendUserEmail.dataValues;
 };
 
-const getByGoogleID = async (googleId) => {
+const getUserByGoogleID = async (googleId) => {
    const userGoogle = await User.findOne({ where: { googleId } });
    const googleIdUser = { ...userGoogle };
    delete googleIdUser.password;
@@ -137,7 +141,7 @@ const getByGoogleID = async (googleId) => {
    return googleIdUser.dataValues;
 };
 
-const getBygithubID = async (githubId) => {
+const getUserByGithubID = async (githubId) => {
    const userGithub = await User.findOne({ where: { githubId } });
    const githubIdUser = { ...userGithub };
    delete githubIdUser.password;
@@ -158,8 +162,8 @@ module.exports = {
    getAllUsers,
    getUserById,
    getUserByEmail,
-   getByGoogleID,
-   getBygithubID,
+   getUserByGoogleID,
+   getUserByGithubID,
    deleteUserById,
    updateUser,
 };
