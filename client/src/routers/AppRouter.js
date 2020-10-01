@@ -5,6 +5,7 @@ import AuthRouter from "./AuthRouter";
 import PublicRoutes from "./PublicRoutes";
 import { useUser } from "hooks";
 import { logout } from "actions/auth";
+import GeneralRoutes from "./GeneralRoutes";
 
 const AppRouter = () => {
    const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const AppRouter = () => {
                   path="/auth"
                   redirectTo="/"
                />
+               <GeneralRoutes path="/" />
             </Switch>
          </div>
       </Router>

@@ -1,4 +1,10 @@
-const { createUser, getAllUsers } = require("../controllers/userController");
+const {
+   createUser,
+   getAllUsers,
+   getUserById,
+   deleteUserById,
+   updateUser,
+} = require("../controllers/userController");
 
 const router = require("express").Router();
 
@@ -6,20 +12,63 @@ router
    .route("/")
    .post((req, res) => {
       createUser(req.body)
-         .then((user) => res.status(201).json(user))
-         .catch((err) => res.status(400).send(err));
+         .then((users) => res.json(users))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+
+            res.status(400).json(err);
+         });
    })
    .get((req, res) => {
       getAllUsers()
-         .then((users) => res.json(users))
-         .catch((err) => res.status(400).send(err));
+         .then((checkpoint) => res.json(checkpoint))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+
+            res.status(400).json(err);
+         });
    });
 
-// router
-//    .route("/:id")
-//    .delete((req, res) = {
-//     const {
-//         id
-//       } = req.params;
-//     }
+router
+   .route("/:id")
+   .get((req, res) => {
+      const { id } = req.params;
+      getUserById(id)
+         .then((users) => res.json(users).status(200))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+
+            res.status(400).json(err);
+         });
+   })
+   .delete((req, res) => {
+      deleteUserById()
+         .then((users) => res.status(204).json(users))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+
+            res.status(400).json(err);
+         });
+   })
+   .put((req, res) => {
+      const { id } = req.params;
+      updateUser(id, req.body)
+         .then((users) => res.json(users).status(201))
+         .catch((err) => {
+            if (err.error) {
+               return res.status(err.error.code).json(err);
+            }
+
+            res.status(400).json(err);
+         });
+   });
+
 module.exports = router;

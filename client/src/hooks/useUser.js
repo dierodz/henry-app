@@ -33,7 +33,8 @@ export default function useUser() {
       };
    }, [removeLocalUser]);
 
-   const loginWithEmail = (username, password) => {
+   const signInWithEmail = (username, password) => {
+      console.log('HOLA')
       return async (dispatch) => {
          try {
             const { data } = await Axios.post("/auth/email", {
@@ -88,7 +89,7 @@ export default function useUser() {
    return {
       initialize: useInitialize,
       user,
-      loginWithEmail,
+      signInWithEmail,
       signInWithGoogle,
       signInWithGithub,
       signInWithToken,
