@@ -3,6 +3,7 @@ const {
    getUserByGoogleID,
    updateUser,
    getUserByGithubID,
+   getUserById,
 } = require("./controllers/userController");
 
 const jwt = require("jsonwebtoken"),
@@ -32,7 +33,10 @@ passport.use(
             return done(null, false, {
                message: "Username or password is incorrect",
             });
-         return done(null, user);
+
+         const sendUser = await getUserById(user.id);
+
+         return done(null, sendUser);
       }
    )
 );

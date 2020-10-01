@@ -1,5 +1,16 @@
 const { User, Roles } = require("../db");
 
+const _sendUser = (user) => {
+   const sendUser = { ...user };
+   delete sendUser.dataValues.password;
+   delete sendUser.dataValues.googleId;
+   delete sendUser.dataValues.githubId;
+   delete sendUser.dataValues.createdAt;
+   delete sendUser.dataValues.updatedAt;
+
+   return sendUser.dataValues;
+};
+
 const createUser = async ({
    givenName,
    familyName,
@@ -51,12 +62,7 @@ const createUser = async ({
 
    user = await User.findOne({ where: { id: user.id } });
 
-   const sendUser = { ...user };
-   delete sendUser.password;
-   delete sendUser.googleId;
-   delete sendUser.githubId;
-
-   return sendUser.dataValues;
+   return _sendUser(user);
 };
 
 const updateUser = async (id, user) => {
@@ -73,7 +79,7 @@ const updateUser = async (id, user) => {
       role,
    } = user;
 
-   return await userdb.update({
+   const sendUser = await userdb.update({
       givenName,
       familyName,
       nickName,
@@ -84,6 +90,8 @@ const updateUser = async (id, user) => {
       password,
       role,
    });
+
+   return _sendUser(sendUser);
 };
 
 const getAllUsers = async () => {
@@ -103,23 +111,20 @@ const getAllUsers = async () => {
    }
 
    copyUsers.forEach((user) => {
-      delete user.password;
-      delete user.googleId;
-      delete user.githubId;
+      delete user.dataValues.password;
+      delete user.dataValues.googleId;
+      delete user.dataValues.githubId;
+      delete user.dataValues.createdAt;
+      delete user.dataValues.updatedAt;
    });
 
    return copyUsers;
 };
 
 const getUserById = async (id) => {
-   const userId = await User.findOne({ where: { id } });
+   const user = await User.findOne({ where: { id } });
 
-   const sendUserId = { ...userId };
-   delete sendUserId.password;
-   delete sendUserId.googleId;
-   delete sendUserId.githubId;
-
-   return sendUserId.dataValues;
+   return _sendUser(user);
 };
 
 const getUserByEmail = async (email) => {
@@ -127,21 +132,13 @@ const getUserByEmail = async (email) => {
 };
 
 const getUserByGoogleID = async (googleId) => {
-   const userGoogle = await User.findOne({ where: { googleId } });
-   const googleIdUser = { ...userGoogle };
-   delete googleIdUser.password;
-   delete googleIdUser.githubId;
-
-   return googleIdUser.dataValues;
+   const user = await User.findOne({ where: { googleId } });
+   return _sendUser(user);
 };
 
 const getUserByGithubID = async (githubId) => {
    const userGithub = await User.findOne({ where: { githubId } });
-   const githubIdUser = { ...userGithub };
-   delete githubIdUser.password;
-   delete githubIdUser.googleId;
-
-   return githubIdUser.dataValues;
+   return _sendUser(userGithub);
 };
 
 const deleteUserById = async (id) => {

@@ -34,10 +34,10 @@ export default function useUser() {
    }, [removeLocalUser]);
 
    const signInWithEmail = (username, password) => {
-      console.log('HOLA')
+     
       return async (dispatch) => {
          try {
-            const { data } = await Axios.post("/auth/email", {
+            const { data } = await Axios.post(`/auth/email`, {
                username,
                password,
             });

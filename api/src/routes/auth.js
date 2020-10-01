@@ -5,7 +5,7 @@ const router = require("express").Router(),
 
 router.route("/me").get(async function (req, res) {
    if (req.user) {
-      const user = getUserById(req.user.uid);
+      const user = await getUserById(req.user.uid);
       res.status(200).json(user);
    } else {
       res.sendStatus(401);
@@ -16,15 +16,14 @@ router.route("/email").post(function (req, res, next) {
    passport.authenticate("local", function (err, user, info) {
       if (err) return next(err);
       if (!user) {
-         return res
-            .status(401)
-            .json({
-               status: "error",
-               code: "unauthorized",
-               message: "usuario y/o contraseña inválida",
-               info,
-            });
+         return res.status(401).json({
+            status: "error",
+            code: "unauthorized",
+            message: "usuario y/o contraseña inválida",
+            info,
+         });
       } else {
+         console.log(user);
          return res.json({
             user,
             token: jwt.sign({ uid: user.id }, process.env.SECRET),

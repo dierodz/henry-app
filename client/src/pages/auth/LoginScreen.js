@@ -18,9 +18,14 @@ import { useFormik } from "formik";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import { useQuery, useUser } from "hooks";
-import { useHistory } from "react-router-dom";
+import { useQuery } from "hooks";
 import { useDispatch } from "react-redux";
+import {
+   signInWithEmail,
+   signInWithToken,
+   signInWithGithub,
+   signInWithGoogle,
+} from "dispatchers/auth";
 
 const useStyles = makeStyles((theme) => ({
    paper: {
@@ -51,22 +56,13 @@ export default function LoginScreen() {
 
    const [visibilityPass, setVisibilityPass] = React.useState(false);
 
-   const {
-      signInWithEmail,
-      signInWithGithub,
-      signInWithGoogle,
-      signInWithToken,
-      user,
-   } = useUser();
    const { token } = useQuery();
-   const { replace } = useHistory();
 
    useEffect(() => {
-      if (user) replace("/");
-   }, [user, replace]);
-   useEffect(() => {
-      if (token) signInWithToken(token);
-   }, [token, signInWithToken]);
+      if (token) {
+         signInWithToken(token);
+      }
+   }, [token]);
 
    const formik = useFormik({
       initialValues: {
@@ -91,8 +87,7 @@ export default function LoginScreen() {
          return errors;
       },
 
-      onSubmit: async ({email, password}) => {
-         console.log('hola')
+      onSubmit: async ({ email, password }) => {
          dispatch(signInWithEmail(email, password));
       },
    });
@@ -174,7 +169,7 @@ export default function LoginScreen() {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  className={classes.submit}                  
+                  className={classes.submit}
                >
                   Ingresar
                </Button>
