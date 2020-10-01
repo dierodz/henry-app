@@ -6,6 +6,7 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 const userModels = require("./models/userModels");
 const rolesModels = require("./models/rolesModels");
 const userRolesModels = require("./models/userRoles");
+const modulesModels = require("./models/modulesModels");
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -28,6 +29,7 @@ const sequelize = new Sequelize(
 const User = userModels(sequelize, DataTypes);
 const Roles = rolesModels(sequelize, DataTypes);
 const UserRoles = userRolesModels(sequelize, DataTypes);
+const Modules = modulesModels(sequelize, DataTypes);
 
 // =================== FIN Creación de entidades en la BD ===================
 
