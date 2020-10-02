@@ -3,6 +3,7 @@ const {
     deleteCohorteById,
     upDateCohorte,
     getAllCohortes,
+    getEspecificCohorte
  } = require("../controllers/cohorteController");
  
  const router = require("express").Router();
@@ -29,13 +30,22 @@ router
  })
  .put((req,res)=> {
     const {id} = req.params;
-    const {cohorteName, cohorteNumber} = req.body;
-    upDateCohorte(id,cohorteName,cohorteNumber).then((user) => {
-      console.log(user)
+    const {Name, Number} = req.body;
+    upDateCohorte(id,Name,Number).then((user) => {
       res.status(201).json(user)
     })
     .catch((err) => res.status(404).json(err));
  })
+ .get((req, res) => {
+   const {id} = req.params;
+   getEspecificCohorte(id)
+   .then((user) => {
+      delete user.createdAt
+      delete user.updatedAt
+      res.status(201).json(user)
+   })
+   .catch((err) => res.status(400).send(err));
+})
 
 
  module.exports = router;

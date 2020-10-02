@@ -21,6 +21,20 @@ const AppRouter = () => {
 
    return (
       <Router>
+import HomeScreen from "../pages/home/HomeScreen.js";
+import UserScreen from "../pages/user/UserScreen";
+import TabCohortes from "../components/TabCohortes/TabCohortes.js";
+import Header from "../components/Header/Header.js";
+
+const AppRouter = () => {
+   const { initialize } = useUser();
+   initialize();
+   return (
+      <Router>
+         <Route path="/" render={() => <Header />} />
+         <Route path="/" exact={true} render={() => <HomeScreen />} />
+         <Route path="/user" exact={true} render={() => <UserScreen />} />
+         <Route path="/cohortes" exact={true} render={() => <TabCohortes />} />
          <div>
             <Switch>
                <PublicRoutes
