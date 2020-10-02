@@ -5,6 +5,7 @@ const initialState = {
    uid: null,
    user: null,
    token: null,
+   msgError: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -15,6 +16,19 @@ const authReducer = (state = initialState, action) => {
             user: action.payload.user,
             uid: action.payload.uid,
             token: action.payload.token,
+            msgError: null,
+         };
+
+      case types.authSetError:
+         return {
+            ...state,
+            msgError: action.payload,
+         };
+
+      case types.authRemoveError:
+         return {
+            ...state,
+            msgError: null,
          };
 
       case types.logout:

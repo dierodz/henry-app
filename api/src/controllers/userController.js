@@ -1,15 +1,5 @@
+const attributes = require("../attributes/attributes");
 const { User, Roles } = require("../db");
-
-const _sendUser = (user) => {
-   const sendUser = { ...user };
-   delete sendUser.dataValues.password;
-   delete sendUser.dataValues.googleId;
-   delete sendUser.dataValues.githubId;
-   delete sendUser.dataValues.createdAt;
-   delete sendUser.dataValues.updatedAt;
-
-   return sendUser.dataValues;
-};
 
 const createUser = async ({
    givenName,
@@ -60,9 +50,93 @@ const createUser = async ({
       await user.setRoles(theRole);
    }
 
-   user = await User.findOne({ where: { id: user.id } });
+   return await getUserById(user.id);
+};
 
-   return _sendUser(user);
+const getAllUsers = async () => {
+   const users = await User.findAll({
+      include: [Roles],
+      attributes: attributes.user,
+   });
+
+   if (users.length < 1) {
+      throw {
+         name: "ApiFindError",
+         type: "Users Error",
+         error: {
+            message: "there are no users in the database",
+            type: "data not found",
+            code: 404,
+         },
+      };
+   }
+
+   return users;
+};
+
+const getUserById = async (id) => {
+   const user = await User.findOne({
+      where: { id },
+      attributes: attributes.user,
+   });
+
+   if (!user) {
+      throw {
+         name: "ApiFindError",
+         type: "Users Error",
+         error: {
+            message: `the user with the id ${id} does not exist in the database`,
+            type: "data not found",
+            code: 404,
+         },
+      };
+   }
+
+   return user;
+};
+
+const getUserByEmail = async (email) => {
+   return await User.findOne({ where: { email } });
+};
+
+const getUserByGoogleID = async (googleId) => {
+   const user = await User.findOne({ where: { googleId } });
+
+   if (!user) {
+      if (!user) {
+         throw {
+            name: "ApiFindError",
+            type: "Users Error",
+            error: {
+               message: `the user with the googleId ${googleId} does not exist in the database`,
+               type: "data not found",
+               code: 404,
+            },
+         };
+      }
+   }
+
+   return await getUserById(user.id);
+};
+
+const getUserByGithubID = async (githubId) => {
+   const user = await User.findOne({ where: { githubId } });
+
+   if (!user) {
+      if (!user) {
+         throw {
+            name: "ApiFindError",
+            type: "Users Error",
+            error: {
+               message: `the user with the githubId ${githubId} does not exist in the database`,
+               type: "data not found",
+               code: 404,
+            },
+         };
+      }
+   }
+
+   return await getUserById(user.id);
 };
 
 const updateUser = async (id, user) => {
@@ -91,59 +165,7 @@ const updateUser = async (id, user) => {
       role,
    });
 
-   return _sendUser(sendUser);
-};
-
-const getAllUsers = async () => {
-   const users = await User.findAll({ include: [Roles] });
-   const copyUsers = [...users];
-
-   if (users.length < 1) {
-      throw {
-         name: "ApiFindError",
-         type: "Users Error",
-         error: {
-            message: "there are no users in the database",
-            type: "data not found",
-            code: 404,
-         },
-      };
-   }
-
-   copyUsers.forEach((user) => {
-      delete user.dataValues.password;
-      delete user.dataValues.googleId;
-      delete user.dataValues.githubId;
-      delete user.dataValues.createdAt;
-      delete user.dataValues.updatedAt;
-   });
-
-   return copyUsers;
-};
-
-const getUserById = async (id) => {
-   const user = await User.findOne({ where: { id } });
-
-   return _sendUser(user);
-};
-
-const getUserByEmail = async (email) => {
-   return await User.findOne({ where: { email } });
-};
-
-const getUserByGoogleID = async (googleId) => {
-   const user = await User.findOne({ where: { googleId } });
-
-   if (!user) {
-      return null;
-   }
-
-   return _sendUser(user);
-};
-
-const getUserByGithubID = async (githubId) => {
-   const userGithub = await User.findOne({ where: { githubId } });
-   return _sendUser(userGithub);
+   return await getUserById(sendUser.id);
 };
 
 const deleteUserById = async (id) => {
@@ -151,6 +173,17 @@ const deleteUserById = async (id) => {
    await user.destroy();
 
    return { message: "successfully removed" };
+};
+
+const setRolesToUser = async (id, roles) => {
+   const user = await getUserById(id);
+   const role = await Roles.findOne({ where: { role: roles } });
+
+   return await user.setRoles(role);
+};
+
+const _internalGetUserByEmail = async (email) => {
+   return await User.findOne({ where: { email } });
 };
 
 module.exports = {
@@ -162,4 +195,6 @@ module.exports = {
    getUserByGithubID,
    deleteUserById,
    updateUser,
+   setRolesToUser,
+   _internalGetUserByEmail
 };

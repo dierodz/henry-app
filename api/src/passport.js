@@ -4,6 +4,7 @@ const {
    updateUser,
    getUserByGithubID,
    getUserById,
+   _internalGetUserByEmail,
 } = require("./controllers/userController");
 
 const jwt = require("jsonwebtoken"),
@@ -24,7 +25,7 @@ passport.use(
    new LocalStrategy(
       { usernameField: "username", passwordField: "password", session: false },
       async (username, password, done) => {
-         const user = await getUserByEmail(username);
+         const user = await _internalGetUserByEmail(username);
          if (!user)
             return done(null, false, {
                message: "Username or password is incorrect",
@@ -50,24 +51,29 @@ passport.use(
          session: false,
       },
       async (_token, _tokenSecret, profile, done) => {
-         let user = await getUserByGoogleID(profile.id);
-         if (!user) {
-            user = await getUserByEmail(profile.emails[0].value);
+         try {
+            let user = await getUserByGoogleID(profile.id);
             if (!user) {
-               return done(null, false);
+               user = await getUserByEmail(profile.emails[0].value);
+
+               if (!user) {
+                  return done(null, false);
+               } else {
+                  await updateUser(user.id, {
+                     givenName: profile.name.givenName,
+                     familyName: profile.name.familyName,
+                     nickName: profile.emails[0].value.split("@")[0],
+                     googleId: profile.id,
+                     photoUrl: profile.photos[0].value,
+                  });
+               }
+               user = await getUserByGoogleID(profile.id);
+               return done(null, user);
             } else {
-               await updateUser(user.id, {
-                  givenName: profile.name.givenName,
-                  familyName: profile.name.familyName,
-                  nickName: profile.emails[0].value.split("@")[0],
-                  googleId: profile.id,
-                  photoUrl: profile.photos[0].value,
-               });
+               return done(null, user);
             }
-            user = await getUserByGoogleID(profile.id);
-            return done(null, user);
-         } else {
-            return done(null, user);
+         } catch (error) {
+            return done(null, false);
          }
       }
    )

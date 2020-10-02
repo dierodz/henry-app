@@ -4,6 +4,7 @@ const {
    getUserById,
    deleteUserById,
    updateUser,
+   setRolesToUser,
 } = require("../controllers/userController");
 
 const router = require("express").Router();
@@ -43,7 +44,6 @@ router
             if (err.error) {
                return res.status(err.error.code).json(err);
             }
-
             res.status(400).json(err);
          });
    })
@@ -70,5 +70,18 @@ router
             res.status(400).json(err);
          });
    });
+
+router.route("/:id/roles/:rolName").post((req, res) => {
+   const { id, rolName } = req.params;
+
+   setRolesToUser(id, rolName)
+      .then((checkpoint) => res.json(checkpoint))
+      .catch((err) => {
+         if (err.error) {
+            return res.status(err.error.code).json(err);
+         }
+         res.status(400).json(err);
+      });
+});
 
 module.exports = router;

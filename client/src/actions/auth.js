@@ -6,3 +6,10 @@ export const login = (uid, user, token) => ({
 });
 
 export const logout = () => ({ type: types.logout });
+
+export const authSetError = (err) => ({
+   type: types.authSetError,
+   payload: err,
+});
+
+export const authRemoveError = () => ({ type: types.authRemoveError });

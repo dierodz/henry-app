@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { login, logout } from "actions/auth";
+import { authSetError, login, logout } from "actions/auth";
 
 export const signOut = () => {
    return async (dispatch) => {
@@ -37,8 +37,9 @@ export const signInWithEmail = (username, password) => {
             localStorage.setItem("token", JSON.stringify(token));
             dispatch(login(user.id, user, token));
          }
-      } catch ({ data }) {
-         console.log(data);
+      } catch ({ response }) {
+         dispatch(logout());
+         dispatch(authSetError(response.data.message));
       }
    };
 };
@@ -56,8 +57,9 @@ export const signInWithToken = (token) => {
             localStorage.setItem("token", JSON.stringify(token));
             dispatch(login(data.id, data, token));
          }
-      } catch ({ data }) {
-         console.log(data);
+      } catch ({ response }) {
+         dispatch(logout());
+         dispatch(authSetError(response.data.message));
       }
    };
 };

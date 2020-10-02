@@ -3,6 +3,9 @@ const types = {
   login: "[Auth] Login",
   logout: "[Auth] Logout",
 
+  authSetError: "[Auth] Set Error",
+  authRemoveError: "[Auth] Remove Error",
+
   // * Solo Para ui
   uiSetError: "[UI] Set Error",
   uiRemoveError: "[UI] Remove Error",
