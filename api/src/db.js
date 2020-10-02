@@ -11,7 +11,10 @@ const scoresModels = require("./models/scoresModel");
 const contentModels = require('./models/contentModel');
 const checkPointModels = require("./models/CheckPoint");
 const modulesModels = require("./models/modulesModels");
-const pairProgModels = require("./models/pairProgModels");
+const groupModels = require("./models/groupModels");
+const cohorteUsersModels = require('./models/UserCohorte');
+
+
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -39,15 +42,35 @@ const Scores = scoresModels(sequelize, DataTypes);
 const Content = contentModels(sequelize,DataTypes);
 const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Modules = modulesModels(sequelize, DataTypes);
-const PairProgramming = pairProgModels(sequelize, DataTypes);
+const Group = groupModels(sequelize, DataTypes);
+const UserCohorte = cohorteUsersModels(sequelize,DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
 
 // ===================== Relaciones entre las enteidades ====================
 
+// Relacion Usuarios y Roles
 User.belongsToMany(Roles, { through: UserRoles });
 Roles.belongsToMany(User, { through: UserRoles });
+// Relaciones de Usuario y Cohorte 
+User.belongsToMany(Cohorte, {through: UserCohorte });
+Cohorte.belongsToMany(User, {through: UserCohorte});
+// Relaciones Usuarios  y Notas
+User.hasMany(Scores);
+Scores.belongsTo(User);
+// Relacion Cohorte y Modulos
+Cohorte.belongsToMany(Modules, {through: 'modules_cohortes'});
+Modules.belongsToMany(Cohorte, {through: 'modules_cohortes'});
+// Relacion Contenidos y Modulos 
+Modules.hasMany(Content);
+Content.belongsTo(Modules);
+// Relacion CheckPoint y Modulos
+Modules.belongsTo(CheckPoint);
+CheckPoint.hasMany(Modules);
+// Relacion Usuarios y Grupos
+User.belongsToMany(Group, {through: 'group_user'});
+Group.belongsToMany(User, {through: 'group_user'});
 
 // =================== FIN Relaciones entre las enteidades ==================
 
@@ -89,5 +112,5 @@ module.exports = {
    Content,
    CheckPoint,
    Modules,
-   PairProgramming
+   Group,
 };
