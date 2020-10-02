@@ -36,7 +36,7 @@ router
    })
    .put((req, res) => {
       const { id } = req.params;
-      upDateUser(id, req.body)
+      updateUser(id, req.body)
          .then((users) => res.json(users).status(201))
          .catch((err) => res.status(400).send(err));
    });

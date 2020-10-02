@@ -1,13 +1,12 @@
 const router = require("express").Router(),
-      auth = require('./auth'),
-      userRoutes = require('./userRoutes'),
-      scoresRoutes = require('./scoresRoutes'),
-      contentRoutes = require('./contentRoutes'),
-      checkPointsRoutes = require("./checkPointRoutes"),
-      cohortRoutes = require("./cohorteRoutes"),
-      userRoutes = require('./userRoutes'),
-      modulesRoutes = require('./modulesRoutes'),
-      PairProgrammingRoutes = require('./pairProgramming');
+  auth = require('./auth'),
+  userRoutes = require('./userRoutes'),
+  scoresRoutes = require('./scoresRoutes'),
+  contentRoutes = require('./contentRoutes'),
+  checkPointsRoutes = require("./checkPointRoutes"),
+  cohortRoutes = require("./cohorteRoutes"),
+  modulesRoutes = require('./modulesRoutes'),
+  PairProgrammingRoutes = require('./pairProgramming');
 
 router.use('/auth', auth);
 router.use("/chekpoints", checkPointsRoutes);
