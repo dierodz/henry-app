@@ -1,10 +1,11 @@
 const { Cohorte } = require("../db");
 
 const createCohorte = async ({
-    cohorteName,
-    cohorteNumber
+    Name,
+    Number
  }) => {
-    let cohorte = await Cohorte.create({cohorteName,cohorteNumber})
+    let cohorte = await Cohorte.create({Name,Number})
+    
 
     return cohorte
 
@@ -17,12 +18,12 @@ const createCohorte = async ({
 
  }
 
-const upDateCohorte = async (id, cohorteName,cohorteNumber) => {
+const upDateCohorte = async (id, Name,Number) => {
    const cohorte = await Cohorte.findOne({ where: { id } });
 
    return await cohorte.update({
-      cohorteName,
-      cohorteNumber
+      Name,
+      Number
    });
 };
 
@@ -34,11 +35,24 @@ const getAllCohortes = async () => {
    return cohorte;
 }
 
+const getEspecificCohorte = async (id) => {
+   const cohorte = await Cohorte.findOne({ where: { id } });
+
+   const copyCohorte = {...cohorte}
+
+   delete cohorte.createdAt
+   delete cohorte.updatedAt
+
+   return copyCohorte.dataValues
+}
+
+
 
 
 module.exports = {
     createCohorte,
     deleteCohorteById,
     upDateCohorte,
-    getAllCohortes
+    getAllCohortes,
+    getEspecificCohorte
  };

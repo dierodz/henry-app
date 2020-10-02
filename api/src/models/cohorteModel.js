@@ -1,10 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
     const Cohortes = sequelize.define('cohortes', {
-        cohorteName:{
+        Name:{
             type: DataTypes.STRING,
             unique: true,
         },
-        cohorteNumber:{
+        Number:{
             type: DataTypes.INTEGER,
             unique: true,
         }
