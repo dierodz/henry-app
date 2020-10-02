@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const passport = require("./passport");
 const { ApolloServer, gql } = require('apollo-server-express');
-const { getAllUsers } = require("./controllers/userController.js");
+const { getAllUsers, getUserById } = require("./controllers/userController.js");
 
 require("./db.js");
 
@@ -35,6 +35,7 @@ const typeDefs = gql`
   # This "Book" type defines the queryable fields for every book in our data source.
 
   type User {
+    id: Int
     givenName: String 
     familyName: String 
     nickName: String 
@@ -48,13 +49,21 @@ const typeDefs = gql`
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
-    users: [User]
+    users(id: Int): [User]
   }
 `;
 
 const resolvers = {
   Query: {
-    users: async () => await getAllUsers()
+    users: async (parent, args) => {
+      console.log(args)
+      if (args.id) {
+        const result = await getUserById(args.id)
+        return [result]
+      }
+
+      else return await getAllUsers()
+    }
   },
 };
 
