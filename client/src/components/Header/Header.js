@@ -15,7 +15,8 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import NavBar from "../NavBar/NavBar";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
-import useUser from "../../hooks/useUser";
+import { useDispatch } from "react-redux";
+import { signOut } from "dispatchers/auth";
 
 const useStyles = makeStyles((theme) => ({
    grow: {
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header() {
+   const dispatch = useDispatch();
    const history = useHistory();
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState(null);
@@ -109,7 +111,7 @@ export default function Header() {
             <button className="perfilBtn" onClick={() => history.push("/user")}>
                Perfil
             </button>
-            <button className="logoutBtn" onClick={useUser.signOut}>
+            <button className="logoutBtn" onClick={() => dispatch(signOut())}>
                Cerrar sesión
             </button>
          </div>
