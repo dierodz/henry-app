@@ -9,7 +9,7 @@ import { signInWithToken, initialize } from "dispatchers/auth";
 
 const AppRouter = () => {
    const dispatch = useDispatch();
-   const { authenticated, token } = useSelector((state) => state.auth);
+   const { authenticated } = useSelector((state) => state.auth);
    const localToken = JSON.parse(localStorage.getItem("token"));
 
    useEffect(() => {
@@ -17,7 +17,7 @@ const AppRouter = () => {
          initialize();
          dispatch(signInWithToken(localToken));
       }
-   }, [localToken, dispatch, token]);
+   }, [localToken, dispatch]);
 
    return (
       <Router>
