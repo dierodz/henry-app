@@ -30,8 +30,8 @@ router
  })
  .put((req,res)=> {
     const {id} = req.params;
-    const {Name, Number} = req.body;
-    upDateCohorte(id,Name,Number).then((user) => {
+    const {name, number} = req.body;
+    upDateCohorte(id,name,number).then((user) => {
       res.status(201).json(user)
     })
     .catch((err) => res.status(404).json(err));
