@@ -5,6 +5,7 @@ import AuthRouter from "./AuthRouter";
 import PublicRoutes from "./PublicRoutes";
 import GeneralRoutes from "./GeneralRoutes";
 import { signInWithToken, initialize } from "dispatchers/auth";
+// import TabCohortes from "../components/TabCohortes/TabCohortes";
 
 const AppRouter = () => {
    const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const AppRouter = () => {
             </Switch>
          </div>
       </Router>
+      // <TabCohortes />
    );
 };
 
