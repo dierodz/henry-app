@@ -11,7 +11,6 @@ const scoresModels = require("./models/scoresModel");
 const contentModels = require('./models/contentModel');
 const checkPointModels = require("./models/CheckPoint");
 const modulesModels = require("./models/modulesModels");
-const pairProgModels = require("./models/pairProgModels");
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -39,7 +38,6 @@ const Scores = scoresModels(sequelize, DataTypes);
 const Content = contentModels(sequelize,DataTypes);
 const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Modules = modulesModels(sequelize, DataTypes);
-const PairProgramming = pairProgModels(sequelize, DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -89,5 +87,4 @@ module.exports = {
    Content,
    CheckPoint,
    Modules,
-   PairProgramming
 };
