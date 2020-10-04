@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) =>
-   sequelize.define("roles", {
+   sequelize.define("role", {
       role: {
-         type: DataTypes.ENUM("instructor", "pm", "alumno", "staff"),
+         type: DataTypes.ENUM("instructor", "pm", "student", "staff"),
          allowNull: false,
          unique: true,
       },

@@ -1,3 +1,4 @@
+const attributes = require("../attributes/attributes");
 const { User, Roles } = require("../db");
 
 const createUser = async ({
@@ -49,14 +50,93 @@ const createUser = async ({
       await user.setRoles(theRole);
    }
 
-   user = await User.findOne({ where: { id: user.id } });
+   return await getUserById(user.id);
+};
 
-   const sendUser = { ...user };
-   delete sendUser.password;
-   delete sendUser.googleId;
-   delete sendUser.githubId;
+const getAllUsers = async () => {
+   const users = await User.findAll({
+      include: [Roles],
+      attributes: attributes.user,
+   });
 
-   return sendUser.dataValues;
+   if (users.length < 1) {
+      throw {
+         name: "ApiFindError",
+         type: "Users Error",
+         error: {
+            message: "there are no users in the database",
+            type: "data not found",
+            code: 404,
+         },
+      };
+   }
+
+   return users;
+};
+
+const getUserById = async (id) => {
+   const user = await User.findOne({
+      where: { id },
+      attributes: attributes.user,
+   });
+
+   if (!user) {
+      throw {
+         name: "ApiFindError",
+         type: "Users Error",
+         error: {
+            message: `the user with the id ${id} does not exist in the database`,
+            type: "data not found",
+            code: 404,
+         },
+      };
+   }
+
+   return user;
+};
+
+const getUserByEmail = async (email) => {
+   return await User.findOne({ where: { email } });
+};
+
+const getUserByGoogleID = async (googleId) => {
+   const user = await User.findOne({ where: { googleId } });
+
+   if (!user) {
+      if (!user) {
+         throw {
+            name: "ApiFindError",
+            type: "Users Error",
+            error: {
+               message: `the user with the googleId ${googleId} does not exist in the database`,
+               type: "data not found",
+               code: 404,
+            },
+         };
+      }
+   }
+
+   return await getUserById(user.id);
+};
+
+const getUserByGithubID = async (githubId) => {
+   const user = await User.findOne({ where: { githubId } });
+
+   if (!user) {
+      if (!user) {
+         throw {
+            name: "ApiFindError",
+            type: "Users Error",
+            error: {
+               message: `the user with the githubId ${githubId} does not exist in the database`,
+               type: "data not found",
+               code: 404,
+            },
+         };
+      }
+   }
+
+   return await getUserById(user.id);
 };
 
 const updateUser = async (id, user) => {
@@ -73,7 +153,7 @@ const updateUser = async (id, user) => {
       role,
    } = user;
 
-   return await userdb.update({
+   const sendUser = await userdb.update({
       givenName,
       familyName,
       nickName,
@@ -84,70 +164,8 @@ const updateUser = async (id, user) => {
       password,
       role,
    });
-};
 
-const getAllUsers = async () => {
-   const users = await User.findAll({ include: [Roles] });
-   const copyUsers = [...users];
-
-   if (users.length < 1) {
-      throw {
-         name: "ApiFindError",
-         type: "Users Error",
-         error: {
-            message: "there are no users in the database",
-            type: "data not found",
-            code: 404,
-         },
-      };
-   }
-
-   copyUsers.forEach((user) => {
-      delete user.password;
-      delete user.googleId;
-      delete user.githubId;
-   });
-
-   return copyUsers;
-};
-
-const getUserById = async (id) => {
-   const userId = await User.findOne({ where: { id } });
-
-   const sendUserId = { ...userId };
-   delete sendUserId.password;
-   delete sendUserId.googleId;
-   delete sendUserId.githubId;
-
-   return sendUserId.dataValues;
-};
-
-const getUserByEmail = async (email) => {
-   const userEmail = await User.findOne({ where: { email } });
-   const sendUserEmail = { ...userEmail };
-   delete sendUserEmail.password;
-   delete sendUserEmail.googleId;
-   delete sendUserEmail.githubId;
-
-   return sendUserEmail.dataValues;
-};
-
-const getUserByGoogleID = async (googleId) => {
-   const userGoogle = await User.findOne({ where: { googleId } });
-   const googleIdUser = { ...userGoogle };
-   delete googleIdUser.password;
-   delete googleIdUser.githubId;
-
-   return googleIdUser.dataValues;
-};
-
-const getUserByGithubID = async (githubId) => {
-   const userGithub = await User.findOne({ where: { githubId } });
-   const githubIdUser = { ...userGithub };
-   delete githubIdUser.password;
-   delete githubIdUser.googleId;
-
-   return githubIdUser.dataValues;
+   return await getUserById(sendUser.id);
 };
 
 const deleteUserById = async (id) => {
@@ -155,6 +173,17 @@ const deleteUserById = async (id) => {
    await user.destroy();
 
    return { message: "successfully removed" };
+};
+
+const setRolesToUser = async (id, roles) => {
+   const user = await getUserById(id);
+   const role = await Roles.findOne({ where: { role: roles } });
+
+   return await user.setRoles(role);
+};
+
+const _internalGetUserByEmail = async (email) => {
+   return await User.findOne({ where: { email } });
 };
 
 module.exports = {
@@ -166,4 +195,6 @@ module.exports = {
    getUserByGithubID,
    deleteUserById,
    updateUser,
+   setRolesToUser,
+   _internalGetUserByEmail
 };

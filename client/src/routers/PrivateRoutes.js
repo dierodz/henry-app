@@ -11,28 +11,31 @@ import PropTypes from "prop-types";
 */
 
 const PrivateRoutes = ({
-  isValid,
-  component: Component,
-  redirectTo,
-  ...rest
+   isAuthenticated,
+   component: Component,
+   redirectTo,
+   ...rest
 }) => {
+   localStorage.setItem("lastPath", rest.location.pathname);
 
-  localStorage.setItem("lastPath", rest.location.pathname);
-
-  return (
-    <Route
-      {...rest}
-      component={(props) =>
-        isValid ? <Component {...props} /> : <Redirect to={redirectTo} />
-      }
-    />
-  );
+   return (
+      <Route
+         {...rest}
+         component={(props) =>
+            isAuthenticated ? (
+               <Component {...props} />
+            ) : (
+               <Redirect to={redirectTo} />
+            )
+         }
+      />
+   );
 };
 
 PrivateRoutes.propTypes = {
-  isValid: PropTypes.bool.isRequired,
-  component: PropTypes.func.isRequired,
-  redirectTo: PropTypes.string.isRequired,
+   isAuthenticated: PropTypes.bool.isRequired,
+   component: PropTypes.func.isRequired,
+   redirectTo: PropTypes.string.isRequired,
 };
 
 export default PrivateRoutes;
