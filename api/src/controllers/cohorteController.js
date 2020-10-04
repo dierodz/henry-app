@@ -1,10 +1,10 @@
 const { Cohorte } = require("../db");
 
 const createCohorte = async ({
-    Name,
-    Number
+    name,
+    number
  }) => {
-    let cohorte = await Cohorte.create({Name,Number})
+    let cohorte = await Cohorte.create({name,number})
     
 
     return cohorte
@@ -18,12 +18,12 @@ const createCohorte = async ({
 
  }
 
-const upDateCohorte = async (id, Name,Number) => {
+const upDateCohorte = async (id, name,number) => {
    const cohorte = await Cohorte.findOne({ where: { id } });
 
    return await cohorte.update({
-      Name,
-      Number
+      name,
+      number
    });
 };
 

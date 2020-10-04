@@ -15,7 +15,8 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import NavBar from "../NavBar/NavBar";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
-import useUser from "../../hooks/useUser";
+import { useDispatch, useSelector } from "react-redux";
+import { signOut } from "dispatchers/auth";
 
 const useStyles = makeStyles((theme) => ({
    grow: {
@@ -59,10 +60,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header() {
+   const dispatch = useDispatch();
    const history = useHistory();
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState(null);
    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+   const { user } = useSelector((state) => state.auth);
 
    const isMenuOpen = Boolean(anchorEl);
    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -104,12 +107,17 @@ export default function Header() {
          onClose={handleMenuClose}
       >
          <div className="userMenu">
-            <img alt="userImg" src="/Imagenes/user.png"></img>
-            <p className="userName">Nombre Apellido</p>
+            <img
+               alt="userImg"
+               src={user.photoUrl || "/Imagenes/user.png"}
+            ></img>
+            <p className="userName">
+               {user.givenName} {user.familyName}
+            </p>
             <button className="perfilBtn" onClick={() => history.push("/user")}>
                Perfil
             </button>
-            <button className="logoutBtn" onClick={useUser.signOut}>
+            <button className="logoutBtn" onClick={() => dispatch(signOut())}>
                Cerrar sesión
             </button>
          </div>

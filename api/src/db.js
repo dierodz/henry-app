@@ -3,17 +3,14 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
 // ========================= Importación de modelos =========================
-const cohorteModel = require("./models/cohorteModel");
-const userModels = require("./models/userModels");
-const rolesModels = require("./models/rolesModels");
-const userRolesModels = require("./models/userRoles");
-const scoresModels = require("./models/scoresModel");
-const contentModels = require('./models/contentModel');
+const cohorteModel = require("./models/Cohorte");
+const userModels = require("./models/User");
+const rolesModels = require("./models/Role");
+const scoresModels = require("./models/Score");
+const contentModels = require("./models/Content");
 const checkPointModels = require("./models/CheckPoint");
-const modulesModels = require("./models/modulesModels");
-const groupModels = require("./models/groupModels");
-const cohorteUsersModels = require('./models/UserCohorte');
-
+const modulesModels = require("./models/Module");
+const groupModels = require("./models/Group");
 
 // ======================= FIN Importación de modelos =======================
 
@@ -37,13 +34,11 @@ const sequelize = new Sequelize(
 const Cohorte = cohorteModel(sequelize, DataTypes);
 const User = userModels(sequelize, DataTypes);
 const Roles = rolesModels(sequelize, DataTypes);
-const UserRoles = userRolesModels(sequelize, DataTypes);
 const Scores = scoresModels(sequelize, DataTypes);
-const Content = contentModels(sequelize,DataTypes);
+const Content = contentModels(sequelize, DataTypes);
 const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Modules = modulesModels(sequelize, DataTypes);
 const Group = groupModels(sequelize, DataTypes);
-const UserCohorte = cohorteUsersModels(sequelize,DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -51,26 +46,32 @@ const UserCohorte = cohorteUsersModels(sequelize,DataTypes);
 // ===================== Relaciones entre las enteidades ====================
 
 // Relacion Usuarios y Roles
-User.belongsToMany(Roles, { through: UserRoles });
-Roles.belongsToMany(User, { through: UserRoles });
-// Relaciones de Usuario y Cohorte 
-User.belongsToMany(Cohorte, {through: UserCohorte });
-Cohorte.belongsToMany(User, {through: UserCohorte});
+User.belongsToMany(Roles, { through: "users_role" });
+Roles.belongsToMany(User, { through: "users_role" });
+
+// Relaciones de Usuario y Cohorte
+User.belongsToMany(Cohorte, { through: "users_cohorte" });
+Cohorte.belongsToMany(User, { through: "users_cohorte" });
+
 // Relaciones Usuarios  y Notas
 User.hasMany(Scores);
 Scores.belongsTo(User);
+
 // Relacion Cohorte y Modulos
-Cohorte.belongsToMany(Modules, {through: 'modules_cohortes'});
-Modules.belongsToMany(Cohorte, {through: 'modules_cohortes'});
-// Relacion Contenidos y Modulos 
+Cohorte.belongsToMany(Modules, { through: "modules_cohorte" });
+Modules.belongsToMany(Cohorte, { through: "modules_cohorte" });
+
+// Relacion Contenidos y Modulos
 Modules.hasMany(Content);
 Content.belongsTo(Modules);
+
 // Relacion CheckPoint y Modulos
 Modules.belongsTo(CheckPoint);
 CheckPoint.hasMany(Modules);
+
 // Relacion Usuarios y Grupos
-User.belongsToMany(Group, {through: 'group_user'});
-Group.belongsToMany(User, {through: 'group_user'});
+User.belongsToMany(Group, { through: "groups_user" });
+Group.belongsToMany(User, { through: "groups_user" });
 
 // =================== FIN Relaciones entre las enteidades ==================
 
@@ -84,7 +85,7 @@ const createRoles = async () => {
       where: { role: "instructor" },
    });
    const pmRole = await Roles.findOne({ where: { role: "pm" } });
-   const alumnoRole = await Roles.findOne({ where: { role: "alumno" } });
+   const alumnoRole = await Roles.findOne({ where: { role: "student" } });
 
    if (!staffRole) {
       await Roles.create({ role: "staff" });
@@ -96,7 +97,7 @@ const createRoles = async () => {
       await Roles.create({ role: "pm" });
    }
    if (!alumnoRole) {
-      await Roles.create({ role: "alumno" });
+      await Roles.create({ role: "student" });
    }
 };
 

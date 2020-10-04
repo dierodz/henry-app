@@ -1,31 +1,47 @@
-import { useUser } from "hooks";
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import AuthRouter from "./AuthRouter";
 import PublicRoutes from "./PublicRoutes";
-import HomeScreen from "../pages/home/HomeScreen.js";
-import UserScreen from "../pages/user/UserScreen";
-import TabCohortes from "../components/TabCohortes/TabCohortes.js";
-import Header from "../components/Header/Header.js";
+import GeneralRoutes from "./GeneralRoutes";
+import { signInWithToken, initialize } from "dispatchers/auth";
+import PrivateRoutes from "./PrivateRoutes";
 
 const AppRouter = () => {
-   const { initialize } = useUser();
-   initialize();
+   const dispatch = useDispatch();
+   const { authenticated } = useSelector((state) => state.auth);
+   const [checking, setChecking] = useState(true);
+   const localToken = JSON.parse(localStorage.getItem("token"));
+
+   useEffect(() => {
+      if (localToken) {
+         initialize();
+         dispatch(signInWithToken(localToken));
+      }
+      setChecking(false);
+   }, [localToken, dispatch]);
+
+   if (checking) {
+      return <h1>Please Wait...</h1>;
+   }
+
    return (
       <Router>
-         <Route path="/" render={() => <Header />} />
-         <Route path="/" exact={true} render={() => <HomeScreen />} />
-         <Route path="/user" exact={true} render={() => <UserScreen />} />
-         <Route path="/cohortes" exact={true} render={() => <TabCohortes />} />
          <div>
             <Switch>
                <PublicRoutes
-                  // Cambiar, luego, el false por una variable de autenticación
                   component={AuthRouter}
-                  isAuthenticated={false}
+                  isAuthenticated={authenticated}
                   path="/auth"
-                  redirectTo="/"
+                  redirectTo="/user"
                />
+               <PrivateRoutes
+                  component={GeneralRoutes}
+                  isAuthenticated={authenticated}
+                  path="/"
+                  redirectTo="/auth"
+               ></PrivateRoutes>
+               <Redirect to="/" />
             </Switch>
          </div>
       </Router>
