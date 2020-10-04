@@ -19,7 +19,7 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 require("dotenv").config();
 const colors = require("colors/safe");
-const server = require("./app.js");
+const { server, apolloServer } = require("./app.js");
 const { conn, createRoles } = require("./db.js");
 const { PORT } = process.env;
 
@@ -28,7 +28,11 @@ const { PORT } = process.env;
 conn.sync({ force: false }).then(() => {
    createRoles().then(() => {
       server.listen(PORT, () => {
-         console.log(`%s listening at port ${colors.brightYellow(PORT)} || GrapthQL path is ${colors.green(server.graphqlPath)}`);
+         console.log(
+            `%s listening at port ${colors.brightYellow(
+               PORT
+            )} || GrapthQL path is ${colors.green(apolloServer.graphqlPath)}`
+         );
       });
    });
 });

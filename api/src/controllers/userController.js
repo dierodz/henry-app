@@ -1,5 +1,6 @@
-const attributes = require("../attributes/attributes");
-const { User, Roles } = require("../db");
+const { User, Role } = require("../db");
+
+const include = [Role];
 
 const createUser = async ({
    givenName,
@@ -46,7 +47,7 @@ const createUser = async ({
          };
       }
 
-      const theRole = await Roles.findOne({ where: { role } });
+      const theRole = await Role.findOne({ where: { name: role } });
       await user.setRoles(theRole);
    }
 
@@ -55,8 +56,7 @@ const createUser = async ({
 
 const getAllUsers = async () => {
    const users = await User.findAll({
-      include: [Roles],
-      attributes: attributes.user,
+      include,
    });
 
    if (users.length < 1) {
@@ -77,7 +77,7 @@ const getAllUsers = async () => {
 const getUserById = async (id) => {
    const user = await User.findOne({
       where: { id },
-      attributes: attributes.user,
+      include,
    });
 
    if (!user) {
@@ -96,7 +96,7 @@ const getUserById = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-   return await User.findOne({ where: { email } });
+   return await User.findOne({ where: { email }, include });
 };
 
 const getUserByGoogleID = async (googleId) => {
@@ -177,9 +177,10 @@ const deleteUserById = async (id) => {
 
 const setRolesToUser = async (id, roles) => {
    const user = await getUserById(id);
-   const role = await Roles.findOne({ where: { role: roles } });
+   const role = await Role.findOne({ where: { name: roles } });
 
-   return await user.setRoles(role);
+   const updatedUsser = await user.setRoles(role);
+   return await getUserById(updatedUsser.id);
 };
 
 const _internalGetUserByEmail = async (email) => {
@@ -196,5 +197,5 @@ module.exports = {
    deleteUserById,
    updateUser,
    setRolesToUser,
-   _internalGetUserByEmail
+   _internalGetUserByEmail,
 };

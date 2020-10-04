@@ -1,9 +1,8 @@
-const {Modules } = require("../db");
-
+const { Module } = require("../db");
 
 // Controlador para obtener todos los modulos
-const getModules = async()=>{
-   const modules = await Modules.findAll()
+const getModules = async () => {
+   const modules = await Module.findAll();
    if (modules.length < 1) {
       throw {
          name: "ApiFindError",
@@ -13,64 +12,58 @@ const getModules = async()=>{
             type: "data not found",
             code: 404,
          },
-      }
-     
+      };
    }
-   return modules
-}
+   return modules;
+};
 
 // Controlador para crear un modulo
-const createModule = async({name, description }) => {
-  const module =await Modules.create({ name, description })
-  return module
-   
-  
-           
+const createModule = async ({ name, description }) => {
+   const module = await Module.create({ name, description });
+   return module;
 };
 
 // Controlador para editar un modulo
-const editModule = async(id, name, description) =>{
-   let module = await Modules.findOne({ where: { id } });
-   module= await module.update({name , description})
-   return module.save()
+const editModule = async (id, name, description) => {
+   let module = await Module.findOne({ where: { id } });
+   module = await module.update({ name, description });
+   return module.save();
+};
 
-}
-
-// Controlador para obtener un modulo por ID 
-const getModulesById = async (id) =>{ 
-   const module = await Modules.findOne({ where: { id } })
+// Controlador para obtener un modulo por ID
+const getModulesById = async (id) => {
+   const module = await Module.findOne({ where: { id } });
 
    if (!module) {
-      throw{
-        error: {
-          name: "ApiFindError",
-          type: "Module Error",
-          errors: [
-            {
-              message: "module does not exist in the database",
-              type: "not found",
-              value: null,
-            },
-          ],
-        },
+      throw {
+         error: {
+            name: "ApiFindError",
+            type: "Module Error",
+            errors: [
+               {
+                  message: "module does not exist in the database",
+                  type: "not found",
+                  value: null,
+               },
+            ],
+         },
       };
-    }
-    return module;
-}
+   }
+   return module;
+};
 
 // Controlador para eliminar un modulo
 const deleteModule = async (id) => {
-   const module = await Modules.findOne({ where: { id } });
+   const module = await Module.findOne({ where: { id } });
    await module.destroy();
 
    return { message: "successfully removed" };
 };
 
-
-module.exports ={
+module.exports = {
    getModules,
    createModule,
    deleteModule,
    editModule,
-   getModulesById
-}
+   getModulesById,
+};
