@@ -1,21 +1,21 @@
 import React from "react";
 import Header from "components/Header/Header";
-import HomeScreen from "pages/home/HomeScreen";
-import UserScreen from "pages/user/UserScreen";
 import TabCohortes from "../components/TabCohortes/TabCohortes.js";
-import { Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
+import VerticalTabs from "pages/user/UserScreen";
+import HomeScreen from "pages/home/HomeScreen.js";
 
 const GeneralRoutes = () => {
    return (
       <div>
          <Header />
-         <Route path="/" exact render={() => <HomeScreen />} />
-         <Route path="/user" exact>
-            <UserScreen />
-         </Route>
-         <Route path="/cohortes" exact>
-            <TabCohortes />
-         </Route>
+         <Switch>
+            {/* AQUÍ IRIÍAN LAS RUTAS */}
+            <Route path="/" exact component={HomeScreen}></Route>
+            <Route path="/user" exact component={VerticalTabs}></Route>
+            <Route path="/cohortes" exact component={TabCohortes}></Route>
+            <Redirect to="/" />
+         </Switch>
       </div>
    );
 };

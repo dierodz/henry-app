@@ -1,11 +1,12 @@
 const {
-   getUserByEmail,
    getUserByGoogleID,
    updateUser,
    getUserByGithubID,
    getUserById,
    _internalGetUserByEmail,
 } = require("./controllers/userController");
+
+const { User } = require("./db");
 
 const jwt = require("jsonwebtoken"),
    passport = require("passport"),
@@ -51,30 +52,26 @@ passport.use(
          session: false,
       },
       async (_token, _tokenSecret, profile, done) => {
-         try {
-            let user = await getUserByGoogleID(profile.id);
-            if (!user) {
-               user = await getUserByEmail(profile.emails[0].value);
+         let user = await User.findOne({ where: { googleId: profile.id } });
 
-               if (!user) {
-                  return done(null, false);
-               } else {
-                  await updateUser(user.id, {
-                     givenName: profile.name.givenName,
-                     familyName: profile.name.familyName,
-                     nickName: profile.emails[0].value.split("@")[0],
-                     googleId: profile.id,
-                     photoUrl: profile.photos[0].value,
-                  });
-               }
-               user = await getUserByGoogleID(profile.id);
-               return done(null, user);
+         if (!user) {
+            user = await _internalGetUserByEmail(profile.emails[0].value);
+
+            if (!user) {
+               return done(null, false);
             } else {
-               return done(null, user);
+               await updateUser(user.id, {
+                  givenName: profile.name.givenName,
+                  familyName: profile.name.familyName,
+                  nickName: profile.emails[0].value.split("@")[0],
+                  googleId: profile.id,
+                  photoUrl: profile.photos[0].value,
+               });
             }
-         } catch (error) {
-            return done(null, false);
          }
+
+         user = await getUserByGoogleID(profile.id);
+         return done(null, user);
       }
    )
 );
@@ -88,10 +85,10 @@ passport.use(
          session: false,
       },
       async (token, tokenSecret, profile, done) => {
-         let user = await getUserByGoogleID(profile.id);
-         // let user = await getOneByGoogleId(profile.id);
+         let user = await User.findOne({ where: { githubId: profile.id } });
          if (!user) {
-            user = await getUserByEmail(profile._json.email);
+            user = await _internalGetUserByEmail(profile._json.email);
+
             if (!user) {
                return done(null, false);
             } else {
@@ -104,11 +101,10 @@ passport.use(
                   photoUrl: profile._json.avatar_url,
                });
             }
-            user = await getUserByGithubID(profile.id);
-            return done(null, user);
-         } else {
-            return done(null, user);
          }
+
+         user = await getUserByGithubID(profile.id);
+         return done(null, user);
       }
    )
 );

@@ -5,6 +5,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 
 const AuthRouter = () => {
+   // console.log("HOLA MI AMOR");
     return (
         <div className="auth__main">
             <div className="auth__box-container" >
