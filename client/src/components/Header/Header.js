@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -12,55 +11,16 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import NavBar from "../NavBar/NavBar";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
+import useStyles from './useStyles';
+
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "dispatchers/auth";
 
-const useStyles = makeStyles((theme) => ({
-   grow: {
-      flexGrow: 1,
-   },
-   menuButton: {
-      marginRight: theme.spacing(2),
-   },
-   title: {
-      display: "none",
-      [theme.breakpoints.up("sm")]: {
-         display: "block",
-      },
-   },
-
-   inputRoot: {
-      color: "inherit",
-   },
-   inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
-         width: "20ch",
-      },
-   },
-   sectionDesktop: {
-      display: "none",
-      [theme.breakpoints.up("md")]: {
-         display: "flex",
-      },
-   },
-   sectionMobile: {
-      display: "flex",
-      [theme.breakpoints.up("md")]: {
-         display: "none",
-      },
-   },
-}));
-
-export default function Header() {
+export default function Header({ handleShowMenu }) {
    const dispatch = useDispatch();
+
    const history = useHistory();
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState(null);
@@ -85,14 +45,6 @@ export default function Header() {
 
    const handleMobileMenuOpen = (event) => {
       setMobileMoreAnchorEl(event.currentTarget);
-   };
-
-   const openMenu = (e) => {
-      if (!document.querySelector(".sidebar").classList[1]) {
-         document.querySelector(".sidebar").classList.add("open");
-      } else {
-         document.querySelector(".sidebar").classList.remove("open");
-      }
    };
 
    const menuId = "primary-search-account-menu";
@@ -167,15 +119,14 @@ export default function Header() {
 
    return (
       <div className={classes.grow}>
-         <AppBar position="static" color="default">
-            <NavBar className="sidebar" />
+         <AppBar position="static" className={classes.header}>
             <Toolbar>
                <IconButton
                   edge="start"
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="open drawer"
-                  onClick={openMenu}
+                  onClick={() => handleShowMenu()}
                >
                   <MenuIcon />
                </IconButton>
