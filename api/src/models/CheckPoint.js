@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) =>
             notEmpty: false,
          },
          set(value) {
-            this.setDataValue("name", value.trim().toLowerCase());
+            if (value) {
+               this.setDataValue("name", value.trim().toLowerCase());
+            }
          },
       },
    });
