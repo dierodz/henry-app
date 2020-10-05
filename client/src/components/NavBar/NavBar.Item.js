@@ -6,10 +6,11 @@ import useStyles from "./NavBar.Item.styles";
 function NavBarItem({ title, icon: Icon, to, exact }) {
   const classes = useStyles()
   const match = useRouteMatch(to)
+  //const match = false
   const { push } = useHistory()
   const selected = useMemo(() => {
     if (!to) return false
-    else if (exact) return match.isExact
+    else if (match && exact) return match.isExact
     else if (match) return true
     return false
   }, [to, exact, match])

@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function LoginScreen() {
-   console.log('aca')
    const dispatch = useDispatch();
    const classes = useStyles();
    const [visibilityPass, setVisibilityPass] = React.useState(false);

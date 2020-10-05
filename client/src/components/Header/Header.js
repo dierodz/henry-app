@@ -18,7 +18,7 @@ import useStyles from './useStyles';
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "dispatchers/auth";
 
-export default function Header(handleShowMenu) {
+export default function Header({ handleShowMenu }) {
    const dispatch = useDispatch();
 
    const history = useHistory();
@@ -126,7 +126,7 @@ export default function Header(handleShowMenu) {
                   className={classes.menuButton}
                   color="inherit"
                   aria-label="open drawer"
-                  onClick={handleShowMenu}
+                  onClick={() => handleShowMenu()}
                >
                   <MenuIcon />
                </IconButton>

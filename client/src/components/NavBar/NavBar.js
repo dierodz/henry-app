@@ -19,7 +19,7 @@ function NavBar({ show, children }) {
       }}
    >
       <List>
-         <NavBarItem title="Dashboard" icon={DashboardRounded} to="/admin" exact />
+         <NavBarItem title="Dashboard" icon={DashboardRounded} to="/" exact />
          <NavBarItem title="Cohortes" icon={ClassRounded} to="/admin/cohortes" />
          <NavBarItem title="Instructores" icon={AssignmentIndRounded} to="/admin/instructors" />
          <NavBarItem title="PM" icon={RecordVoiceOverRounded} to="/admin/pm" />

@@ -1,22 +1,36 @@
-import React from "react";
+import { Route, Switch, useHistory, useRouteMatch } from "react-router-dom";
+
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+import LoginScreen from "pages/auth/LoginScreen";
 import Header from "components/Header/Header";
-import TabCohortes from "../components/TabCohortes/TabCohortes.js";
-import { Redirect, Route, Switch } from "react-router-dom";
-import VerticalTabs from "pages/user/UserScreen";
-import HomeScreen from "pages/home/HomeScreen.js";
+import NavBar from "components/NavBar/NavBar";
+import Dashboard from "pages/Dashboard";
 
 const GeneralRoutes = () => {
+   const { authenticated, user } = useSelector((state) => state.auth);
+   const { push } = useHistory()
+   const [show, setShow] = useState(false)
+   const isSignInPath = useRouteMatch('/auth/signin')
+   useEffect(() => {
+      if (isSignInPath && authenticated) push('/')
+      else if (authenticated === false) push('/auth/signin')
+   }, [authenticated])
+
    return (
-      <div>
-         <Header />
+      <>
+         {user &&
+            <>
+               <Header handleShowMenu={() => setShow(!show)} />
+               <NavBar show={show} />
+            </>
+         }
          <Switch>
-            {/* AQUÍ IRIÍAN LAS RUTAS */}
-            <Route path="/" exact component={HomeScreen}></Route>
-            <Route path="/user" exact component={VerticalTabs}></Route>
-            <Route path="/cohortes" exact component={TabCohortes}></Route>
-            <Redirect to="/" />
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/auth/signin" component={LoginScreen} />
          </Switch>
-      </div>
+      </>
    );
 };
 
