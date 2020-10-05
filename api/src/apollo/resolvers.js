@@ -26,6 +26,8 @@ const resolvers = {
       createUser,
       updateUser,
       deleteUser,
+
+      // Mutations for modules
       createModule, 
       updateModule,
       deleteModule 
