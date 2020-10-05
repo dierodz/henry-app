@@ -7,7 +7,7 @@ const {
 const { checkPoints } = require("./resolvers/checkPointResolver");
 const { cohortes } = require("./resolvers/cohorteResolver");
 const { contents } = require("./resolvers/contentResolver");
-const { modules } = require("./resolvers/moduleResolver");
+const {  modules,createModule , updateModule,deleteModule  } = require("./resolvers/moduleResolver");
 const { roles } = require("./resolvers/roleResolver");
 const { scores } = require("./resolvers/scoreResolver");
 
@@ -26,6 +26,9 @@ const resolvers = {
       createUser,
       updateUser,
       deleteUser,
+      createModule, 
+      updateModule,
+      deleteModule 
    },
 };
 
