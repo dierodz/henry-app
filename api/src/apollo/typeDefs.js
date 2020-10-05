@@ -91,6 +91,8 @@ const typeDefs = gql`
       createUser(input: UserInput): User!
       editUser(input: UserInput): User!
       deleteUser(id: Int): String!
+      # Mutations Cohorte
+      createCohorte(name:String, number:Int): Cohorte!
    }
 `;
 

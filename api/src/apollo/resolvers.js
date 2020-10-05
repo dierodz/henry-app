@@ -1,7 +1,7 @@
 const { createUser } = require("../controllers/userController");
 const { users } = require("./resolvers/userResolver");
 const { checkPoints } = require("./resolvers/checkPointResolver");
-const { cohortes } = require("./resolvers/cohorteResolver");
+const { cohortes,createCohorte } = require("./resolvers/cohorteResolver");
 const { contents } = require("./resolvers/contentResolver");
 const { modules } = require("./resolvers/moduleResolver");
 const { roles } = require("./resolvers/roleResolver");
@@ -25,6 +25,7 @@ const resolvers = {
       ) => {
          return await createUser({ ...input });
       },
+      createCohorte
    },
 };
 

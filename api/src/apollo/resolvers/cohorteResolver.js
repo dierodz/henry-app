@@ -1,6 +1,7 @@
 const {
    getAllCohortes,
    getEspecificCohorte,
+   createCohorte: createOneCohorte
 } = require("../../controllers/cohorteController");
 
 const cohortes = async (_, { id }) => {
@@ -10,4 +11,8 @@ const cohortes = async (_, { id }) => {
    } else return await getAllCohortes();
 };
 
-module.exports = { cohortes };
+const createCohorte = async (_, {name,number}) =>{
+   return await createOneCohorte({name,number})
+}
+
+module.exports = { cohortes,createCohorte };
