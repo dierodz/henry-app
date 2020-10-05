@@ -1,6 +1,9 @@
 const {
    getAllCheck,
    getOneCheck,
+   createCheck,
+   editCheck,
+   deleteCheck,
 } = require("../../controllers/checkPointController");
 
 const checkPoints = async (_, { id, name }) => {
@@ -10,4 +13,21 @@ const checkPoints = async (_, { id, name }) => {
    } else return await getAllCheck();
 };
 
-module.exports = { checkPoints };
+const createCheckPoint = async (_, { name }) => {
+   return await createCheck(name);
+};
+
+const updateCheckPoint = async (_, { id, name }) => {
+   return await editCheck(id, { name });
+};
+
+const deleteCheckPoint = async (_, { id, name }) => {
+   return await deleteCheck({ id, name });
+};
+
+module.exports = {
+   checkPoints,
+   createCheckPoint,
+   updateCheckPoint,
+   deleteCheckPoint,
+};
