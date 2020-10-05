@@ -1,12 +1,6 @@
 import { useUser } from "hooks";
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import AuthRouter from "./AuthRouter";
-import PublicRoutes from "./PublicRoutes";
-import HomeScreen from "../pages/home/HomeScreen.js";
-import UserScreen from "../pages/user/UserScreen";
-import TabCohortes from "../components/TabCohortes/TabCohortes.js";
-import Header from "../components/Header/Header.js";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Admin } from "pages/admin";
 
 const AppRouter = () => {

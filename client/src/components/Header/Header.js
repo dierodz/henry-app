@@ -11,7 +11,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import NavBar from "../NavBar/NavBar";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
 import useUser from "../../hooks/useUser";
@@ -41,14 +40,6 @@ export default function Header({ handleShowMenu }) {
 
    const handleMobileMenuOpen = (event) => {
       setMobileMoreAnchorEl(event.currentTarget);
-   };
-
-   const openMenu = (e) => {
-      if (!document.querySelector(".sidebar").classList[1]) {
-         document.querySelector(".sidebar").classList.add("open");
-      } else {
-         document.querySelector(".sidebar").classList.remove("open");
-      }
    };
 
    const menuId = "primary-search-account-menu";
@@ -119,7 +110,6 @@ export default function Header({ handleShowMenu }) {
    return (
       <div className={classes.grow}>
          <AppBar position="static" className={classes.header}>
-            <NavBar className="sidebar" />
             <Toolbar>
                <IconButton
                   edge="start"
