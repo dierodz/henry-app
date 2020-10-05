@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) =>{
            },
        
       },
-      typeOf: {
+      type: {
          type: DataTypes.ENUM('PP', 'StandUp', 'General')
       }
  })

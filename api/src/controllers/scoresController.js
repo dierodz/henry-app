@@ -1,16 +1,16 @@
-const { Scores } = require("../db");
+const { Score } = require("../db");
 
 //-----controlador para crear score-------\\
 
 const createScores = async (score) => {
-   const create = Scores.create({ score });
+   const create = Score.create({ score });
    return create;
 };
 
 //----------controlador para obtener los scores----\\
 
 const getScores = async () => {
-   const scores = await Scores.findAll();
+   const scores = await Score.findAll();
    if (scores.length < 1) {
       throw {
          name: "ApiFindError",
@@ -27,7 +27,7 @@ const getScores = async () => {
 
 //--------controlador para obtener un score------------\\
 const getScoreById = async (id) => {
-   const scoreById = await Scores.findOne({ where: { id } });
+   const scoreById = await Score.findOne({ where: { id } });
 
    if (!scoreById) {
       throw {
@@ -50,7 +50,7 @@ const getScoreById = async (id) => {
 //------------controlador para actualizar una puntuación----------------\\
 
 const updateScore = async (id, score) => {
-   const scoreId = await Scores.findOne({ where: { id } });
+   const scoreId = await Score.findOne({ where: { id } });
 
    if (!scoreId) {
       throw {
@@ -76,7 +76,7 @@ const updateScore = async (id, score) => {
 //--------------controlador para eliminar una puntuación--------------------\\
 
 const deleteScore = async (id) => {
-   const score = await Scores.findOne({ where: { id } });
+   const score = await Score.findOne({ where: { id } });
 
    if (!score) {
       throw {

@@ -9,7 +9,9 @@ module.exports = function (sequelize, Datatypes) {
                 notEmpty: false,
             },
             set(value) {
-                this.setDataValue('givenName', value.trim().toLowerCase())
+                if (value) {
+                    this.setDataValue('givenName', value.trim().toLowerCase())
+                }
             },
         },
         familyName: {
@@ -19,17 +21,22 @@ module.exports = function (sequelize, Datatypes) {
                 notEmpty: false,
             },
             set(value) {
-                this.setDataValue('familyName', value.trim().toLowerCase())
+                if (value) {
+                    this.setDataValue('familyName', value.trim().toLowerCase())
+                }
             },
         },
         nickName: {
             type: Datatypes.STRING,
             allowNull: true,
+            unique: true,
             validate: {
                 notEmpty: false,
             },
             set(value) {
-                this.setDataValue('nickName', value.trim().toLowerCase())
+                if (value) {
+                    this.setDataValue('nickName', value.trim().toLowerCase())
+                }
             },
         },
         email: {
@@ -43,7 +50,9 @@ module.exports = function (sequelize, Datatypes) {
             },
 
             set(value) {
-                this.setDataValue('email', value.trim().toLowerCase())
+                if (value) {
+                    this.setDataValue('email', value.trim().toLowerCase())
+                }
             },
         },
         googleId: {
@@ -70,8 +79,10 @@ module.exports = function (sequelize, Datatypes) {
                 notEmpty: false,
             },
             set(value) {
-                const hashedPass = bcrypt.hashSync(value.trim(), 10)
-                this.setDataValue('password', hashedPass)
+                if (value) {
+                    const hashedPass = bcrypt.hashSync(value.trim(), 10)
+                    this.setDataValue('password', hashedPass)
+                }
             },
         }
     })

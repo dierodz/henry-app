@@ -53,10 +53,29 @@ const getAllTopics = async () => {
     return copytopics;
 }
 
+const getOneTopic = async ({id, topicName}) => {
+   const topic = await Content.findOne({where: { id, topicName } });
+
+   if (!topic) {
+      throw {
+         name: "ApiFindError",
+         type: "Content Error",
+         error: {
+            message: `the content with the id ${id} does not exist in the database`,
+            type: "data not found",
+            code: 404,
+         },
+      };
+   }
+
+   return topic
+}
+
 module.exports = {
     createContent,
     updateTopic,
     deleteTopic,
     getAllTopics,
+    getOneTopic
  };
  

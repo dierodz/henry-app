@@ -74,6 +74,8 @@ router
 router.route("/:id/roles/:rolName").post((req, res) => {
    const { id, rolName } = req.params;
 
+  
+
    setRolesToUser(id, rolName)
       .then((checkpoint) => res.json(checkpoint))
       .catch((err) => {

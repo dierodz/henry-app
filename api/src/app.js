@@ -5,6 +5,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const routes = require("./routes/index.js");
 const passport = require("./passport");
+const { ApolloServer } = require("apollo-server-express");
+const { resolvers, typeDefs } = require("./apollo");
 
 require("./db.js");
 
@@ -27,6 +29,15 @@ server.use((req, res, next) => {
    next();
 });
 
+const apolloServer = new ApolloServer({
+   typeDefs,
+   resolvers,
+   introspection: true,
+   playground: true,
+});
+
+apolloServer.applyMiddleware({ app: server });
+
 server.all("*", function (req, res, next) {
    passport.authenticate("bearer", function (err, user) {
       if (err) return next(err);
@@ -41,4 +52,4 @@ server.use(passport.initialize());
 
 server.use("/", routes);
 
-module.exports = server;
+module.exports = { server, apolloServer };
