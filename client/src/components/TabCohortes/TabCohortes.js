@@ -1,12 +1,11 @@
 import React from "react";
-import {StyledTableCell, StyledTableRow, useStyles} from "./style";
+import { StyledTableCell, StyledTableRow, useStyles } from "./style";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { Cohortes } from "./cohortes";
 import AddIcon from "@material-ui/icons/Add";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
@@ -19,42 +18,42 @@ import DialogDel from "./DialogDel";
 import DialogEdit from "./DialogEdit";
 
 
-export default function CustomizedTables(props) {
+export default function CustomizedTables({ data }) {
 
-const classes = useStyles();
-const columnas = ["Nombre de cohorte", "Nombre del instructor"];
+   const classes = useStyles();
+   const columnas = ["Nombre de cohorte", "Nombre del instructor"];
 
-const [openDel, setOpenDel] = React.useState(false);
-const theme = useTheme();
-const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+   const [openDel, setOpenDel] = React.useState(false);
+   const theme = useTheme();
+   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-const handleDelClickOpen = () => {
-   setOpenDel(true);
-};
+   const handleDelClickOpen = () => {
+      setOpenDel(true);
+   };
 
-const handleDelClose = () => {
-   setOpenDel(false);
-};
+   const handleDelClose = () => {
+      setOpenDel(false);
+   };
 
-const [openAdd, setOpenAdd] = React.useState(false);
+   const [openAdd, setOpenAdd] = React.useState(false);
 
-const handleAddClickOpen = () => {
-   setOpenAdd(true);
-};
+   const handleAddClickOpen = () => {
+      setOpenAdd(true);
+   };
 
-const handleAddClose = () => {
-   setOpenAdd(false);
-};
+   const handleAddClose = () => {
+      setOpenAdd(false);
+   };
 
-const [openEdit, setOpenEdit] = React.useState(false);
+   const [openEdit, setOpenEdit] = React.useState(false);
 
-const handleEditClickOpen = () => {
-   setOpenEdit(true);
-};
+   const handleEditClickOpen = () => {
+      setOpenEdit(true);
+   };
 
-const handleEditClose = () => {
-   setOpenEdit(false);
-};
+   const handleEditClose = () => {
+      setOpenEdit(false);
+   };
 
    return (
       <TableContainer className={classes.container} component={Paper}>
@@ -72,7 +71,7 @@ const handleEditClose = () => {
                </TableRow>
             </TableHead>
             <TableBody>
-               {Cohortes.map((el) => (
+               {data && data.cohortes.map((el) => (
                   <StyledTableRow key={el.name}>
                      <StyledTableCell
                         align="center"
@@ -82,7 +81,7 @@ const handleEditClose = () => {
                         {el.name}
                      </StyledTableCell>
                      <StyledTableCell align="center">
-                        {el.instructor}
+                        {el.number}
                      </StyledTableCell>
                      <StyledTableCell
                         className={classes.botones}
@@ -102,9 +101,9 @@ const handleEditClose = () => {
                ))}
             </TableBody>
          </Table>
-      <DialogDel openDel={openDel} handleDelClose={handleDelClose} fullScreen={fullScreen} />
-      <DialogAdd openAdd={openAdd} handleAddClose={handleAddClose} />
-      <DialogEdit openEdit={openEdit} handleEditClose={handleEditClose} />
+         <DialogDel openDel={openDel} handleDelClose={handleDelClose} fullScreen={fullScreen} />
+         <DialogAdd openAdd={openAdd} handleAddClose={handleAddClose} />
+         <DialogEdit openEdit={openEdit} handleEditClose={handleEditClose} />
       </TableContainer>
    );
 }
