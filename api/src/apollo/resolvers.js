@@ -1,31 +1,41 @@
-const { createUser } = require("../controllers/userController");
-const { users } = require("./resolvers/userResolver");
-const { checkPoints } = require("./resolvers/checkPointResolver");
-const { cohortes,createCohorte } = require("./resolvers/cohorteResolver");
-const { contents } = require("./resolvers/contentResolver");
-const { modules } = require("./resolvers/moduleResolver");
-const { roles } = require("./resolvers/roleResolver");
-const { scores } = require("./resolvers/scoreResolver");
+const { cohortes,createCohorte, editCohorte,deleteCohorte } = require("./resolvers/cohorteResolver");
+const {
+   users,
+   createUser,
+   updateUser,
+   deleteUser,
+} = require("./resolvers/userResolver");
+const {
+   checkPoints,
+   updateCheckPoint,
+   deleteCheckPoint,
+   createCheckPoint,
+} = require("./resolvers/checkPointResolver");
 
 const resolvers = {
    Query: {
       users,
       checkPoints,
       cohortes,
-      contents,
-      modules,
-      roles,
-      scores,
+      // contents,
+      // modules,
+      // roles,
+      // scores,
    },
-
    Mutation: {
-      createUser: async (
-         _,
-         { input }
-      ) => {
-         return await createUser({ ...input });
-      },
-      createCohorte
+      //Mutations for Cohortes
+      createCohorte,
+      editCohorte,
+      deleteCohorte,
+      // Mutations for Users
+      createUser,
+      updateUser,
+      deleteUser,
+
+      // Mutations for Checkpoints
+      createCheckPoint,
+      updateCheckPoint,
+      deleteCheckPoint,
    },
 };
 
