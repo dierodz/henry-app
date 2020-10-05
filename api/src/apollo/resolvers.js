@@ -1,5 +1,9 @@
-const { createUser } = require("../controllers/userController");
-const { users } = require("./resolvers/userResolver");
+const {
+   users,
+   createUser,
+   updateUser,
+   deleteUser,
+} = require("./resolvers/userResolver");
 const { checkPoints } = require("./resolvers/checkPointResolver");
 const { cohortes } = require("./resolvers/cohorteResolver");
 const { contents } = require("./resolvers/contentResolver");
@@ -19,12 +23,9 @@ const resolvers = {
    },
 
    Mutation: {
-      createUser: async (
-         _,
-         { input }
-      ) => {
-         return await createUser({ ...input });
-      },
+      createUser,
+      updateUser,
+      deleteUser,
    },
 };
 

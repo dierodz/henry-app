@@ -87,10 +87,14 @@ const typeDefs = gql`
       password: String
    }
 
+   type DeleteResolve {
+      message: String!
+   }
+
    type Mutation {
       createUser(input: UserInput): User!
-      editUser(input: UserInput): User!
-      deleteUser(id: Int): String!
+      updateUser(id: Int, input: UserInput): User!
+      deleteUser(id: Int): DeleteResolve!
    }
 `;
 
