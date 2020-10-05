@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { Admin } from "pages/admin";
 import LoginScreen from "pages/auth/LoginScreen";
 

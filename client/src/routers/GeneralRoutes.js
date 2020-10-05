@@ -16,7 +16,7 @@ const GeneralRoutes = () => {
    useEffect(() => {
       if (isSignInPath && authenticated) push('/')
       else if (authenticated === false) push('/auth/signin')
-   }, [authenticated])
+   }, [authenticated, isSignInPath, push])
 
    return (
       <>
