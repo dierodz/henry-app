@@ -18,7 +18,7 @@ import useStyles from './useStyles';
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "dispatchers/auth";
 
-export default function Header() {
+export default function Header(handleShowMenu) {
    const dispatch = useDispatch();
 
    const history = useHistory();
