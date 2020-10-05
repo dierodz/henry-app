@@ -1,11 +1,29 @@
-import { useUser } from "hooks";
-import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Admin } from "pages/admin";
 
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { signInWithToken, initialize } from "dispatchers/auth";
+
 const AppRouter = () => {
-   const { initialize } = useUser();
-   initialize();
+   const dispatch = useDispatch();
+   const { authenticated } = useSelector((state) => state.auth);
+   const [checking, setChecking] = useState(true);
+   const localToken = JSON.parse(localStorage.getItem("token"));
+
+   useEffect(() => {
+      if (localToken) {
+         initialize();
+         dispatch(signInWithToken(localToken));
+      }
+      setChecking(false);
+   }, [localToken, dispatch]);
+
+   if (checking) {
+      return <h1>Please Wait...</h1>;
+   }
+
    return (
       <Router>
          {/* <Route path="/" render={() => <Header />} />
@@ -15,12 +33,18 @@ const AppRouter = () => {
          {/* <div>
             <Switch>
                <PublicRoutes
-                  // Cambiar, luego, el false por una variable de autenticación
                   component={AuthRouter}
-                  isAuthenticated={false}
+                  isAuthenticated={authenticated}
                   path="/auth"
-                  redirectTo="/"
+                  redirectTo="/user"
                />
+               <PrivateRoutes
+                  component={GeneralRoutes}
+                  isAuthenticated={authenticated}
+                  path="/"
+                  redirectTo="/auth"
+               ></PrivateRoutes>
+               <Redirect to="/" />
             </Switch>
          </div> */}
          <Route path={'/admin'} component={Admin} />

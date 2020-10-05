@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) =>{
-   return sequelize.define("pair_prog", {
+   return sequelize.define("group", {
        name: {
           type: DataTypes.STRING,
           allowNull: false,
@@ -10,8 +10,11 @@ module.exports = (sequelize, DataTypes) =>{
            set(value) {
              this.setDataValue("name", value.trim().toLowerCase());
            },
-   
-    }
+       
+      },
+      typeOf: {
+         type: DataTypes.ENUM('PP', 'StandUp', 'General')
+      }
  })
  };
  

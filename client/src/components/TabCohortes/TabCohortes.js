@@ -1,8 +1,7 @@
 import React from "react";
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {StyledTableCell, StyledTableRow, useStyles} from "./style";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
@@ -13,42 +12,49 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import "../../styles/components/TabCohortes.scss";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+import DialogAdd from "./DialogAdd";
+import DialogDel from "./DialogDel";
+import DialogEdit from "./DialogEdit";
 
-const StyledTableCell = withStyles((theme) => ({
-   head: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-      fontFamily: "Trebuchet MS",
-   },
-   body: {
-      fontSize: 14,
-   },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-   root: {
-      "&:nth-of-type(odd)": {
-         backgroundColor: theme.palette.action.hover,
-      },
-   },
-}))(TableRow);
-
-const useStyles = makeStyles({
-   table: {
-      maxWidth: 900,
-   },
-   container: {
-      maxWidth: 900,
-   },
-   botones: {
-      display: "flex",
-      justifyContent: "space-evenly",
-   },
-});
 
 export default function CustomizedTables(props) {
-   const classes = useStyles();
-   const columnas = ["Nombre de cohorte", "Nombre del instructor"];
+
+const classes = useStyles();
+const columnas = ["Nombre de cohorte", "Nombre del instructor"];
+
+const [openDel, setOpenDel] = React.useState(false);
+const theme = useTheme();
+const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+const handleDelClickOpen = () => {
+   setOpenDel(true);
+};
+
+const handleDelClose = () => {
+   setOpenDel(false);
+};
+
+const [openAdd, setOpenAdd] = React.useState(false);
+
+const handleAddClickOpen = () => {
+   setOpenAdd(true);
+};
+
+const handleAddClose = () => {
+   setOpenAdd(false);
+};
+
+const [openEdit, setOpenEdit] = React.useState(false);
+
+const handleEditClickOpen = () => {
+   setOpenEdit(true);
+};
+
+const handleEditClose = () => {
+   setOpenEdit(false);
+};
 
    return (
       <TableContainer className={classes.container} component={Paper}>
@@ -56,10 +62,10 @@ export default function CustomizedTables(props) {
             <TableHead>
                <TableRow>
                   {columnas.map((columna) => (
-                     <StyledTableCell align="center">{columna}</StyledTableCell>
+                     <StyledTableCell key={columna} align="center">{columna}</StyledTableCell >
                   ))}
                   <StyledTableCell align="center">
-                     <button className="addIcon">
+                     <button className="addIcon" onClick={handleAddClickOpen} >
                         <AddIcon />
                      </button>
                   </StyledTableCell>
@@ -85,10 +91,10 @@ export default function CustomizedTables(props) {
                         <button className="viewIcon">
                            <VisibilityIcon />
                         </button>
-                        <button className="editIcon">
+                        <button className="editIcon" onClick={handleEditClickOpen} >
                            <EditIcon />
                         </button>
-                        <button className="deleteIcon">
+                        <button className="deleteIcon" onClick={handleDelClickOpen} >
                            <DeleteIcon />
                         </button>
                      </StyledTableCell>
@@ -96,6 +102,9 @@ export default function CustomizedTables(props) {
                ))}
             </TableBody>
          </Table>
+      <DialogDel openDel={openDel} handleDelClose={handleDelClose} fullScreen={fullScreen} />
+      <DialogAdd openAdd={openAdd} handleAddClose={handleAddClose} />
+      <DialogEdit openEdit={openEdit} handleEditClose={handleEditClose} />
       </TableContainer>
    );
 }
