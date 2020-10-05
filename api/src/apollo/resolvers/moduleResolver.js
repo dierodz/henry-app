@@ -13,12 +13,12 @@ const modules = async (_, { id, name }) => {
    } else return await getModules();
 };
 
-const createModule = async (_, { input }) => {
-   return await createOneModel({ ...input });
+const createModule = async (_, { name, description}) => {
+   return await createOneModel({ name,description });
 };
 
-const updateModule = async (_, { id, input }) => {
-   return await editModule(id, { ...input });
+const updateModule = async (_, { id, name, description }) => {
+   return await editModule(id, {name, description});
 };
 
 const deleteModule = async (_, { id }) => {
