@@ -1,10 +1,13 @@
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Admin } from "pages/admin";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { signInWithToken, initialize } from "dispatchers/auth";
+import PrivateRoutes from "./PrivateRoutes";
+import AuthRouter from "./AuthRouter";
+import { Admin } from "pages/admin";
+import LoginScreen from "pages/auth/LoginScreen";
 
 const AppRouter = () => {
    const dispatch = useDispatch();
@@ -26,28 +29,10 @@ const AppRouter = () => {
 
    return (
       <Router>
-         {/* <Route path="/" render={() => <Header />} />
-         <Route path="/" exact={true} render={() => <HomeScreen />} />
-         <Route path="/user" exact={true} render={() => <UserScreen />} />
-         <Route path="/cohortes" exact={true} render={() => <TabCohortes />} /> */}
-         {/* <div>
-            <Switch>
-               <PublicRoutes
-                  component={AuthRouter}
-                  isAuthenticated={authenticated}
-                  path="/auth"
-                  redirectTo="/user"
-               />
-               <PrivateRoutes
-                  component={GeneralRoutes}
-                  isAuthenticated={authenticated}
-                  path="/"
-                  redirectTo="/auth"
-               ></PrivateRoutes>
-               <Redirect to="/" />
-            </Switch>
-         </div> */}
-         <Route path={'/admin'} component={Admin} />
+         <Switch>
+            <Route path="/admin" component={Admin} />
+            <Route path="/auth/signin" component={LoginScreen} />
+         </Switch>
       </Router>
    );
 };
