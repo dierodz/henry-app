@@ -95,7 +95,13 @@ const typeDefs = gql`
       createUser(input: UserInput): User!
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
+
+      # Mutaciones para los modulos
+      createModule(name: String!): Module! 
+      updateModule(id: Int, name: String!, description: String!): Module!
+      deleteModule(id: Int): DeleteResolve!
    }
+  
 `;
 
 module.exports = typeDefs;
