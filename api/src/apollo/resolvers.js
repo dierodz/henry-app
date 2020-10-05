@@ -7,6 +7,7 @@ const {
 const resolvers = {
    Query: {
       users: async (_, { id }) => {
+         console.log("HELLO MY BODY");
          if (id) {
             const result = await getUserById(id);
             return [result];
@@ -14,7 +15,7 @@ const resolvers = {
       },
    },
 
-   Mutations: {
+   Mutation: {
       createUser: async (_, user) => {
          return await createUser(user);
       },

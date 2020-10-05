@@ -84,9 +84,10 @@ const typeDefs = gql`
       googleId: String
       githubId: String
       photoUrl: String
+      password: String
    }
 
-   type Mutations {
+   type Mutation {
       createUser(input: UserInput): User!
       editUser(input: UserInput): User!
       deleteUser(id: Int): String!

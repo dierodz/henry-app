@@ -29,7 +29,12 @@ server.use((req, res, next) => {
    next();
 });
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+   typeDefs,
+   resolvers,
+   introspection: true,
+   playground: true,
+});
 
 apolloServer.applyMiddleware({ app: server });
 
