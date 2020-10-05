@@ -12,7 +12,7 @@ const createUser = async ({
    photoUrl,
    password,
    role,
-}) => {
+}) => {  
    let user = await User.create({
       givenName,
       familyName,
@@ -48,6 +48,9 @@ const createUser = async ({
       }
 
       const theRole = await Role.findOne({ where: { name: role } });
+      await user.setRoles(theRole);
+   } else {
+      const theRole = await Role.findOne({ where: { name: "student" } });
       await user.setRoles(theRole);
    }
 

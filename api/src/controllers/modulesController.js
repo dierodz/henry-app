@@ -31,8 +31,12 @@ const editModule = async (id, name, description) => {
 };
 
 // Controlador para obtener un modulo por ID
-const getModulesById = async (id) => {
-   const module = await Module.findOne({ where: { id } });
+const getModulesById = async ({ id, name }) => {
+   const where = {};
+   if (id) where.id = id;
+   if (name) where.name = name;
+
+   const module = await Module.findOne({ where });
 
    if (!module) {
       throw {

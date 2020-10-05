@@ -1,21 +1,5 @@
 const { CheckPoint } = require("../db");
 
-const _sendCheck = (check) => {
-   if (!Array.isArray(check)) {
-      const sendCheck = { ...check };
-      delete sendCheck.dataValues.createdAt;
-      delete sendCheck.dataValues.updatedAt;
-      return sendCheck.dataValues;
-   }
-
-   const sendChecks = [...check];
-   sendChecks.forEach((c) => {
-      delete c.dataValues.createdAt;
-      delete c.dataValues.updatedAt;
-   });
-   return sendChecks;
-};
-
 const _getOneCheck = async ({ id, name }) => {
    const where = {};
 
@@ -45,15 +29,13 @@ const _getOneCheck = async ({ id, name }) => {
 
 // Recibe como argumento el nombre del check
 const createCheck = async (name) => {
-   console.log(name);
    const check = await CheckPoint.create({ name: name });
-   return _sendCheck(check);
+   return getOneCheck({ id: check.id });
 };
 
 // Recibe un objeto que puede venir con el nombre del check o el id
 const getOneCheck = async ({ id, name }) => {
-   const check = await _getOneCheck({ id, name });
-   return _sendCheck(check);
+   return await _getOneCheck({ id, name });
 };
 
 const getAllCheck = async () => {
@@ -71,7 +53,7 @@ const getAllCheck = async () => {
       };
    }
 
-   return _sendCheck(checks);
+   return checks;
 };
 
 // Recibe como primer argumento el id, y como segundo argumdo argumneot
@@ -80,7 +62,7 @@ const editCheck = async (id, { name }) => {
    let check = await _getOneCheck({ id });
    check = await check.update({ name });
 
-   return _sendCheck(check);
+   return getOneCheck({ id: check.id });
 };
 
 // Recibe un objeto que puede venir con el nombre o el id
