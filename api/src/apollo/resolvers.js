@@ -9,6 +9,7 @@ const {
    createUser,
    updateUser,
    deleteUser,
+   getUserRol,
 } = require("./resolvers/userResolver");
 const {
    checkPoints,
@@ -46,6 +47,7 @@ const resolvers = {
       modules,
       roles,
       scores,
+      getUserRol,
    },
    Mutation: {
       //Mutations for Cohortes

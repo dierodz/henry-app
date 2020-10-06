@@ -4,6 +4,7 @@ const {
    createUser: createOneUser,
    updateUser: editUser,
    deleteUserById,
+   getUserbyRol,
 } = require("../../controllers/userController");
 
 const users = async (_, { id }) => {
@@ -25,4 +26,8 @@ const deleteUser = async (_, { id }) => {
    return await deleteUserById(id);
 };
 
-module.exports = { users, createUser, updateUser, deleteUser };
+const getUserRol = async (_, {role}) => {
+   return await getUserbyRol(role)
+}
+
+module.exports = { users, createUser, updateUser, deleteUser, getUserRol  };
