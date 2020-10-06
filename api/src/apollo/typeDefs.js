@@ -117,12 +117,22 @@ const typeDefs = gql`
       editCohorte(id: Int, name: String, number: Int): Cohorte!
       deleteCohorte(id: Int): DeleteResolve!
 
+      # Mutaciones para los modulos
+      createModule(name: String!): Module! 
+      updateModule(id: Int, name: String!, description: String!): Module!
+      deleteModule(id: Int): DeleteResolve!
 
       # Mutaciones para los checkpoints
       createCheckPoint(name: String!): CheckPoint! 
       updateCheckPoint(id: Int, name: String!): CheckPoint!
       deleteCheckPoint(id: Int): DeleteResolve!
+
+      # Mutaciones para Contenidos
+      createContenido(topicName: String!, durationTime: Int): Content! 
+      updateTopics(id: Int, topic: String!): Content!
+      deleteTopics(id: Int): DeleteResolve!
    }
+  
 `;
 
 module.exports = typeDefs;
