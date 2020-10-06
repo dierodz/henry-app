@@ -7,16 +7,16 @@ const router = require('express').Router();
 router
       .route('/')
       .get((req, res) => {
-      	getScores()
-      	  .then( score => res.status(201).json(score))
-      	  .catch(err => res.status(400).json({err}))
+      getScores()
+        .then( score => res.status(201).json(score))
+        .catch(err => res.status(400).json({err}))
 
       })
       .post( (req, res) => {
-      	const { score } = req.body;
-      	createScores(score)
-      	  .then( score => res.status(201).json(score))
-      	  .catch(err => res.status(400).json({err}))
+      const { score } = req.body;
+      createScores(score)
+        .then( score => res.status(201).json(score))
+        .catch(err => res.status(400).json({err}))
       })
 
 
@@ -25,10 +25,10 @@ router
 router
       .route('/:id')
       .get( (req, res) => {
-      	const { id } = req.params;
-      	getScoreById(id)
-      	  .then( score => res.status(201).json(score))
-      	  .catch(err => res.status(400).json({err}))
+      const { id } = req.params;
+      getScoreById(id)
+      .then( score => res.status(201).json(score))
+      .catch(err => res.status(400).json({err}))
       })
       .put( (req, res) => {
             const { id } = req.params;
