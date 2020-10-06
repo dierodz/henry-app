@@ -76,6 +76,7 @@ const typeDefs = gql`
       roles(name: String): [Role]
       scores(id: Int): [Score]
       users(id: Int): [User]
+      getUserRol(role: String): [User] 
    }
 
    # Estos son los datos que acepta un usuario
@@ -114,6 +115,7 @@ const typeDefs = gql`
       createUser(input: UserInput): User!
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
+ 
 
       # Mutations Cohorte
       createCohorte(name:String, number:Int, instructor: Int, startDate: String): Cohorte!

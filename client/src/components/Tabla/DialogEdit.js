@@ -20,11 +20,11 @@ function DialogEdit({ openEdit, handleEditClose, columnas }) {
                Por favor, introduzca los datos correspondientes.
             </DialogContentText>
             {columnas &&
-               columnas.map((col) => (
+               columnas.map(({ key, label }) => (
                   <TextField
                      margin="dense"
-                     key={col}
-                     label={col}
+                     key={key}
+                     label={label}
                      type="text"
                      fullWidth
                   />

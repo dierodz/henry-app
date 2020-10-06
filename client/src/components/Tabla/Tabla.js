@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledTableCell, StyledTableRow, useStyles } from "./style";
+import { StyledAddButton, StyledTableCell, StyledTableRow, useStyles } from "./style";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -16,8 +16,11 @@ import { useTheme } from "@material-ui/core/styles";
 import DialogAdd from "./DialogAdd";
 import DialogDel from "./DialogDel";
 import DialogEdit from "./DialogEdit";
+import empty from 'assets/empty.svg';
+import styles from './Tabla.module.scss';
+import { Button, ButtonGroup } from "@material-ui/core";
 
-export default function Tabla({ columnas, info }) {
+export default function Tabla({ data, columnas, info }) {
    const classes = useStyles();
    const [openDel, setOpenDel] = React.useState(false);
    const theme = useTheme();
@@ -51,61 +54,71 @@ export default function Tabla({ columnas, info }) {
       setOpenEdit(false);
    };
 
+   console.log(data.data)
+
    return (
       <TableContainer className={classes.container} component={Paper}>
-         <Table className={classes.table} aria-label="customized table">
-            <TableHead>
-               <TableRow>
-                  {columnas.map((columna) => (
-                     <StyledTableCell key={columna} align="center">
-                        {columna}
+         {data.data && data.data.length > 0
+            ? <Table className={classes.table} aria-label="customized table">
+               <TableHead>
+                  <TableRow>
+                     {data.columns.map(({ key, label, align }) => (
+                        <StyledTableCell key={key} align={align}>
+                           {label}
+                        </StyledTableCell>
+                     ))}
+                     <StyledTableCell align="right">
+                        <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                           {data.addButtonLabel}
+                        </Button>
                      </StyledTableCell>
-                  ))}
-                  <StyledTableCell align="center">
-                     <button className="addIcon" onClick={handleAddClickOpen}>
-                        <AddIcon />
-                     </button>
-                  </StyledTableCell>
-               </TableRow>
-            </TableHead>
-            <TableBody>
-               {info &&
-                  info.map((el, i) => (
+                  </TableRow>
+               </TableHead>
+               <TableBody>
+                  {data.data.map((el, i) => (
                      <StyledTableRow key={i}>
-                        {Object.entries(el).map((cell) => (
+                        {data.columns.map(({ key, align }) => (
                            <StyledTableCell
-                              align="center"
+                              align={align}
                               component="th"
-                              scope="cohorte"
-                              key={cell[1]}
+                              //scope="cohorte"
+                              key={key}
                            >
-                              {cell[1]}
+                              {el[key]}
                            </StyledTableCell>
                         ))}
                         <StyledTableCell
-                           className={classes.botones}
-                           align="center"
+                           align="right"
                         >
-                           <button className="viewIcon">
-                              <VisibilityIcon />
-                           </button>
-                           <button
-                              className="editIcon"
-                              onClick={handleEditClickOpen}
-                           >
-                              <EditIcon />
-                           </button>
-                           <button
-                              className="deleteIcon"
-                              onClick={handleDelClickOpen}
-                           >
-                              <DeleteIcon />
-                           </button>
+                           <ButtonGroup >
+                              <Button>
+                                 <VisibilityIcon />
+                              </Button>
+                              <Button
+                                 onClick={handleEditClickOpen}
+                              >
+                                 <EditIcon />
+                              </Button>
+                              <Button
+                                 onClick={handleDelClickOpen}
+                              >
+                                 <DeleteIcon />
+                              </Button>
+                           </ButtonGroup>
                         </StyledTableCell>
                      </StyledTableRow>
                   ))}
-            </TableBody>
-         </Table>
+               </TableBody>
+            </Table>
+            : <div className={styles.empty}>
+               <img src={empty} alt="sin datos" />
+               <div className={styles.info} >
+                  <StyledAddButton size="large" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                     {data.addButtonLabel}
+                  </StyledAddButton>
+               </div>
+            </div>
+         }
          <DialogDel
             openDel={openDel}
             handleDelClose={handleDelClose}
@@ -117,7 +130,7 @@ export default function Tabla({ columnas, info }) {
             handleAddClose={handleAddClose}
          />
          <DialogEdit
-            columnas={columnas}
+            columnas={data.columns}
             openEdit={openEdit}
             handleEditClose={handleEditClose}
          />
