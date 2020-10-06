@@ -4,7 +4,7 @@ const useStyles = (show) => {
     content: {
       flexGrow: 1,
       minHeight: 'calc(100vh - 4rem - 1px)',
-      paddingLeft: theme.spacing(show ? 32 : 11),
+      paddingLeft: theme.spacing(show ? 31 : 8),
       transition: theme.transitions.create('padding-left', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,

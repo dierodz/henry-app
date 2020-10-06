@@ -4,13 +4,13 @@ export const CREATE_COHORTE = gql`
 mutation createCohorte(
    $name: String
    $number: Int
-   $starDate: String
+   $startDate: String
    $instructor: Int
  ) {
    createCohorte(
      name: $name
      number: $number
-     starDate: $starDate
+     startDate: $startDate
      instructor: $instructor
    ) {
      id

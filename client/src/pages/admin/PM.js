@@ -18,7 +18,12 @@ function PM({ className }) {
          { key: 'cohorte', label: 'Cohorte', align: 'left' },
          { key: 'group', label: 'Grupo', align: 'left' },
       ],
-      addButtonLabel: 'Agregar PM'
+      addButtonLabel: 'Agregar PM',
+      actions: {
+         delete: {
+            onSubmit: (id) => alert(id)
+         }
+      }
    }), [data, error, loading]);
 
    return (
