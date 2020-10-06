@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
 
 function Cohortes({ className }) {
    const { loading, error, data } = useQuery(COHORTES);
-   const columnas = [
-      "Nombre de cohorte",
-      "Nombre del instructor",
-      "Cant. de Alumnos",
-   ];
-   const info = [
-      { name: "WEBFT01", instructor: "Toni", cantidad: 194 },
-      { name: "WEBFT02", instructor: "Franco", cantidad: 159 },
-      { name: "WEBFT03", instructor: "Emi", cantidad: 100 },
-   ];
+
+   const tableData = useMemo(() => ({
+      loading,
+      error,
+      data: data ? data.cohortes : undefined,
+      columns: [
+         { key: 'name', label: 'Nombre del cohorte', align: 'left' },
+         { key: 'instructor', label: 'Instructor', align: 'left' },
+         { key: 'groups', label: 'Grupos', align: 'left' },
+         { key: 'alumns', label: 'Alumnos', align: 'left' },
+      ],
+      addButtonLabel: 'Agregar cohorte'
+   }), [data, error, loading]);
+
    return (
       <div className={className}>
-         <Tabla columnas={columnas} info={info} />
+         <Tabla data={tableData} />
       </div>
    );
 }
