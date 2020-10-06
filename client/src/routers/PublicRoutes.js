@@ -1,6 +1,5 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import PropTypes from "prop-types";
 
 /*
  ! Este un componente de rutas - (Especial para auth).
@@ -25,17 +24,11 @@ const PublicRoutes = ({
             !isAuthenticated ? (
                <Component {...props} />
             ) : (
-               <Redirect to={lastPath || redirectTo} />
-            )
+                  <Redirect to={lastPath || redirectTo} />
+               )
          }
       />
    );
-};
-
-PublicRoutes.propTypes = {
-   isAuthenticated: PropTypes.bool.isRequired,
-   component: PropTypes.func.isRequired,
-   redirectTo: PropTypes.string.isRequired,
 };
 
 export default PublicRoutes;
