@@ -1,6 +1,10 @@
 const {
+   createContent,
+   updateTopic,
+   deleteTopic,
    getAllTopics,
-   getOneTopic,
+   getOneTopic
+
 } = require("../../controllers/contentController");
 
 const contents = async (_, { id, topicName }) => {
@@ -9,5 +13,22 @@ const contents = async (_, { id, topicName }) => {
       return [result];
    } else return await getAllTopics();
 };
+const createContenido = async (_, { topicName,durationTime }) => {
+   return await createContent(topicName,durationTime);
+};
 
-module.exports = { contents };
+const updateTopics = async (_, { id, topic }) => {
+   return await updateTopic(id, { topic });
+};
+
+const deleteTopics = async (_, { id }) => {
+   return await deleteTopic({ id });
+};
+
+
+module.exports = { 
+   contents,
+   createContenido,
+   updateTopics,
+   deleteTopics,
+};

@@ -115,6 +115,11 @@ const typeDefs = gql`
       createCheckPoint(name: String!): CheckPoint! 
       updateCheckPoint(id: Int, name: String!): CheckPoint!
       deleteCheckPoint(id: Int): DeleteResolve!
+
+      # Mutaciones para Contenidos
+      createContenido(topicName: String!, durationTime: Int): Content! 
+      updateTopics(id: Int, topic: String!): Content!
+      deleteTopics(id: Int): DeleteResolve!
    }
 `;
 
