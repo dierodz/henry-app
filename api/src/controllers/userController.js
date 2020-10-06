@@ -38,7 +38,7 @@ const createUser = async ({
       if (
          role !== "instructor" &&
          role !== "pm" &&
-         role !== "alumno" &&
+         role !== "student" &&
          role !== "staff"
       ) {
          throw {
@@ -212,6 +212,10 @@ const _internalGetUserByEmail = async (email) => {
    return await User.findOne({ where: { email } });
 };
 
+const getUserbyRol = async (role) => {
+   const result =  await Role.findOne({ where: { name: role }, include: [{model: User, include: [Role]}]})
+   return result.users
+}
 module.exports = {
    createUser,
    getAllUsers,
@@ -223,4 +227,5 @@ module.exports = {
    updateUser,
    setRolesToUser,
    _internalGetUserByEmail,
+   getUserbyRol,
 };
