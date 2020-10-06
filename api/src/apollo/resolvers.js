@@ -36,6 +36,7 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
+const { getUserById } = require('../controllers/userController');
 const resolvers = {
    Query: {
       users,
@@ -72,6 +73,13 @@ const resolvers = {
       updateScore,
       deleteScore,
    },
+   Cohorte: {
+      instructor: async ({
+         instructor
+      }) => {
+        return await getUserById(instructor)
+      }
+   }
 };
 
 module.exports = resolvers;
