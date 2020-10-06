@@ -18,7 +18,6 @@ function Cohortes({ className }) {
       ],
       addButtonLabel: 'Agregar cohorte'
    }), [data, error, loading]);
-
    return (
       <div className={className}>
          <Tabla data={tableData} />
