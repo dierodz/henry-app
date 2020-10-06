@@ -8,12 +8,13 @@ function Cohortes({ className }) {
    const columnas = [
       "Nombre de cohorte",
       "Nombre del instructor",
-      "Cant. de Alumnos",
+      "Numero de Cohorte",
+      "Fecha de inicio",
    ];
    const info = [
-      { name: "WEBFT01", instructor: "Toni", cantidad: 194 },
-      { name: "WEBFT02", instructor: "Franco", cantidad: 159 },
-      { name: "WEBFT03", instructor: "Emi", cantidad: 100 },
+      { name: "WEBFT01", instructor: 1, number: 1, startDate: "07/08/2020" },
+      { name: "WEBFT02", instructor: 2, number: 2, startDate: "07/08/2020" },
+      { name: "WEBFT03", instructor: 3, number: 3, startDate: "07/08/2020"},
    ];
    return (
       <div className={className}>
