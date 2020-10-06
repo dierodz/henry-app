@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Drawer, List } from '@material-ui/core'
-import { AssignmentIndRounded, ClassRounded, DashboardRounded, RecordVoiceOverRounded } from '@material-ui/icons';
+import { AssignmentIndRounded, ClassRounded, DashboardRounded, EmojiPeopleRounded, RecordVoiceOverRounded } from '@material-ui/icons';
 
 import "../../styles/components/NavBar.scss";
 import useStyles from "./NavBar.styles";
@@ -23,6 +23,7 @@ function NavBar({ show, children }) {
          <NavBarItem title="Cohortes" icon={ClassRounded} to="/admin/cohortes" />
          <NavBarItem title="Instructores" icon={AssignmentIndRounded} to="/admin/instructors" />
          <NavBarItem title="PM" icon={RecordVoiceOverRounded} to="/admin/pm" />
+         <NavBarItem title="Alumnos" icon={EmojiPeopleRounded} to="/admin/alumns" />
       </List>
    </Drawer>;
 }
