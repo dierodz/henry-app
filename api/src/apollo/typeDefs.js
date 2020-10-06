@@ -50,7 +50,7 @@ const typeDefs = gql`
 
    type Score {
       id: Int
-      score: Int
+      score: Float
    }
 
    type User {
@@ -108,7 +108,6 @@ const typeDefs = gql`
    type Mutation {
       # Mutaciones para usuarios
       createUser(input: UserInput): User!
-      editUser(input: UserInput): User!
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
 
@@ -131,6 +130,16 @@ const typeDefs = gql`
       createContenido(topicName: String!, durationTime: Int): Content! 
       updateTopics(id: Int, topic: String!): Content!
       deleteTopics(id: Int): DeleteResolve!
+
+      # Mutaciones para Roles
+      createRole(name: String): Role!
+      updateRole(id: Int, name: String): Role!
+      deleteRole(id: Int, name: String): DeleteResolve!
+
+      # Mutaciones para Scores
+      createScore(score: Float): Score!
+      updateScore(id: Int, score: Float): Score!
+      deleteScore(id: Int): DeleteResolve!
    }
   
 `;

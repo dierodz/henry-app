@@ -1,4 +1,10 @@
-const { getAllRoles, getOneRole } = require("../../controllers/roleController");
+const {
+   getAllRoles,
+   getOneRole,
+   createRole: createOneRole,
+   deleteRole: deleteOneRole,
+   editRole,
+} = require("../../controllers/roleController");
 
 const roles = async (_, { name }) => {
    if (name) {
@@ -7,4 +13,16 @@ const roles = async (_, { name }) => {
    } else return await getAllRoles();
 };
 
-module.exports = { roles };
+const createRole = async (_, { name }) => {
+   return await createOneRole(name);
+};
+
+const updateRole = async (_, { id, name }) => {
+   return await editRole(id, name);
+};
+
+const deleteRole = async (_, { id, name }) => {
+   return await deleteOneRole({ id, name });
+};
+
+module.exports = { roles, createRole, updateRole, deleteRole };
