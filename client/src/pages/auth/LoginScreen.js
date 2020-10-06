@@ -61,11 +61,10 @@ export default function LoginScreen() {
          dispatch(signInWithToken(token));
       }
    }, [dispatch, token]);
-
    const formik = useFormik({
       initialValues: {
-         email: "pacuestar@gmail.com",
-         password: "123456789",
+         email: "",
+         password: "",
       },
       validate: (values) => {
          setVisibilityPass(false);
@@ -151,8 +150,8 @@ export default function LoginScreen() {
                               {visibilityPass ? (
                                  <Visibility />
                               ) : (
-                                 <VisibilityOff />
-                              )}
+                                    <VisibilityOff />
+                                 )}
                            </IconButton>
                         </InputAdornment>
                      ),
