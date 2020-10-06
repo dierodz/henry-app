@@ -13,12 +13,12 @@ const cohortes = async (_, { id }) => {
    } else return await getAllCohortes();
 };
 
-const createCohorte = async (_, {name,number}) =>{
-   return await createOneCohorte({name,number})
+const createCohorte = async (_, {name,number, instructor, startDate}) =>{
+   return await createOneCohorte({name,number, instructor, startDate})
 }
 
-const editCohorte = async(_, {id, name, number}) => {
-   return await editOneCohorte(id,name,number)
+const editCohorte = async(_, {id, name, number,instructor, startDate}) => {
+   return await editOneCohorte({id,name,number,instructor, startDate})
 }
 
 const deleteCohorte = async(_, {id}) => {

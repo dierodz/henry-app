@@ -10,6 +10,8 @@ const typeDefs = gql`
       id: Int
       name: String
       number: Int
+      startDate: String
+      instructor: User
    }
 
    type Content {
@@ -114,8 +116,8 @@ const typeDefs = gql`
       deleteUser(id: Int): DeleteResolve!
 
       # Mutations Cohorte
-      createCohorte(name:String, number:Int): Cohorte!
-      editCohorte(id: Int, name: String, number: Int): Cohorte!
+      createCohorte(name:String, number:Int, instructor: Int, startDate: String): Cohorte!
+      editCohorte(id: Int, name: String, number: Int, startDate: String, instructor: Int): Cohorte!
       deleteCohorte(id: Int): DeleteResolve!
 
       # Mutaciones para los modulos

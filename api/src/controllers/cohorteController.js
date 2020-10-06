@@ -1,8 +1,8 @@
 const { Cohorte } = require("../db");
 
-const createCohorte = async ({ name, number }) => {
-   let cohorte = await Cohorte.create({ name, number });
-   return cohorte;
+const createCohorte = async (cohorte) => {
+   let result = await Cohorte.create({...cohorte, starDate: Date.parse(cohorte.starDate) });
+   return result;
 };
 
 const deleteCohorteById = async (id) => {
@@ -11,11 +11,11 @@ const deleteCohorteById = async (id) => {
    return { message: "successfully removed" };
 };
 
-const upDateCohorte = async (id, name, number) => {
-   const cohorte = await getEspecificCohorte(id);
-   return await cohorte.update({
-      name,
-      number,
+const upDateCohorte = async (cohorte) => {
+   const result = await getEspecificCohorte(cohorte.id);
+   return await result.update({
+      ...cohorte,
+      starDate: Date.parse(cohorte.starDate)
    });
 };
 
