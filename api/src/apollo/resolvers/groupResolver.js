@@ -13,12 +13,12 @@ const groups = async (_, { id, name }) => {
    } else return await getAllGrups();
 };
 
-const createGrup = async (_, { name, type, instructorId, studentId }) => {
-   return await createoneGrup({ name, type, instructorId, studentId });
+const createGrup = async (_, { input }) => {
+   return await createoneGrup({ ...input });
 };
 
-const updateGrup = async (_, { id, name, type }) => {
-   return await editGrup(id, { name, type });
+const updateGrup = async (_, { id, input }) => {
+   return await editGrup(id, { ...input });
 };
 
 const deleteGrup = async (_, { id, name }) => {

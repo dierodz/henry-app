@@ -9,6 +9,7 @@ const {
    createUser,
    updateUser,
    deleteUser,
+   getUserRol,
 } = require("./resolvers/userResolver");
 const {
    checkPoints,
@@ -41,7 +42,15 @@ const {
    createGrup,
    updateGrup,
    deleteGrup,
-} = require("./resolvers/gruupResolver");
+} = require("./resolvers/groupResolver");
+
+const { getUserById } = require("../controllers/userController");
+const {
+   getStudentOfGrups,
+   getStaffOfGrups,
+   getPmsOfGrups,
+   getInstructorOfGrups,
+} = require("../controllers/groupController");
 
 const resolvers = {
    Query: {
@@ -53,6 +62,7 @@ const resolvers = {
       roles,
       scores,
       groups,
+      getUserRol,
    },
    Mutation: {
       //Mutations for Cohortes
@@ -83,6 +93,30 @@ const resolvers = {
       createGrup,
       updateGrup,
       deleteGrup,
+   },
+
+   Cohorte: {
+      instructor: async ({ instructor }) => {
+         return await getUserById(instructor);
+      },
+   },
+
+   Group: {
+      instructor: async ({ id }) => {
+         return await getInstructorOfGrups(id);
+      },
+
+      pms: async ({ id }) => {
+         return await getPmsOfGrups(id);
+      },
+
+      staff: async ({ id }) => {
+         return await getStaffOfGrups(id);
+      },
+
+      students: async ({ id }) => {
+         return await getStudentOfGrups(id);
+      },
    },
 };
 

@@ -10,6 +10,8 @@ const typeDefs = gql`
       id: Int
       name: String
       number: Int
+      startDate: String
+      instructor: User
    }
 
    type Content {
@@ -19,15 +21,28 @@ const typeDefs = gql`
    }
 
    enum GroupTypes {
-      PP
-      StandUp
-      General
+      pp
+      standup
+      general
    }
 
    type Group {
       id: Int
       name: String
       type: GroupTypes
+      instructor: User
+      pms: [User]
+      staff: [User]
+      students: [User]
+   }
+
+   input GroupInput {
+      name: String
+      type: String
+      instructorId: Int
+      pmId: [Int]
+      staffId: [Int]
+      studentId: [Int]
    }
 
    type Module {
@@ -74,6 +89,7 @@ const typeDefs = gql`
       roles(name: String): [Role]
       scores(id: Int): [Score]
       users(id: Int): [User]
+      getUserRol(role: String): [User]
    }
 
    # Estos son los datos que acepta un usuario
@@ -114,22 +130,33 @@ const typeDefs = gql`
       deleteUser(id: Int): DeleteResolve!
 
       # Mutations Cohorte
-      createCohorte(name:String, number:Int): Cohorte!
-      editCohorte(id: Int, name: String, number: Int): Cohorte!
+      createCohorte(
+         name: String
+         number: Int
+         instructor: Int
+         startDate: String
+      ): Cohorte!
+      editCohorte(
+         id: Int
+         name: String
+         number: Int
+         startDate: String
+         instructor: Int
+      ): Cohorte!
       deleteCohorte(id: Int): DeleteResolve!
 
       # Mutaciones para los modulos
-      createModule(name: String!): Module! 
+      createModule(name: String!): Module!
       updateModule(id: Int, name: String!, description: String!): Module!
       deleteModule(id: Int): DeleteResolve!
 
       # Mutaciones para los checkpoints
-      createCheckPoint(name: String!): CheckPoint! 
+      createCheckPoint(name: String!): CheckPoint!
       updateCheckPoint(id: Int, name: String!): CheckPoint!
       deleteCheckPoint(id: Int): DeleteResolve!
 
       # Mutaciones para Contenidos
-      createContenido(topicName: String!, durationTime: Int): Content! 
+      createContenido(topicName: String!, durationTime: Int): Content!
       updateTopics(id: Int, topic: String!): Content!
       deleteTopics(id: Int): DeleteResolve!
 
@@ -142,8 +169,12 @@ const typeDefs = gql`
       createScore(score: Float): Score!
       updateScore(id: Int, score: Float): Score!
       deleteScore(id: Int): DeleteResolve!
+
+      # Mutaciones pra Gtoups
+      createGrup(input: GroupInput): Group!
+      updateGrup(id: Int, name: String, type: String): Group!
+      deleteGrup(id: Int, name: String): DeleteResolve!
    }
-  
 `;
 
 module.exports = typeDefs;

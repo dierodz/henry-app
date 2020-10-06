@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
 
-function Cohortes({ className }) {
+function Alumns({ className }) {
    const { loading, error, data } = useQuery(COHORTES);
 
    const tableData = useMemo(() => ({
@@ -11,12 +11,11 @@ function Cohortes({ className }) {
       error,
       data: data ? data.cohortes : undefined,
       columns: [
-         { key: 'name', label: 'Nombre del cohorte', align: 'left' },
-         { key: 'instructor', label: 'Instructor', align: 'left' },
-         { key: 'groups', label: 'Grupos', align: 'left' },
-         { key: 'alumns', label: 'Alumnos', align: 'left' },
+         { key: 'givenName', label: 'Nombre', align: 'left' },
+         { key: 'familyName', label: 'Apellido', align: 'left' },
+         { key: 'cohorte', label: 'Cohorte', align: 'left' },
       ],
-      addButtonLabel: 'Agregar cohorte'
+      addButtonLabel: 'Agregar alumnos'
    }), [data, error, loading]);
 
    return (
@@ -26,4 +25,4 @@ function Cohortes({ className }) {
    );
 }
 
-export default Cohortes;
+export default Alumns;
