@@ -9,6 +9,9 @@ import NavBar from "components/NavBar/NavBar";
 import Dashboard from "pages/Dashboard";
 import Cohortes from "pages/admin/Cohortes";
 import useStyles from "./GeneralRoutes.styles";
+import Alumns from "pages/admin/Alumns";
+import Instructors from "pages/admin/Instructors";
+import PM from "pages/admin/PM";
 
 const GeneralRoutes = () => {
    const { authenticated, user } = useSelector((state) => state.auth);
@@ -33,6 +36,9 @@ const GeneralRoutes = () => {
             <Switch>
                <Route exact path="/" component={Dashboard} />
                <Route exact path="/admin/cohortes" component={Cohortes} />
+               <Route exact path="/admin/instructors" component={Instructors} />
+               <Route exact path="/admin/pm" component={PM} />
+               <Route exact path="/admin/alumns" component={Alumns} />
                <Route path="/auth/signin" component={LoginScreen} />
             </Switch>
          </div>
