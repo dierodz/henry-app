@@ -86,6 +86,8 @@ const typeDefs = gql`
       githubId: String
       photoUrl: String
       password: String
+      role: RoleTypes
+      roles: [RoleTypes]
    }
 
    # Esto es tl tipo objeto que arroja cuando se elimina un registro

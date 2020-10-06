@@ -12,7 +12,8 @@ const createUser = async ({
    photoUrl,
    password,
    role,
-}) => {  
+   roles
+}) => {
    let user = await User.create({
       givenName,
       familyName,
@@ -23,8 +24,15 @@ const createUser = async ({
       photoUrl,
       password,
    });
-
-   if (role) {
+   if (roles) {
+      let dbRoles = []
+      for (const specificRol of roles) {
+         const dbRole = await Role.findOne({ where: { name: specificRol } })
+         dbRoles.push(dbRole)
+      }
+      await user.setRoles(dbRoles)
+   }
+   else if (role) {
       role = role.toLowerCase();
 
       if (
@@ -154,6 +162,7 @@ const updateUser = async (id, user) => {
       photoUrl,
       password,
       role,
+      roles
    } = user;
 
    const sendUser = await userdb.update({
@@ -165,8 +174,21 @@ const updateUser = async (id, user) => {
       githubId,
       photoUrl,
       password,
-      role,
    });
+
+   if (roles) {
+      let dbRoles = []
+      for (const specificRol of roles) {
+         const dbRole = await Role.findOne({ where: { name: specificRol } })
+         dbRoles.push(dbRole)
+      }
+      await sendUser.setRoles(dbRoles)
+   }
+   else if (role) {
+      const dbRole = await Role.findOne({ where: { name: role } })
+
+      await sendUser.setRoles(dbRole)
+   }
 
    return await getUserById(sendUser.id);
 };
