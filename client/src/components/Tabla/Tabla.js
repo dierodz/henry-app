@@ -1,5 +1,5 @@
 import React from "react";
-import { StyledTableCell, StyledTableRow, useStyles } from "./style";
+import { StyledAddButton, StyledTableCell, StyledTableRow, useStyles } from "./style";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -16,8 +16,11 @@ import { useTheme } from "@material-ui/core/styles";
 import DialogAdd from "./DialogAdd";
 import DialogDel from "./DialogDel";
 import DialogEdit from "./DialogEdit";
+import empty from 'assets/empty.svg';
+import styles from './Tabla.module.scss';
+import { Button } from "@material-ui/core";
 
-export default function Tabla({ columnas, info }) {
+export default function Tabla({ data, columnas, info }) {
    const classes = useStyles();
    const [openDel, setOpenDel] = React.useState(false);
    const theme = useTheme();
@@ -51,35 +54,37 @@ export default function Tabla({ columnas, info }) {
       setOpenEdit(false);
    };
 
+   console.log(data.data)
+
    return (
       <TableContainer className={classes.container} component={Paper}>
          <Table className={classes.table} aria-label="customized table">
             <TableHead>
                <TableRow>
-                  {columnas.map((columna) => (
-                     <StyledTableCell key={columna} align="center">
-                        {columna}
+                  {data.columns.map(({ key, label, align }) => (
+                     <StyledTableCell key={key} align={align}>
+                        {label}
                      </StyledTableCell>
                   ))}
-                  <StyledTableCell align="center">
-                     <button className="addIcon" onClick={handleAddClickOpen}>
-                        <AddIcon />
-                     </button>
+                  <StyledTableCell align="right">
+                     <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                        {data.addButtonLabel}
+                     </Button>
                   </StyledTableCell>
                </TableRow>
             </TableHead>
-            <TableBody>
-               {info &&
-                  info.map((el, i) => (
+            {data.data && data.data.length > 0 ?
+               <TableBody>
+                  {data.data.map((el, i) => (
                      <StyledTableRow key={i}>
-                        {Object.entries(el).map((cell) => (
+                        {data.columns.map(({ key, align }) => (
                            <StyledTableCell
-                              align="center"
+                              align={align}
                               component="th"
-                              scope="cohorte"
-                              key={cell[1]}
+                              //scope="cohorte"
+                              key={key}
                            >
-                              {cell[1]}
+                              {el[key]}
                            </StyledTableCell>
                         ))}
                         <StyledTableCell
@@ -104,7 +109,20 @@ export default function Tabla({ columnas, info }) {
                         </StyledTableCell>
                      </StyledTableRow>
                   ))}
-            </TableBody>
+               </TableBody> :
+               <TableBody>
+                  <StyledTableRow>
+                     <td className={styles.empty} colSpan={data.columns.length + 1}>
+                        <img src={empty} alt="sin datos" />
+                        <div className={styles.info} >
+                           <StyledAddButton size="large" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                              {data.addButtonLabel}
+                           </StyledAddButton>
+                        </div>
+                     </td>
+                  </StyledTableRow>
+               </TableBody>
+            }
          </Table>
          <DialogDel
             openDel={openDel}
