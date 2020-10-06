@@ -22,6 +22,11 @@ module.exports = function (sequelize, DataTypes) {
             notEmpty: false,
          },
       },
+      instructor: {
+         type: DataTypes.INTEGER,
+         allowNull: false,
+      }
+
    });
    return Cohorte;
 };
