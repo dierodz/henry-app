@@ -39,9 +39,11 @@ const {
 
 const {
    groups,
-   createGrup,
-   updateGrup,
-   deleteGrup,
+   createGroup,
+   updateGroup,
+   deleteGroup,
+   removeUsersOfGroups,
+   addUsersToGroups,
 } = require("./resolvers/groupResolver");
 
 const { getUserById } = require("../controllers/userController");
@@ -90,9 +92,11 @@ const resolvers = {
       updateScore,
       deleteScore,
       // Mutaciones para groups
-      createGrup,
-      updateGrup,
-      deleteGrup,
+      createGroup,
+      updateGroup,
+      deleteGroup,
+      removeUsersOfGroups,
+      addUsersToGroups,
    },
 
    Cohorte: {

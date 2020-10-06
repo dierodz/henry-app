@@ -38,7 +38,7 @@ const typeDefs = gql`
 
    input GroupInput {
       name: String
-      type: String
+      type: GroupTypes
       instructorId: Int
       pmId: [Int]
       staffId: [Int]
@@ -171,9 +171,11 @@ const typeDefs = gql`
       deleteScore(id: Int): DeleteResolve!
 
       # Mutaciones pra Gtoups
-      createGrup(input: GroupInput): Group!
-      updateGrup(id: Int, name: String, type: String): Group!
-      deleteGrup(id: Int, name: String): DeleteResolve!
+      createGroup(input: GroupInput): Group!
+      updateGroup(id: Int, name: String, type: GroupTypes): Group!
+      deleteGroup(id: Int, name: String): DeleteResolve!
+      removeUsersOfGroups(id: Int, name: String, userId: [Int]): Group!
+      addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
    }
 `;
 

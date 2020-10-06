@@ -9,10 +9,7 @@ const getMultipleUsers = async (id) => {
          id.forEach(async (id) => {
             users.push(await getUserById(id));
          });
-
-         // users = await Promise.all(users);
       } else {
-         console.log("DEBES ENTRAR 1 VECES ACPA");
          users.push(await getUserById(id));
       }
 
@@ -60,12 +57,12 @@ const createGrup = async ({
 };
 
 const editGrup = async (id, { name, type }) => {
-   const group = getOneGrup({ id });
+   const group = await getOneGrup({ id });
    return await group.update({ name, type });
 };
 
 const deleteGrup = async ({ id, name }) => {
-   const group = getOneGrup({ id, name });
+   const group = await getOneGrup({ id, name });
    await group.destroy();
 
    return { message: "successfully removed" };
@@ -98,7 +95,7 @@ const getOneGrup = async ({ id, name }) => {
 };
 
 const getAllGrups = async () => {
-   return await Group.findAll({ include: [User] });
+   return await Group.findAll();
 };
 
 const getInstructorOfGrups = async (id) => {
@@ -111,7 +108,11 @@ const getInstructorOfGrups = async (id) => {
       return user.group_users.role === "instructor";
    });
 
-   return await getUserById(instructor.id);
+   if (instructor) {
+      return await getUserById(instructor.id);
+   }
+
+   return []
 };
 
 const getPmsOfGrups = async (id) => {
@@ -130,7 +131,11 @@ const getPmsOfGrups = async (id) => {
 
    const result = pms.map(async (id) => await getUserById(id));
 
-   return await Promise.all(result);
+   if (result.length === 0 || !result) {
+      return await Promise.all(result);
+   }
+
+   return []
 };
 
 const getStaffOfGrups = async (id) => {
@@ -149,7 +154,11 @@ const getStaffOfGrups = async (id) => {
 
    const result = staff.map(async (id) => await getUserById(id));
 
-   return await Promise.all(result);
+   if (result.length === 0 || !result) {
+      return await Promise.all(result);
+   }
+
+   return []
 };
 
 const getStudentOfGrups = async (id) => {
@@ -171,6 +180,48 @@ const getStudentOfGrups = async (id) => {
    return await Promise.all(result);
 };
 
+const removeUsersOfGroups = async ({ groupId, groupName, userId }) => {
+   const group = await getOneGrup({ id: groupId, name: groupName });
+   const users = await getMultipleUsers(userId);
+
+   await group.removeUsers(users);
+
+   return await getOneGrup({ id: group.id });
+};
+
+const addUsersToGroups = async ({
+   groupId,
+   groupName,
+   instructorId,
+   studentId,
+   staffId,
+   pmId,
+}) => {
+   const group = await getOneGrup({ id: groupId, name: groupName });
+
+   if (studentId) {
+      const students = await getMultipleUsers(studentId);
+      await group.addUsers(students, { through: { role: "student" } });
+   }
+
+   if (instructorId) {
+      const instructor = await getMultipleUsers(instructorId);
+      await group.addUsers(instructor, { through: { role: "instructor" } });
+   }
+
+   if (pmId) {
+      const pms = await getMultipleUsers(pmId);
+      await group.addUsers(pms, { through: { role: "pm" } });
+   }
+
+   if (staffId) {
+      const staff = await getMultipleUsers(staffId);
+      await group.addUsers(staff, { through: { role: "staff" } });
+   }
+
+   return await getOneGrup({ id: group.id });
+};
+
 module.exports = {
    createGrup,
    editGrup,
@@ -181,4 +232,6 @@ module.exports = {
    getPmsOfGrups,
    getStaffOfGrups,
    getStudentOfGrups,
+   removeUsersOfGroups,
+   addUsersToGroups,
 };

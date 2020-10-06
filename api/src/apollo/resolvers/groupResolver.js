@@ -4,6 +4,8 @@ const {
    editGrup,
    deleteGrup: deleteOneGrup,
    createGrup: createoneGrup,
+   removeUsersOfGroups: removeUsers,
+   addUsersToGroups: addUsers,
 } = require("../../controllers/groupController");
 
 const groups = async (_, { id, name }) => {
@@ -13,21 +15,31 @@ const groups = async (_, { id, name }) => {
    } else return await getAllGrups();
 };
 
-const createGrup = async (_, { input }) => {
+const createGroup = async (_, { input }) => {
    return await createoneGrup({ ...input });
 };
 
-const updateGrup = async (_, { id, input }) => {
-   return await editGrup(id, { ...input });
+const updateGroup = async (_, { id, name, type }) => {
+   return await editGrup(id, { name, type });
 };
 
-const deleteGrup = async (_, { id, name }) => {
+const deleteGroup = async (_, { id, name }) => {
    return await deleteOneGrup({ id, name });
+};
+
+const removeUsersOfGroups = async (_, { id, name, userId }) => {
+   return await removeUsers({ groupId: id, groupName: name, userId });
+};
+
+const addUsersToGroups = async (_, { id, name, input }) => {   
+   return await addUsers({ groupName: name, groupId: id, ...input });
 };
 
 module.exports = {
    groups,
-   createGrup,
-   updateGrup,
-   deleteGrup,
+   createGroup,
+   updateGroup,
+   deleteGroup,
+   removeUsersOfGroups,
+   addUsersToGroups,
 };

@@ -13,7 +13,6 @@ router.route("/me").get(async function (req, res) {
 });
 
 router.route("/email").post(function (req, res, next) {
-   console.log("ANDATE");
    passport.authenticate("local", function (err, user, info) {
       if (err) return next(err);
       if (!user) {
