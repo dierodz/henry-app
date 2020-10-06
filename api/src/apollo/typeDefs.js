@@ -174,7 +174,7 @@ const typeDefs = gql`
       createGroup(input: GroupInput): Group!
       updateGroup(id: Int, name: String, type: GroupTypes): Group!
       deleteGroup(id: Int, name: String): DeleteResolve!
-      removeUsersOfGroups(id: Int, name: String, userId: [Int]): Group!
+      removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
    }
 `;

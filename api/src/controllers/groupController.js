@@ -6,11 +6,16 @@ const getMultipleUsers = async (id) => {
 
    if (id) {
       if (Array.isArray(id)) {
-         id.forEach(async (id) => {
-            users.push(await getUserById(id));
+         users = await id.map(async (id) => {
+            id = parseInt(id);
+            const user = await getUserById(id);
+            return user;
          });
+
+         users = Promise.all(users);
       } else {
-         users.push(await getUserById(id));
+         const user = await getUserById(id);
+         users = [user];
       }
 
       return users;
@@ -28,12 +33,10 @@ const createGrup = async ({
    staffId,
    pmId,
 }) => {
-   type = type.trim().toLowerCase();
-
    const group = await Group.create({ name, type });
 
-   const students = await getMultipleUsers(studentId);
    const instructor = await getMultipleUsers(instructorId);
+   const students = await getMultipleUsers(studentId);
    const pms = await getMultipleUsers(pmId);
    const staff = await getMultipleUsers(staffId);
 
@@ -82,7 +85,7 @@ const getOneGrup = async ({ id, name }) => {
 
       throw {
          name: "ApiFindError",
-         type: "Users Error",
+         type: "Groups Error",
          error: {
             message: `the user with the ${message} does not exist in the database`,
             type: "data not found",
@@ -112,7 +115,7 @@ const getInstructorOfGrups = async (id) => {
       return await getUserById(instructor.id);
    }
 
-   return []
+   return [];
 };
 
 const getPmsOfGrups = async (id) => {
@@ -131,11 +134,7 @@ const getPmsOfGrups = async (id) => {
 
    const result = pms.map(async (id) => await getUserById(id));
 
-   if (result.length === 0 || !result) {
-      return await Promise.all(result);
-   }
-
-   return []
+   return await Promise.all(result);
 };
 
 const getStaffOfGrups = async (id) => {
@@ -154,11 +153,7 @@ const getStaffOfGrups = async (id) => {
 
    const result = staff.map(async (id) => await getUserById(id));
 
-   if (result.length === 0 || !result) {
-      return await Promise.all(result);
-   }
-
-   return []
+   return await Promise.all(result);
 };
 
 const getStudentOfGrups = async (id) => {
@@ -166,6 +161,10 @@ const getStudentOfGrups = async (id) => {
       where: { id },
       include: [User],
    });
+
+   if (!group.users.length || group.users.length === 0) {
+      return [];
+   }
 
    let students = [];
 
