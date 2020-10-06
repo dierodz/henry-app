@@ -1,15 +1,21 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import COHORTES from "apollo/querys/cohortes";
+import { getUserRol } from "apollo/querys/users";
 
 function Alumns({ className }) {
-   const { loading, error, data } = useQuery(COHORTES);
+   const { loading, error, data } = useQuery(getUserRol, {
+      variables: { role: "student" },
+   });
+
+   useEffect(() => {
+      console.log(loading, error, data)
+   }, [loading, error, data])
 
    const tableData = useMemo(() => ({
       loading,
       error,
-      data: data ? data.cohortes : undefined,
+      data: data ? data.getUserRol : undefined,
       columns: [
          { key: 'givenName', label: 'Nombre', align: 'left' },
          { key: 'familyName', label: 'Apellido', align: 'left' },

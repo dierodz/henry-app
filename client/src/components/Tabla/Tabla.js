@@ -18,7 +18,7 @@ import DialogDel from "./DialogDel";
 import DialogEdit from "./DialogEdit";
 import empty from 'assets/empty.svg';
 import styles from './Tabla.module.scss';
-import { Button } from "@material-ui/core";
+import { Button, ButtonGroup } from "@material-ui/core";
 
 export default function Tabla({ data, columnas, info }) {
    const classes = useStyles();
@@ -58,22 +58,22 @@ export default function Tabla({ data, columnas, info }) {
 
    return (
       <TableContainer className={classes.container} component={Paper}>
-         <Table className={classes.table} aria-label="customized table">
-            <TableHead>
-               <TableRow>
-                  {data.columns.map(({ key, label, align }) => (
-                     <StyledTableCell key={key} align={align}>
-                        {label}
+         {data.data && data.data.length > 0
+            ? <Table className={classes.table} aria-label="customized table">
+               <TableHead>
+                  <TableRow>
+                     {data.columns.map(({ key, label, align }) => (
+                        <StyledTableCell key={key} align={align}>
+                           {label}
+                        </StyledTableCell>
+                     ))}
+                     <StyledTableCell align="right">
+                        <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                           {data.addButtonLabel}
+                        </Button>
                      </StyledTableCell>
-                  ))}
-                  <StyledTableCell align="right">
-                     <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
-                        {data.addButtonLabel}
-                     </Button>
-                  </StyledTableCell>
-               </TableRow>
-            </TableHead>
-            {data.data && data.data.length > 0 ?
+                  </TableRow>
+               </TableHead>
                <TableBody>
                   {data.data.map((el, i) => (
                      <StyledTableRow key={i}>
@@ -88,42 +88,37 @@ export default function Tabla({ data, columnas, info }) {
                            </StyledTableCell>
                         ))}
                         <StyledTableCell
-                           className={classes.botones}
-                           align="center"
+                           align="right"
                         >
-                           <button className="viewIcon">
-                              <VisibilityIcon />
-                           </button>
-                           <button
-                              className="editIcon"
-                              onClick={handleEditClickOpen}
-                           >
-                              <EditIcon />
-                           </button>
-                           <button
-                              className="deleteIcon"
-                              onClick={handleDelClickOpen}
-                           >
-                              <DeleteIcon />
-                           </button>
+                           <ButtonGroup >
+                              <Button>
+                                 <VisibilityIcon />
+                              </Button>
+                              <Button
+                                 onClick={handleEditClickOpen}
+                              >
+                                 <EditIcon />
+                              </Button>
+                              <Button
+                                 onClick={handleDelClickOpen}
+                              >
+                                 <DeleteIcon />
+                              </Button>
+                           </ButtonGroup>
                         </StyledTableCell>
                      </StyledTableRow>
                   ))}
-               </TableBody> :
-               <TableBody>
-                  <StyledTableRow>
-                     <td className={styles.empty} colSpan={data.columns.length + 1}>
-                        <img src={empty} alt="sin datos" />
-                        <div className={styles.info} >
-                           <StyledAddButton size="large" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
-                              {data.addButtonLabel}
-                           </StyledAddButton>
-                        </div>
-                     </td>
-                  </StyledTableRow>
                </TableBody>
-            }
-         </Table>
+            </Table>
+            : <div className={styles.empty}>
+               <img src={empty} alt="sin datos" />
+               <div className={styles.info} >
+                  <StyledAddButton size="large" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                     {data.addButtonLabel}
+                  </StyledAddButton>
+               </div>
+            </div>
+         }
          <DialogDel
             openDel={openDel}
             handleDelClose={handleDelClose}
@@ -135,7 +130,7 @@ export default function Tabla({ data, columnas, info }) {
             handleAddClose={handleAddClose}
          />
          <DialogEdit
-            columnas={columnas}
+            columnas={data.columns}
             openEdit={openEdit}
             handleEditClose={handleEditClose}
          />

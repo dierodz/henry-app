@@ -23,14 +23,14 @@ export const StyledTableRow = withStyles((theme) => ({
 
 export const useStyles = makeStyles({
    table: {
-      height: 'calc(100vh - 4rem - 1px)'
+      //height: 'calc(100vh - 4rem - 1px)'
    },
    container: {
       height: 'calc(100vh - 4rem - 1px)'
    },
    botones: {
       display: "flex",
-      justifyContent: "space-evenly",
+      justifyContent: "flex-end",
    },
 });
 
