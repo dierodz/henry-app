@@ -38,9 +38,9 @@ const resolvers = {
       createCheckPoint,
       updateCheckPoint,
       deleteCheckPoint,
-      //createModule,
-      //updateModule,
-      //deleteModule
+      createModule,
+      updateModule,
+      deleteModule
    },
 };
 
