@@ -1,3 +1,4 @@
+const { cohortes, createCohorte, editCohorte, deleteCohorte } = require("./resolvers/cohorteResolver");
 const {
    users,
    createUser,
@@ -10,7 +11,6 @@ const {
    deleteCheckPoint,
    createCheckPoint,
 } = require("./resolvers/checkPointResolver");
-const { cohortes } = require("./resolvers/cohorteResolver");
 const { contents } = require("./resolvers/contentResolver");
 const { modules, createModule, updateModule, deleteModule } = require("./resolvers/moduleResolver");
 const { roles } = require("./resolvers/roleResolver");
@@ -26,8 +26,11 @@ const resolvers = {
       roles,
       scores,
    },
-
    Mutation: {
+      //Mutations for Cohortes
+      createCohorte,
+      editCohorte,
+      deleteCohorte,
       // Mutations for Users
       createUser,
       updateUser,
@@ -35,7 +38,7 @@ const resolvers = {
       createCheckPoint,
       updateCheckPoint,
       deleteCheckPoint,
-      //createModule, 
+      //createModule,
       //updateModule,
       //deleteModule
    },

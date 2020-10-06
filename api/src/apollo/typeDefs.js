@@ -108,9 +108,14 @@ const typeDefs = gql`
    type Mutation {
       # Mutaciones para usuarios
       createUser(input: UserInput): User!
+      editUser(input: UserInput): User!
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
 
+      # Mutations Cohorte
+      createCohorte(name:String, number:Int): Cohorte!
+      editCohorte(id: Int, name: String, number: Int): Cohorte!
+      deleteCohorte(id: Int): DeleteResolve!
 
       # Mutaciones para los modulos
       createModule(name: String!): Module! 
