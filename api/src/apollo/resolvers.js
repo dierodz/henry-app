@@ -36,6 +36,13 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
+const {
+   groups,
+   createGrup,
+   updateGrup,
+   deleteGrup,
+} = require("./resolvers/gruupResolver");
+
 const resolvers = {
    Query: {
       users,
@@ -45,6 +52,7 @@ const resolvers = {
       modules,
       roles,
       scores,
+      groups,
    },
    Mutation: {
       //Mutations for Cohortes
@@ -71,6 +79,10 @@ const resolvers = {
       createScore,
       updateScore,
       deleteScore,
+      // Mutaciones para groups
+      createGrup,
+      updateGrup,
+      deleteGrup,
    },
 };
 

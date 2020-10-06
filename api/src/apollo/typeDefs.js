@@ -69,7 +69,7 @@ const typeDefs = gql`
       checkPoints(id: Int, name: String): [CheckPoint]
       cohortes(name: String): [Cohorte]
       contents(topicName: String): [Content]
-      groups(id: Int): [Group]
+      groups(id: Int, name: String): [Group]
       modules(id: Int): [Module]
       roles(name: String): [Role]
       scores(id: Int): [Score]
