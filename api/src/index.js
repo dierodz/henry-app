@@ -26,7 +26,7 @@ const { PORT } = process.env;
 // Syncing all the models at once.
 
 conn.sync({ force: false }).then(() => {
-   //createRoles().then(() => {
+   createRoles().then(() => {
 
       server.listen(PORT, () => {
          console.log(
@@ -35,5 +35,5 @@ conn.sync({ force: false }).then(() => {
             )} || GrapthQL path is ${colors.green(apolloServer.graphqlPath)}`
          );
       });
-   //});
+   });
 });

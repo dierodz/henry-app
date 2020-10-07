@@ -81,7 +81,7 @@ Group.belongsToMany(User, { through: Group_users });
 // ==========================================================================
 
 // CREACIÓN DE LOS ROLES
-/*
+
 const createRoles = async () => {
    const staffRole = await Role.findOne({ where: { name: "staff" } });
    const instructorRole = await Role.findOne({
@@ -103,7 +103,7 @@ const createRoles = async () => {
       await Role.create({ name: "student" });
    }
 };
-*/
+
 module.exports = {
    conn: sequelize,
    Op,
@@ -111,7 +111,7 @@ module.exports = {
    Cohorte,
    User,
    Role,
-   //createRoles,
+   createRoles,
    Score,
    Content,
    CheckPoint,
