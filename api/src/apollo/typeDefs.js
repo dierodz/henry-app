@@ -38,16 +38,16 @@ const typeDefs = gql`
       description: String
    }
 
-   enum RoleTypes {
-      instructor
-      pm
-      student
-      staff
-   }
-
+   #enum RoleTypes {
+   #   instructor
+   #   pm
+   #   student
+   #   staff
+   #}
+   
    type Role {
       id: Int
-      name: RoleTypes
+      name: String
    }
 
    type Score {
@@ -73,7 +73,7 @@ const typeDefs = gql`
       contents(topicName: String): [Content]
       groups(id: Int): [Group]
       modules(id: Int): [Module]
-      roles(name: String): [Role]
+      roles(id: Int): [Role]
       scores(id: Int): [Score]
       users(id: Int): [User]
       getUserRol(role: String): [User] 
@@ -89,8 +89,8 @@ const typeDefs = gql`
       githubId: String
       photoUrl: String
       password: String
-      role: RoleTypes
-      roles: [RoleTypes]
+      role: String
+      roles: [String]
    }
 
    # Esto es tl tipo objeto que arroja cuando se elimina un registro
