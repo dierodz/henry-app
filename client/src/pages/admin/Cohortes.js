@@ -2,18 +2,31 @@ import React, { useEffect, useMemo } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
-import { CREATE_COHORTE } from "apollo/Mutations/cohortes";
+import { CREATE_COHORTE, DELETE_COHORTE } from "apollo/Mutations/cohortes";
 
 function Cohortes({ className }) {
 
-   const { loading, error, data, refetch } = useQuery(COHORTES);
-   const [createMutation, result] = useMutation(CREATE_COHORTE)
+   const { loading, error, data: preData, refetch } = useQuery(COHORTES);
+   const [createMutation, resultCreate] = useMutation(CREATE_COHORTE)
+   const [deleteMutation, resultDelete] = useMutation(DELETE_COHORTE)
 
+   const data = useMemo(() => {
+      if (Array.isArray(preData?.cohortes)) {
+         return preData.cohortes.map((item) => {
+            return {
+               ...item,
+               instructor: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
+               groups: 0,
+               alumns: 0
+            }
+         })
+      } else return preData
+   }, [preData])
 
    const tableData = useMemo(() => ({
       loading,
       error,
-      data: data ? data.cohortes : undefined,
+      data: data,
       columns: [
          { key: 'name', label: 'Nombre del cohorte', align: 'left' },
          { key: 'instructor', label: 'Instructor', align: 'left' },
@@ -33,7 +46,7 @@ function Cohortes({ className }) {
                { key: 'name', label: "Nombre" },
                { key: 'number', label: "Numero" },
                { key: 'instructor', label: "Instructor" },
-               { key: 'startDate', label: "Fecha de inicio" }
+               { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
             onSubmit: async (values) => {
                await createMutation({
@@ -44,15 +57,30 @@ function Cohortes({ className }) {
                   }
                })
             }
+         },
+         delete: {
+            onSubmit: async (id) => {
+               await deleteMutation({
+                  variables: {
+                     id: parseInt(id)
+                  }
+               })
+            }
          }
       }
-   }), [data, error, loading, createMutation]);
+   }), [data, error, loading, createMutation, deleteMutation]);
 
    useEffect(() => {
-      if (!result.loading && result.called) {
+      if (!resultCreate.loading && resultCreate.called) {
          refetch()
       }
-   }, [result, refetch])
+   }, [resultCreate, refetch])
+
+   useEffect(() => {
+      if (!resultDelete.loading && resultDelete.called) {
+         refetch()
+      }
+   }, [resultDelete, refetch])
 
    return (
       <div className={className}>

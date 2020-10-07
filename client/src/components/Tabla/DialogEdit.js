@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -11,26 +11,29 @@ import { EDIT_COHORTE } from "apollo/Mutations/cohortes";
 
 function DialogEdit({ openEdit, handleEditClose, columnas }) {
 
-const [editCohorte] = useMutation(EDIT_COHORTE);
-const [state, setState] = useState ({});
+   const [editCohorte] = useMutation(EDIT_COHORTE);
+   const [state, setState] = useState({});
 
-const handleInputChange = (e) => {
-   setState({
-      ...state,
-      [e.target.name]: e.target.value,
-   })
- }
+   const handleInputChange = (e) => {
+      setState({
+         ...state,
+         [e.target.name]: e.target.value,
+      })
+   }
 
-const handleSubmit = (e) => {
-   e.preventDefault();
-   editCohorte( {variables: 
-         {id: 3,
-         name: state[columnas[0]],
-         number: state[columnas[2]],
-         startDate: state[columnas[3]],
-         instructor: state[columnas[1]]
-      }})
-}
+   const handleSubmit = (e) => {
+      e.preventDefault();
+      editCohorte({
+         variables:
+         {
+            id: 3,
+            name: state[columnas[0]],
+            number: state[columnas[2]],
+            startDate: state[columnas[3]],
+            instructor: state[columnas[1]]
+         }
+      })
+   }
 
    return (
       <Dialog
@@ -52,19 +55,19 @@ const handleSubmit = (e) => {
                      type="text"
                      fullWidth
                      onChange={handleInputChange}
-                     name={col}
+                     name={key}
                   />
                ))}
          </DialogContent>
          <DialogActions>
-         <form onSubmit={handleSubmit} >
-            <Button onClick={handleEditClose} color="primary">
-               Cancelar
+            <form onSubmit={handleSubmit} >
+               <Button onClick={handleEditClose} color="primary">
+                  Cancelar
             </Button>
-            <Button onClick={handleEditClose} type="submit" color="primary">
-               Guardar Cambios
+               <Button onClick={handleEditClose} type="submit" color="primary">
+                  Guardar Cambios
             </Button>
-         </form>
+            </form>
          </DialogActions>
       </Dialog>
    );

@@ -5,12 +5,16 @@ import store from "store/store";
 import "./styles/styles.scss";
 import { ApolloProvider } from '@apollo/client';
 import { client } from "apollo";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import LuxonUtils from '@date-io/luxon';
 
 const App = () => {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <AppRouter />
+        <MuiPickersUtilsProvider utils={LuxonUtils}>
+          <AppRouter />
+        </MuiPickersUtilsProvider>
       </Provider>
     </ApolloProvider>
   );

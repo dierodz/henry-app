@@ -27,7 +27,7 @@ export default function Tabla({ data, columnas, info }) {
    const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
    const handleDelClickOpen = (id) => {
-      setOpenDel(true);
+      setOpenDel(id);
    };
 
    const handleDelClose = () => {
@@ -53,8 +53,6 @@ export default function Tabla({ data, columnas, info }) {
    const handleEditClose = () => {
       setOpenEdit(false);
    };
-
-   console.log(data.data)
 
    return (
       <TableContainer className={classes.container} component={Paper}>
@@ -102,16 +100,16 @@ export default function Tabla({ data, columnas, info }) {
                                  >
                                     <EditIcon />
                                  </Button>}
-                                 {data.actions.delete && <Button onClick={handleDelClickOpen}>
+                                 {data.actions.delete && <Button onClick={() => handleDelClickOpen(el.id)}>
                                     <DeleteIcon />
                                  </Button>}
                               </ButtonGroup>
                            }
                         </StyledTableCell>
                         <DialogDel
-                           opened={openDel}
+                           opened={openDel === el.id}
                            onClose={handleDelClose}
-                           onSubmit={() => data.actions.delete.onSubmit(4)}
+                           onSubmit={() => data.actions.delete.onSubmit(el.id)}
                            fullScreen={fullScreen}
                         />
                      </StyledTableRow>

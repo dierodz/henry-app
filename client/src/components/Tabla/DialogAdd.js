@@ -6,7 +6,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import { useFormik } from "formik";
+import { useFormik, useFormikContext } from "formik";
+import { DatePicker } from "@material-ui/pickers";
 
 function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
    const formik = useFormik(create)
@@ -30,16 +31,13 @@ function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
                Por favor, introduzca los datos correspondientes.
             </DialogContentText>
             {create.inputs &&
-               create.inputs.map(({ key, label }) => (
-                  <TextField
-                     margin="dense"
-                     key={key}
-                     label={label}
-                     type="text"
-                     fullWidth
-                     onChange={formik.handleChange}
-                     name={key}
-                  />
+               create.inputs.map((input) => (
+                  <Field key={input.key} input={{
+                     ...input,
+                     value: formik.values[input.key],
+                     handleChange: formik.handleChange,
+                     setFieldValue: formik.setFieldValue
+                  }} />
                ))}
          </DialogContent>
 
@@ -55,6 +53,24 @@ function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
          </DialogActions>
       </Dialog>
    );
+}
+
+function Field({ input }) {
+   const { type, key, label, value, handleChange, setFieldValue } = input
+   switch (type) {
+      case 'date': return (
+         <DatePicker name={key} value={value} onChange={(value) => setFieldValue(key, value)} />
+      )
+      default: return (<TextField
+         margin="dense"
+         label={label}
+         type="text"
+         fullWidth
+         onChange={handleChange}
+         name={key}
+         value={value}
+      />)
+   }
 }
 
 export default DialogAdd;
