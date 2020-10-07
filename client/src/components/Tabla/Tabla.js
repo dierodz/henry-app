@@ -13,12 +13,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import "../../styles/components/TabCohortes.scss";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import DialogAdd from "./DialogAdd";
 import DialogDel from "./DialogDel";
-import DialogEdit from "./DialogEdit";
 import empty from 'assets/empty.svg';
 import styles from './Tabla.module.scss';
 import { Button, ButtonGroup } from "@material-ui/core";
+import TableDialog from "./TableDialog";
 
 export default function Tabla({ data, columnas, info }) {
    const classes = useStyles();
@@ -46,8 +45,8 @@ export default function Tabla({ data, columnas, info }) {
 
    const [openEdit, setOpenEdit] = React.useState(false);
 
-   const handleEditClickOpen = () => {
-      setOpenEdit(true);
+   const handleEditClickOpen = (id) => {
+      setOpenEdit(id);
    };
 
    const handleEditClose = () => {
@@ -95,14 +94,16 @@ export default function Tabla({ data, columnas, info }) {
                                  {data.actions.view && <Button>
                                     <VisibilityIcon />
                                  </Button>}
-                                 {data.actions.update && <Button
-                                    onClick={handleEditClickOpen}
-                                 >
-                                    <EditIcon />
-                                 </Button>}
-                                 {data.actions.delete && <Button onClick={() => handleDelClickOpen(el.id)}>
-                                    <DeleteIcon />
-                                 </Button>}
+                                 {data.actions.update &&
+                                    <Button onClick={() => handleEditClickOpen(el.id)}>
+                                       <EditIcon />
+                                    </Button>
+                                 }
+                                 {data.actions.delete &&
+                                    <Button onClick={() => handleDelClickOpen(el.id)}>
+                                       <DeleteIcon />
+                                    </Button>
+                                 }
                               </ButtonGroup>
                            }
                         </StyledTableCell>
@@ -112,6 +113,14 @@ export default function Tabla({ data, columnas, info }) {
                            onSubmit={() => data.actions.delete.onSubmit(el.id)}
                            fullScreen={fullScreen}
                         />
+                        {data.actions && data.actions.update &&
+                           <TableDialog
+                              opened={openEdit === el.id}
+                              onClose={handleEditClose}
+                              context={{ ...data.actions.update, initialValues: el }}
+                           />
+                        }
+
                      </StyledTableRow>
                   ))}
                </TableBody>
@@ -126,18 +135,12 @@ export default function Tabla({ data, columnas, info }) {
             </div>
          }
          {data.actions && data.actions.create &&
-            <DialogAdd
-               create={data.actions.create}
-               columnas={columnas}
-               openAdd={openAdd}
-               handleAddClose={handleAddClose}
+            <TableDialog
+               opened={openAdd}
+               onClose={handleAddClose}
+               context={data.actions.create}
             />
          }
-         <DialogEdit
-            columnas={data.columns}
-            openEdit={openEdit}
-            handleEditClose={handleEditClose}
-         />
       </TableContainer>
    );
 }

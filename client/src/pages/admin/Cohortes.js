@@ -2,20 +2,22 @@ import React, { useEffect, useMemo } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
-import { CREATE_COHORTE, DELETE_COHORTE } from "apollo/Mutations/cohortes";
+import { CREATE_COHORTE, DELETE_COHORTE, EDIT_COHORTE } from "apollo/Mutations/cohortes";
 
 function Cohortes({ className }) {
 
    const { loading, error, data: preData, refetch } = useQuery(COHORTES);
    const [createMutation, resultCreate] = useMutation(CREATE_COHORTE)
    const [deleteMutation, resultDelete] = useMutation(DELETE_COHORTE)
+   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE)
 
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
          return preData.cohortes.map((item) => {
             return {
                ...item,
-               instructor: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
+               instructorDisplay: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
+               instructor: item.instructor.id,
                groups: 0,
                alumns: 0
             }
@@ -40,12 +42,12 @@ function Cohortes({ className }) {
                name: undefined,
                number: undefined,
                instructor: undefined,
-               startDate: '06/10/2020',
+               startDate: new Date(),
             },
             inputs: [
                { key: 'name', label: "Nombre" },
                { key: 'number', label: "Numero" },
-               { key: 'instructor', label: "Instructor" },
+               { key: 'instructorDisplay', label: "Instructor" },
                { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
             onSubmit: async (values) => {
@@ -56,7 +58,28 @@ function Cohortes({ className }) {
                      number: parseInt(values.number)
                   }
                })
-            }
+            },
+            submitButtonLabel: 'Crear',
+            title: 'Crear cohorte'
+         },
+         update: {
+            inputs: [
+               { key: 'name', label: "Nombre" },
+               { key: 'number', label: "Numero" },
+               { key: 'instructor', label: "Instructor" },
+               { key: 'startDate', label: "Fecha de inicio", type: 'date' }
+            ],
+            onSubmit: async (values) => {
+               await updateMutation({
+                  variables: {
+                     ...values,
+                     instructor: parseInt(values.instructor),
+                     number: parseInt(values.number)
+                  }
+               })
+            },
+            submitButtonLabel: 'Enviar cambios',
+            title: 'Editar cohorte'
          },
          delete: {
             onSubmit: async (id) => {
@@ -68,13 +91,19 @@ function Cohortes({ className }) {
             }
          }
       }
-   }), [data, error, loading, createMutation, deleteMutation]);
+   }), [data, error, loading, createMutation, deleteMutation, updateMutation]);
 
    useEffect(() => {
       if (!resultCreate.loading && resultCreate.called) {
          refetch()
       }
    }, [resultCreate, refetch])
+
+   useEffect(() => {
+      if (!resultUpdate.loading && resultUpdate.called) {
+         refetch()
+      }
+   }, [resultUpdate, refetch])
 
    useEffect(() => {
       if (!resultDelete.loading && resultDelete.called) {
