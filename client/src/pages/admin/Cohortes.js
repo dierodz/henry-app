@@ -31,7 +31,7 @@ function Cohortes({ className }) {
       data: data,
       columns: [
          { key: 'name', label: 'Nombre del cohorte', align: 'left' },
-         { key: 'instructor', label: 'Instructor', align: 'left' },
+         { key: 'instructorDisplay', label: 'Instructor', align: 'left' },
          { key: 'groups', label: 'Grupos', align: 'left' },
          { key: 'alumns', label: 'Alumnos', align: 'left' },
       ],
@@ -47,7 +47,7 @@ function Cohortes({ className }) {
             inputs: [
                { key: 'name', label: "Nombre" },
                { key: 'number', label: "Numero" },
-               { key: 'instructorDisplay', label: "Instructor" },
+               { key: 'instructor', label: "Instructor" },
                { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
             onSubmit: async (values) => {

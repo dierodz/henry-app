@@ -1,8 +1,16 @@
 const { Cohorte } = require("../db");
 
 const createCohorte = async (cohorte) => {
-   let result = await Cohorte.create({ ...cohorte });
-   return result;
+   try {
+      let result = await Cohorte.create({
+         ...cohorte,
+         startDate: new Date(parseInt(cohorte.startDate))
+      });
+      return result;
+   } catch (error) {
+      console.error(error)
+   }
+
 };
 
 const deleteCohorteById = async (id) => {
