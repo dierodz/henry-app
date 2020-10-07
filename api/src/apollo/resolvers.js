@@ -7,6 +7,7 @@ const {
 const {
    users,
    createUser,
+   inviteUser,
    updateUser,
    deleteUser,
    getUserRol,
@@ -73,6 +74,7 @@ const resolvers = {
       deleteCohorte,
       // Mutations for Users
       createUser,
+      inviteUser,
       updateUser,
       deleteUser,
       // Mutations for CheckPoints

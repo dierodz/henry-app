@@ -10,7 +10,6 @@ const createCohorte = async (cohorte) => {
    } catch (error) {
       console.error(error)
    }
-
 };
 
 const deleteCohorteById = async (id) => {

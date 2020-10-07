@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,9 +18,15 @@ import { useFormik } from "formik";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import useUser from "hooks/useUser";
 import { useHistory } from "react-router-dom";
-
+import {
+  signInWithEmail,
+  signInWithToken,
+  signInWithGithub,
+  signInWithGoogle,
+} from "dispatchers/auth";
+import { useQuery } from 'hooks';
+import jwt from 'jsonwebtoken';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,47 +51,58 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegisterScreen() {
   const classes = useStyles();
-  const { localUser, register, signInWithGithub, signInWithGoogle } = useUser()
   const history = useHistory()
-
+  const { token } = useQuery()
   useEffect(() => {
-    if (localUser) history.push('/')
-  }, [localUser, history])
+    if (!token) history.push('/auth/signin')
+    else if (JSON.parse(localStorage.getItem("token"))) history.push('/')
+  }, [history, token])
+  const [initialValues] = useState(() => {
+    const values = {
+      firstName: "",
+      lastName: "",
+      nickName: "",
+      email: "",
+      password: "",
+      passwordConfirm: ""
+    }
+    try {
+      const result = jwt.decode(token)
+      if (result !== null) return { ...values, ...result }
+    } catch {
+      history.push('/auth/signin')
+    }
+    history.push('/auth/signin')
+    return values
+  })
 
-  const [visibilityPass, setVisibilityPass] = React.useState({pass1:false, pass2:false});
+  const [visibilityPass, setVisibilityPass] = React.useState({ pass1: false, pass2: false });
   const handleClickShowPassword = (e) => {
-    setVisibilityPass({...visibilityPass,[e]:!visibilityPass[e]})
+    setVisibilityPass({ ...visibilityPass, [e]: !visibilityPass[e] })
   };
 
 
   const formik = useFormik({
-   initialValues: {
-     firstName:"",
-     lastName:"",
-     nickName:"",
-     email: "",
-     password: "",
-     passwordConfirm:""
-   },
-   validate:(values)=>{
-      setVisibilityPass({pass1:false, pass2:false})
-     const errors = {};
-     if(!values.firstName)errors.firstName ="Required"
-     if(!values.lastName)errors.lastName = "Required"
-     if(!values.nickName)errors.nickName="Required"
-     if(!values.email)errors.email = "Required"
-     else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)){
-      errors.email = "Invalid email address"
-     } 
-     if (!values.password)errors.password = "Required";
-     else if (values.password.length <= 8)errors.password = "Must be more than 8 characters";
-     if(values.password !== values.passwordConfirm) errors.passwordConfirm="Required"
-     return errors;
-   },
-   onSubmit: async (values) => {
+    initialValues,
+    validate: (values) => {
+      setVisibilityPass({ pass1: false, pass2: false })
+      const errors = {};
+      if (!values.firstName) errors.firstName = "Required"
+      if (!values.lastName) errors.lastName = "Required"
+      if (!values.nickName) errors.nickName = "Required"
+      if (!values.email) errors.email = "Required"
+      else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = "Invalid email address"
+      }
+      if (!values.password) errors.password = "Required";
+      else if (values.password.length <= 8) errors.password = "Must be more than 8 characters";
+      if (values.password !== values.passwordConfirm) errors.passwordConfirm = "Required"
+      return errors;
+    },
+    onSubmit: async (values) => {
       alert(values.firstName)
-   }
- });
+    }
+  });
 
 
   return (
@@ -98,6 +115,7 @@ export default function RegisterScreen() {
         <Typography component="h1" variant="h5">
           Registro
         </Typography>
+
         <form className={classes.form} onSubmit={formik.handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -112,8 +130,8 @@ export default function RegisterScreen() {
                 autoFocus
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
-                error={formik.errors.firstName?true:false}
-                helperText={formik.errors.firstName?"Debes ingresar tu nombre":null}
+                error={formik.errors.firstName ? true : false}
+                helperText={formik.errors.firstName ? "Debes ingresar tu nombre" : null}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -127,8 +145,8 @@ export default function RegisterScreen() {
                 autoComplete="lname"
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
-                error={formik.errors.lastName?true:false}
-                helperText={formik.errors.lastName?"Debes ingresar tu apellido":null}
+                error={formik.errors.lastName ? true : false}
+                helperText={formik.errors.lastName ? "Debes ingresar tu apellido" : null}
 
               />
             </Grid>
@@ -143,8 +161,8 @@ export default function RegisterScreen() {
                 autoComplete="nname"
                 value={formik.values.nickName}
                 onChange={formik.handleChange}
-                error={formik.errors.nickName?true:false}
-                helperText={formik.errors.nickName?"Debes ingresar un apodo":null}
+                error={formik.errors.nickName ? true : false}
+                helperText={formik.errors.nickName ? "Debes ingresar un apodo" : null}
               />
             </Grid>
             <Grid item xs={12}>
@@ -158,8 +176,8 @@ export default function RegisterScreen() {
                 autoComplete="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
-                error={formik.errors.email?true:false}
-                helperText={formik.errors.email?"Debes ingresar un email valido":null}
+                error={formik.errors.email ? true : false}
+                helperText={formik.errors.email ? "Debes ingresar un email valido" : null}
 
               />
             </Grid>
@@ -170,19 +188,19 @@ export default function RegisterScreen() {
                 fullWidth
                 name="password"
                 label="Contraseña"
-                type={visibilityPass.pass1?"text":"password"}
+                type={visibilityPass.pass1 ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
-                error={formik.errors.password?true:false}
-                helperText={formik.errors.password?"La contraseña debe tener mas de 8 caracteres":null}
+                error={formik.errors.password ? true : false}
+                helperText={formik.errors.password ? "La contraseña debe tener mas de 8 caracteres" : null}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={()=>handleClickShowPassword("pass1")}
+                        onClick={() => handleClickShowPassword("pass1")}
                         edge="end"
                       >
                         {visibilityPass ? <Visibility /> : <VisibilityOff />}
@@ -190,7 +208,7 @@ export default function RegisterScreen() {
                     </InputAdornment>
                   ),
                 }}
-             />
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -199,18 +217,18 @@ export default function RegisterScreen() {
                 fullWidth
                 name="passwordConfirm"
                 label="Repite contraseña"
-                type={visibilityPass.pass2?"text":"password"}
+                type={visibilityPass.pass2 ? "text" : "password"}
                 id="passwordConfirm"
                 value={formik.values.passwordConfirm}
                 onChange={formik.handleChange}
-                error={formik.errors.passwordConfirm?true:false}
-                helperText={formik.errors.passwordConfirm?"Las contraseñas no coinciden":null}
+                error={formik.errors.passwordConfirm ? true : false}
+                helperText={formik.errors.passwordConfirm ? "Las contraseñas no coinciden" : null}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={()=>handleClickShowPassword("pass2")}
+                        onClick={() => handleClickShowPassword("pass2")}
                         edge="end"
                         name="icono"
                       >
@@ -242,15 +260,22 @@ export default function RegisterScreen() {
             direction="column"
             justify="space-around"
             alignItems="center">
-               Tambien puede registrarte con:
+            Tambien puede registrarte con:
             <Grid
               item
               className={classes.icons}
-            > 
-              <IconButton color="primary" onClick={()=>signInWithGithub()} >
+            >
+              <IconButton
+                onClick={() => signInWithGithub()}
+                color="primary"
+                aria-label="add to shopping cart"
+              >
                 <Icon className="fab fa-github" aria-hidden="true" />
               </IconButton>
-              <IconButton color="primary" onClick={()=>signInWithGoogle()}>
+              <IconButton
+                onClick={() => signInWithGoogle()}
+                color="primary"
+              >
                 <Icon className="fab fa-google" aria-hidden="true" />
               </IconButton>
             </Grid>
@@ -265,14 +290,14 @@ export default function RegisterScreen() {
         </form>
       </div>
       <Box mt={5}>
-         <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://www.soyhenry.com/">
-             Henry
+        <Typography variant="body2" color="textSecondary" align="center">
+          {'Copyright © '}
+          <Link color="inherit" href="https://www.soyhenry.com/">
+            Henry
             </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-         </Typography>
+          {new Date().getFullYear()}
+          {'.'}
+        </Typography>
       </Box>
     </Container>
   );

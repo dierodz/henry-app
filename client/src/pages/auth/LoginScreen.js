@@ -26,6 +26,7 @@ import {
    signInWithGithub,
    signInWithGoogle,
 } from "dispatchers/auth";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
    paper: {
@@ -55,12 +56,13 @@ export default function LoginScreen() {
    const classes = useStyles();
    const [visibilityPass, setVisibilityPass] = React.useState(false);
    const { token } = useQuery();
-
+   const history = useHistory()
    useEffect(() => {
-      if (token) {
+      if (JSON.parse(localStorage.getItem("token"))) history.push('/')
+      else if (token) {
          dispatch(signInWithToken(token));
       }
-   }, [dispatch, token]);
+   }, [dispatch, token, history]);
    const formik = useFormik({
       initialValues: {
          email: "",

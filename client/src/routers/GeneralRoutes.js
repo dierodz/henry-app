@@ -12,17 +12,20 @@ import useStyles from "./GeneralRoutes.styles";
 import Alumns from "pages/admin/Alumns";
 import Instructors from "pages/admin/Instructors";
 import PM from "pages/admin/PM";
+import RegisterScreen from "pages/auth/RegisterScreen";
 
 const GeneralRoutes = () => {
    const { authenticated, user } = useSelector((state) => state.auth);
    const { push } = useHistory()
    const [show, setShow] = useState(false)
    const isSignInPath = useRouteMatch('/auth/signin')
+   const isSignUpPath = useRouteMatch('/auth/signup')
    const classes = useStyles(show)
    useEffect(() => {
-      if (isSignInPath && authenticated) push('/')
-      else if (!isSignInPath && authenticated === false) push('/auth/signin')
-   }, [authenticated, isSignInPath, push])
+      if (isSignInPath && JSON.parse(localStorage.getItem("token"))) push('/')
+      else if (isSignUpPath && JSON.parse(localStorage.getItem("token"))) push('/')
+      else if (!JSON.parse(localStorage.getItem("token")) && !(isSignInPath || isSignUpPath)) push('/auth/signin')
+   }, [authenticated, isSignInPath, isSignUpPath, push])
 
    return (
       <>
@@ -40,6 +43,7 @@ const GeneralRoutes = () => {
                <Route exact path="/admin/pm" component={PM} />
                <Route exact path="/admin/alumns" component={Alumns} />
                <Route path="/auth/signin" component={LoginScreen} />
+               <Route path="/auth/signup" component={RegisterScreen} />
             </Switch>
          </div>
       </>
