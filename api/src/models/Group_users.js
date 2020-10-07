@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) =>{
     return sequelize.define("group_users", {
-       rol: {
+       role: {
            type: DataTypes.ENUM('instructor', 'pm', 'student', 'staff')
        }
   })

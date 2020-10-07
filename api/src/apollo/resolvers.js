@@ -37,7 +37,23 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
-const { getUserById } = require('../controllers/userController');
+const {
+   groups,
+   createGroup,
+   updateGroup,
+   deleteGroup,
+   removeUsersOfGroups,
+   addUsersToGroups,
+} = require("./resolvers/groupResolver");
+
+const { getUserById } = require("../controllers/userController");
+const {
+   getStudentOfGrups,
+   getStaffOfGrups,
+   getPmsOfGrups,
+   getInstructorOfGrups,
+} = require("../controllers/groupController");
+
 const resolvers = {
    Query: {
       users,
@@ -47,6 +63,7 @@ const resolvers = {
       modules,
       roles,
       scores,
+      groups,
       getUserRol,
    },
    Mutation: {
@@ -74,14 +91,37 @@ const resolvers = {
       createScore,
       updateScore,
       deleteScore,
+      // Mutaciones para groups
+      createGroup,
+      updateGroup,
+      deleteGroup,
+      removeUsersOfGroups,
+      addUsersToGroups,
    },
+
    Cohorte: {
-      instructor: async ({
-         instructor
-      }) => {
-        return await getUserById(instructor)
-      }
-   }
+      instructor: async ({ instructor }) => {
+         return await getUserById(instructor);
+      },
+   },
+
+   Group: {
+      instructor: async ({ id }) => {
+         return await getInstructorOfGrups(id);
+      },
+
+      pms: async ({ id }) => {
+         return await getPmsOfGrups(id);
+      },
+
+      staff: async ({ id }) => {
+         return await getStaffOfGrups(id);
+      },
+
+      students: async ({ id }) => {
+         return await getStudentOfGrups(id);
+      },
+   },
 };
 
 module.exports = resolvers;
