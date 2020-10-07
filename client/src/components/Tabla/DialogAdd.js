@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -6,31 +6,17 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import { useMutation } from '@apollo/client';
-import { CREATE_COHORTE } from "apollo/Mutations/cohortes";
+import { useFormik } from "formik";
 
-function DialogAdd({ openAdd, handleAddClose, columnas }) {
+function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
+   const formik = useFormik(create)
 
-   const [createCohorte, { data }] = useMutation(CREATE_COHORTE);
-   const [state, setState] = useState ({});
-
-   const handleInputChange = (e) => {
-      setState({
-         ...state,
-         [e.target.name]: e.target.value,
-      })
-
-    
-   }
    const handleSubmit = (e) => {
-      e.preventDefault();
-      createCohorte( {variables: 
-          {name: state[columnas[0]],
-           number: state[columnas[2]],
-           startDate: state[columnas[3]],
-           instructor: state[columnas[1]]
-         }})
-  }
+
+      e.preventDefault()
+      formik.handleSubmit()
+      handleAddClose()
+   }
 
    return (
       <Dialog
@@ -43,27 +29,27 @@ function DialogAdd({ openAdd, handleAddClose, columnas }) {
             <DialogContentText>
                Por favor, introduzca los datos correspondientes.
             </DialogContentText>
-            {columnas &&
-               columnas.map((col) => (
+            {create.inputs &&
+               create.inputs.map(({ key, label }) => (
                   <TextField
                      margin="dense"
-                     key={col}
-                     label={col}
+                     key={key}
+                     label={label}
                      type="text"
                      fullWidth
-                     onChange={handleInputChange}
-                     name={col}
+                     onChange={formik.handleChange}
+                     name={key}
                   />
                ))}
          </DialogContent>
-         
+
          <DialogActions>
             <form onSubmit={handleSubmit} >
-            <Button onClick={handleAddClose} color="primary">
-               Cancelar
+               <Button onClick={handleAddClose} color="primary">
+                  Cancelar
             </Button>
-            <Button onClick={handleAddClose} type="submit" color="primary">
-               Enviar
+               <Button onClick={handleSubmit} type="submit" color="primary">
+                  Enviar
             </Button>
             </form>
          </DialogActions>
