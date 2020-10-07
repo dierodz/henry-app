@@ -1,7 +1,7 @@
 const { Cohorte } = require("../db");
 
 const createCohorte = async (cohorte) => {
-   let result = await Cohorte.create({...cohorte, starDate: Date.parse(cohorte.starDate) });
+   let result = await Cohorte.create({ ...cohorte });
    return result;
 };
 

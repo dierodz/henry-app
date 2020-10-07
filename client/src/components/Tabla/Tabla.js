@@ -26,8 +26,8 @@ export default function Tabla({ data, columnas, info }) {
    const theme = useTheme();
    const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-   const handleDelClickOpen = () => {
-      setOpenDel(true);
+   const handleDelClickOpen = (id) => {
+      setOpenDel(id);
    };
 
    const handleDelClose = () => {
@@ -54,8 +54,6 @@ export default function Tabla({ data, columnas, info }) {
       setOpenEdit(false);
    };
 
-   console.log(data.data)
-
    return (
       <TableContainer className={classes.container} component={Paper}>
          {data.data && data.data.length > 0
@@ -68,9 +66,11 @@ export default function Tabla({ data, columnas, info }) {
                         </StyledTableCell>
                      ))}
                      <StyledTableCell align="right">
-                        <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
-                           {data.addButtonLabel}
-                        </Button>
+                        {data.actions && data.actions.create &&
+                           <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
+                              {data.addButtonLabel}
+                           </Button>
+                        }
                      </StyledTableCell>
                   </TableRow>
                </TableHead>
@@ -90,22 +90,28 @@ export default function Tabla({ data, columnas, info }) {
                         <StyledTableCell
                            align="right"
                         >
-                           <ButtonGroup >
-                              <Button>
-                                 <VisibilityIcon />
-                              </Button>
-                              <Button
-                                 onClick={handleEditClickOpen}
-                              >
-                                 <EditIcon />
-                              </Button>
-                              <Button
-                                 onClick={handleDelClickOpen}
-                              >
-                                 <DeleteIcon />
-                              </Button>
-                           </ButtonGroup>
+                           {data.actions &&
+                              <ButtonGroup >
+                                 {data.actions.view && <Button>
+                                    <VisibilityIcon />
+                                 </Button>}
+                                 {data.actions.update && <Button
+                                    onClick={handleEditClickOpen}
+                                 >
+                                    <EditIcon />
+                                 </Button>}
+                                 {data.actions.delete && <Button onClick={() => handleDelClickOpen(el.id)}>
+                                    <DeleteIcon />
+                                 </Button>}
+                              </ButtonGroup>
+                           }
                         </StyledTableCell>
+                        <DialogDel
+                           opened={openDel === el.id}
+                           onClose={handleDelClose}
+                           onSubmit={() => data.actions.delete.onSubmit(el.id)}
+                           fullScreen={fullScreen}
+                        />
                      </StyledTableRow>
                   ))}
                </TableBody>
@@ -119,16 +125,14 @@ export default function Tabla({ data, columnas, info }) {
                </div>
             </div>
          }
-         <DialogDel
-            openDel={openDel}
-            handleDelClose={handleDelClose}
-            fullScreen={fullScreen}
-         />
-         <DialogAdd
-            columnas={columnas}
-            openAdd={openAdd}
-            handleAddClose={handleAddClose}
-         />
+         {data.actions && data.actions.create &&
+            <DialogAdd
+               create={data.actions.create}
+               columnas={columnas}
+               openAdd={openAdd}
+               handleAddClose={handleAddClose}
+            />
+         }
          <DialogEdit
             columnas={data.columns}
             openEdit={openEdit}

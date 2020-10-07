@@ -6,8 +6,19 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+import { useFormik, useFormikContext } from "formik";
+import { DatePicker } from "@material-ui/pickers";
 
-function DialogAdd({ openAdd, handleAddClose, columnas }) {
+function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
+   const formik = useFormik(create)
+
+   const handleSubmit = (e) => {
+
+      e.preventDefault()
+      formik.handleSubmit()
+      handleAddClose()
+   }
+
    return (
       <Dialog
          open={openAdd}
@@ -19,27 +30,47 @@ function DialogAdd({ openAdd, handleAddClose, columnas }) {
             <DialogContentText>
                Por favor, introduzca los datos correspondientes.
             </DialogContentText>
-            {columnas &&
-               columnas.map((col) => (
-                  <TextField
-                     margin="dense"
-                     key={col}
-                     label={col}
-                     type="text"
-                     fullWidth
-                  />
+            {create.inputs &&
+               create.inputs.map((input) => (
+                  <Field key={input.key} input={{
+                     ...input,
+                     value: formik.values[input.key],
+                     handleChange: formik.handleChange,
+                     setFieldValue: formik.setFieldValue
+                  }} />
                ))}
          </DialogContent>
+
          <DialogActions>
-            <Button onClick={handleAddClose} color="primary">
-               Cancelar
+            <form onSubmit={handleSubmit} >
+               <Button onClick={handleAddClose} color="primary">
+                  Cancelar
             </Button>
-            <Button onClick={handleAddClose} color="primary">
-               Enviar
+               <Button onClick={handleSubmit} type="submit" color="primary">
+                  Enviar
             </Button>
+            </form>
          </DialogActions>
       </Dialog>
    );
+}
+
+function Field({ input }) {
+   const { type, key, label, value, handleChange, setFieldValue } = input
+   switch (type) {
+      case 'date': return (
+         <DatePicker name={key} value={value} onChange={(value) => setFieldValue(key, value)} />
+      )
+      default: return (<TextField
+         margin="dense"
+         label={label}
+         type="text"
+         fullWidth
+         onChange={handleChange}
+         name={key}
+         value={value}
+      />)
+   }
 }
 
 export default DialogAdd;
