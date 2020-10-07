@@ -5,8 +5,10 @@ import COHORTES from "apollo/querys/cohortes";
 import { CREATE_COHORTE } from "apollo/Mutations/cohortes";
 
 function Cohortes({ className }) {
+
    const { loading, error, data, refetch } = useQuery(COHORTES);
    const [createMutation, result] = useMutation(CREATE_COHORTE)
+
 
    const tableData = useMemo(() => ({
       loading,

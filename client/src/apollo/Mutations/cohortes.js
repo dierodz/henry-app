@@ -17,3 +17,31 @@ mutation createCohorte(
    }
  }
  `;
+
+ export const DELETE_COHORTE = gql`
+ mutation deleteCohorte($id: Int) {
+   deleteCohorte(id: $id) {
+     message
+   }
+ }
+ `;
+
+ export const EDIT_COHORTE = gql`
+ mutation editCohorte(
+   $id: Int
+   $name: String
+   $number: Int
+   $startDate: String
+   $instructor: Int
+ ) {
+   editCohorte(
+     id: $id
+     name: $name
+     number: $number
+     startDate: $startDate
+     instructor: $instructor
+   ) {
+     id
+   }
+ }
+  `;

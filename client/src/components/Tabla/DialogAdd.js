@@ -12,6 +12,7 @@ function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
    const formik = useFormik(create)
 
    const handleSubmit = (e) => {
+
       e.preventDefault()
       formik.handleSubmit()
       handleAddClose()
