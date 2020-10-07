@@ -7,12 +7,13 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from "apollo";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LuxonUtils from '@date-io/luxon';
-
+import { Settings } from 'luxon';
+Settings.defaultLocale = "es"
 const App = () => {
   return (
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <MuiPickersUtilsProvider utils={LuxonUtils} locale="es">
           <AppRouter />
         </MuiPickersUtilsProvider>
       </Provider>

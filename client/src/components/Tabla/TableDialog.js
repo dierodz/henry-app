@@ -6,32 +6,32 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
-import { useFormik, useFormikContext } from "formik";
+import { useFormik } from "formik";
 import { DatePicker } from "@material-ui/pickers";
 
-function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
-   const formik = useFormik(create)
+function TableDialog({ context, opened, onClose }) {
+   const formik = useFormik(context)
 
    const handleSubmit = (e) => {
 
       e.preventDefault()
       formik.handleSubmit()
-      handleAddClose()
+      onClose()
    }
 
    return (
       <Dialog
-         open={openAdd}
-         onClose={handleAddClose}
+         open={opened}
+         onClose={onClose}
          aria-labelledby="form-dialog-title"
       >
-         <DialogTitle id="form-dialog-title">Agregar</DialogTitle>
+         <DialogTitle id="form-dialog-title">{context.title || ''}</DialogTitle>
          <DialogContent>
             <DialogContentText>
                Por favor, introduzca los datos correspondientes.
             </DialogContentText>
-            {create.inputs &&
-               create.inputs.map((input) => (
+            {context.inputs &&
+               context.inputs.map((input) => (
                   <Field key={input.key} input={{
                      ...input,
                      value: formik.values[input.key],
@@ -42,11 +42,11 @@ function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
          </DialogContent>
 
          <DialogActions>
-            <Button onClick={handleAddClose} color="primary">
+            <Button onClick={onClose} color="primary">
                Cancelar
             </Button>
             <Button onClick={handleSubmit} type="submit" color="primary">
-               Enviar
+               {context.submitButtonLabel || 'Aceptar'}
             </Button>
          </DialogActions>
       </Dialog>
@@ -55,11 +55,12 @@ function DialogAdd({ create, openAdd, handleAddClose, columnas }) {
 
 function Field({ input }) {
    const { type, key, label, value, handleChange, setFieldValue } = input
+
    switch (type) {
       case 'date': return (
          <DatePicker
             name={key}
-            value={value}
+            value={typeof value === 'string' ? new Date(parseInt(value)) : value}
             onChange={(value) => setFieldValue(key, value)}
             format="dd/MM/yyyy"
             inputVariant="outlined"
@@ -82,4 +83,4 @@ function Field({ input }) {
    }
 }
 
-export default DialogAdd;
+export default TableDialog;

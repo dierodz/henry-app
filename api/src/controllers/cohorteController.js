@@ -13,10 +13,14 @@ const deleteCohorteById = async (id) => {
 
 const upDateCohorte = async (cohorte) => {
    const result = await getEspecificCohorte(cohorte.id);
-   return await result.update({
-      ...cohorte,
-      starDate: Date.parse(cohorte.starDate)
-   });
+   try {
+      return await result.update({
+         ...cohorte,
+         startDate: new Date(parseInt(cohorte.startDate))
+      });
+   } catch (error) {
+      console.error(error)
+   }
 };
 
 const getAllCohortes = async () => {
