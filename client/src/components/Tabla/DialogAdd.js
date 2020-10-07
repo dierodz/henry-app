@@ -27,7 +27,7 @@ function DialogAdd({ openAdd, handleAddClose, columnas }) {
       createCohorte( {variables: 
           {name: state[columnas[0]],
            number: state[columnas[2]],
-           starDate: state[columnas[3]],
+           startDate: state[columnas[3]],
            instructor: state[columnas[1]]
          }})
   }

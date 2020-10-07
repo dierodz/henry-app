@@ -4,7 +4,8 @@ export default gql`
   query {
     cohortes {
       name,
-      number
+      number, 
+      id
     }
   }
 `;
