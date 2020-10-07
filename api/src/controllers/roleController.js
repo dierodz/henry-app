@@ -1,7 +1,9 @@
 const { Role } = require("../db");
 
-const getOneRole = async (name) => {
-   const role = await Role.findOne({ where: { name } });
+const getOneRole = async (id) => {
+   
+   const role = await Role.findOne({ where: { id } });
+   console.log(role)
 
    if (!role) {
       throw {
@@ -55,7 +57,7 @@ const editRole = async (id, name) => {
       };
    }
 
-   return role.update({ name });
+   return await role.update( name );
 };
 
 const deleteRole = async ({ id, name }) => {
