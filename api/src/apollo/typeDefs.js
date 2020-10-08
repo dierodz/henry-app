@@ -11,6 +11,8 @@ const typeDefs = gql`
       name: String
       startDate: String
       instructor: User
+      users: [User]
+      groups: [Group]
    }
 
    type Content {
@@ -50,13 +52,6 @@ const typeDefs = gql`
       description: String
    }
 
-   #enum RoleTypes {
-   #   instructor
-   #   pm
-   #   student
-   #   staff
-   #}
-   
    type Role {
       id: Int
       name: String
@@ -122,6 +117,13 @@ const typeDefs = gql`
       error: Error
    }
 
+   input CohorteInput {
+      id: Int
+      name: String
+      startDate: String
+      instructor: Int
+   }
+
    type Mutation {
       # Mutaciones para usuarios
       createUser(input: UserInput): User!
@@ -130,18 +132,13 @@ const typeDefs = gql`
       inviteUser(email: String!, role: String!): User
 
       # Mutations Cohorte
-      createCohorte(
-         name: String
-         instructor: Int
-         startDate: String
-      ): Cohorte!
-      editCohorte(
-         id: Int
-         name: String
-         startDate: String
-         instructor: Int
-      ): Cohorte!
+      createCohorte(input: CohorteInput): Cohorte!
+      editCohorte(input: CohorteInput): Cohorte!
       deleteCohorte(id: Int): DeleteResolve!
+      addUsersToCohorte(cohorteId: Int!, userId: [Int]!): Cohorte!
+      removeUsersFromCohorte(cohorteId: Int!, userId: [Int]!): Cohorte!
+      addGroupsToCohorte(cohorteId: Int!, groupId: [Int]!): Cohorte!
+      removeGroupsFromCohorte(cohorteId: Int!, groupId: [Int]!): Cohorte!
 
       # Mutaciones para los modulos
       createModule(name: String!): Module!
@@ -168,7 +165,7 @@ const typeDefs = gql`
       updateScore(id: Int, score: Float): Score!
       deleteScore(id: Int): DeleteResolve!
 
-      # Mutaciones pra Gtoups
+      # Mutaciones pra Groups
       createGroup(input: GroupInput): Group!
       updateGroup(id: Int, name: String, type: GroupTypes): Group!
       deleteGroup(id: Int, name: String): DeleteResolve!

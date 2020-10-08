@@ -75,6 +75,9 @@ CheckPoint.hasMany(Module);
 User.belongsToMany(Group, { through: Group_users });
 Group.belongsToMany(User, { through: Group_users });
 
+// Relación entre cohortes y grupos
+Cohorte.hasMany(Group);
+Group.belongsTo(Cohorte);
 
 // =================== FIN Relaciones entre las enteidades ==================
 

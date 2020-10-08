@@ -3,7 +3,11 @@ const {
    getEspecificCohorte,
    createCohorte: createOneCohorte,
    upDateCohorte: editOneCohorte,
-   deleteCohorteById: deleteOneCohorte
+   deleteCohorteById: deleteOneCohorte,
+   removeGroupsOfCohorte,
+   addUsersToCohorte,
+   addGropusToCohorte,
+   removeUsersOfCohorte,
 } = require("../../controllers/cohorteController");
 
 const cohortes = async (_, { id }) => {
@@ -26,16 +30,34 @@ const cohortes = async (_, { id }) => {
    }
 };
 
-const createCohorte = async (_, { name, instructor, startDate }) => {
-   return await createOneCohorte({ name, instructor, startDate })
-}
+const cohorteResolver = {
+   createCohorte: async (_, { input }) => {
+      return await createOneCohorte({ ...input });
+   },
 
-const editCohorte = async (_, { id, name, instructor, startDate }) => {
-   return await editOneCohorte({ id, name, instructor, startDate })
-}
+   editCohorte: async (_, { input }) => {
+      return await editOneCohorte({ ...input });
+   },
 
-const deleteCohorte = async (_, { id }) => {
-   return await deleteOneCohorte(id)
-}
+   deleteCohorte: async (_, { id }) => {
+      return await deleteOneCohorte(id);
+   },
 
-module.exports = { cohortes, createCohorte, editCohorte, deleteCohorte };
+   addGroupsToCohorte: async (_, { cohorteId, groupId }) => {
+      return await addGropusToCohorte(cohorteId, groupId);
+   },
+
+   removeGroupsFromCohorte: async (_, { cohorteId, groupId }) => {
+      return await removeGroupsOfCohorte(cohorteId, groupId);
+   },
+
+   addUsersToCohorte: async (_, { cohorteId, userId }) => {
+      return await addUsersToCohorte(cohorteId, userId);
+   },
+
+   removeUsersFromCohorte: async (_, { cohorteId, userId }) => {
+      return await removeUsersOfCohorte(cohorteId, userId);
+   },
+};
+
+module.exports = { cohortes, cohorteResolver };
