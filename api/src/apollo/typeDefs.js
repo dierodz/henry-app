@@ -80,6 +80,11 @@ const typeDefs = gql`
       roles: [Role]
    }
 
+   type MatesScore {
+      id: Int
+      type: String 
+   }
+
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
       cohortes(name: String): [Cohorte]
@@ -90,6 +95,7 @@ const typeDefs = gql`
       scores(id: Int): [Score]
       users(id: Int): [User]
       getUserRol(role: String): [User]
+      matesScore(id: Int, name: String): [MatesScore]
    }
 
    # Estos son los datos que acepta un usuario
@@ -177,6 +183,11 @@ const typeDefs = gql`
       deleteGroup(id: Int, name: String): DeleteResolve!
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
+
+      # Mutaciones para MatesScore
+      createMatesScore(type: String): Role!
+      updateMatesScore(id: Int, type: String): Role!
+      deleteMatesScore(id: Int, type: String): DeleteResolve!
    }
 `;
 

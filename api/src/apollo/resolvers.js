@@ -1,4 +1,10 @@
 const {
+   matesScore,
+   deleteMatesScore,
+   updateMatesScore,
+   createMatesScore,
+} = require("./resolvers/mateScoreResolver");
+const {
    cohortes,
    createCohorte,
    editCohorte,
@@ -66,6 +72,7 @@ const resolvers = {
       scores,
       groups,
       getUserRol,
+      matesScore
    },
    Mutation: {
       //Mutations for Cohortes
@@ -99,6 +106,11 @@ const resolvers = {
       deleteGroup,
       removeUsersOfGroups,
       addUsersToGroups,
+      //mutations para mateScores
+      deleteMatesScore,
+      updateMatesScore,
+      createMatesScore,
+
    },
 
    Cohorte: {

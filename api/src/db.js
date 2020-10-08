@@ -13,6 +13,9 @@ const moduleModels = require("./models/Module");
 const groupModels = require("./models/Group");
 const group_userModels = require("./models/Group_users");
 
+const matesScoreModels = require("./models/ClassmatesScore");
+const mateReviewModels = require("./models/MateReview");
+
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -41,6 +44,10 @@ const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Module = moduleModels(sequelize, DataTypes);
 const Group = groupModels(sequelize, DataTypes);
 const Group_users = group_userModels(sequelize, DataTypes);
+
+
+const MatesScoreType = matesScoreModels(sequelize, DataTypes);
+const MateReview = mateReviewModels(sequelize, DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -74,6 +81,10 @@ CheckPoint.hasMany(Module);
 // Relacion Usuarios y Grupos
 User.belongsToMany(Group, { through: Group_users });
 Group.belongsToMany(User, { through: Group_users });
+
+// Relación calificación y opinión con el tipo
+MatesScoreType.hasMany(MateReview);
+MateReview.belongsTo(MatesScoreType);
 
 
 // =================== FIN Relaciones entre las enteidades ==================
@@ -117,4 +128,6 @@ module.exports = {
    CheckPoint,
    Module,
    Group,
+   MatesScoreType,
+   MateReview
 };
