@@ -14,7 +14,20 @@ const cohortes = async (_, { id }) => {
    if (id) {
       const result = await getEspecificCohorte(id);
       return [result];
-   } else return await getAllCohortes();
+   } else {
+      let result = await getAllCohortes();
+      // result = result.reduce((res, { dataValues: field }) => {
+      //    res = ([
+      //       ...res,
+      //       {
+      //          ...field,
+      //          startDate: field.startDate.toDateString()
+      //       }
+      //    ])
+      //    return res
+      // }, [])
+      return result
+   }
 };
 
 const cohorteResolver = {
@@ -22,8 +35,8 @@ const cohorteResolver = {
       return await createOneCohorte({ ...input });
    },
 
-   editCohorte: async (_, { id, name, number, instructor, startDate }) => {
-      return await editOneCohorte({ id, name, number, instructor, startDate });
+   editCohorte: async (_, { input }) => {
+      return await editOneCohorte({ ...input });
    },
 
    deleteCohorte: async (_, { id }) => {

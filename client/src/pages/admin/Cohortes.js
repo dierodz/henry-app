@@ -3,10 +3,14 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
 import { CREATE_COHORTE, DELETE_COHORTE, EDIT_COHORTE } from "apollo/Mutations/cohortes";
+import { getUserRol } from "apollo/querys/users";
 
 function Cohortes({ className }) {
 
    const { loading, error, data: preData, refetch } = useQuery(COHORTES);
+   const instructors = useQuery(getUserRol, {
+      variables: { role: "instructor" },
+   });
    const [createMutation, resultCreate] = useMutation(CREATE_COHORTE)
    const [deleteMutation, resultDelete] = useMutation(DELETE_COHORTE)
    const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE)
@@ -40,14 +44,18 @@ function Cohortes({ className }) {
          create: {
             initialValues: {
                name: undefined,
-               number: undefined,
                instructor: undefined,
                startDate: new Date(),
             },
             inputs: [
                { key: 'name', label: "Nombre" },
-               { key: 'number', label: "Numero" },
-               { key: 'instructor', label: "Instructor" },
+               {
+                  key: 'instructor', label: "Instructor", type: "select", options: (() => {
+                     return instructors.data?.getUserRol
+                        ? instructors.data.getUserRol.map(({ givenName, familyName, id }) => ({ value: id, label: `${givenName} ${familyName}` }))
+                        : []
+                  })()
+               },
                { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
             onSubmit: async (values) => {
@@ -55,7 +63,6 @@ function Cohortes({ className }) {
                   variables: {
                      ...values,
                      instructor: parseInt(values.instructor),
-                     number: parseInt(values.number)
                   }
                })
             },
@@ -65,8 +72,13 @@ function Cohortes({ className }) {
          update: {
             inputs: [
                { key: 'name', label: "Nombre" },
-               { key: 'number', label: "Numero" },
-               { key: 'instructor', label: "Instructor" },
+               {
+                  key: 'instructor', label: "Instructor", type: "select", options: (() => {
+                     return instructors.data?.getUserRol
+                        ? instructors.data.getUserRol.map(({ givenName, familyName, id }) => ({ value: id, label: `${givenName} ${familyName}` }))
+                        : []
+                  })()
+               },
                { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
             onSubmit: async (values) => {
@@ -74,7 +86,6 @@ function Cohortes({ className }) {
                   variables: {
                      ...values,
                      instructor: parseInt(values.instructor),
-                     number: parseInt(values.number)
                   }
                })
             },
@@ -91,7 +102,7 @@ function Cohortes({ className }) {
             }
          }
       }
-   }), [data, error, loading, createMutation, deleteMutation, updateMutation]);
+   }), [data, error, loading, createMutation, deleteMutation, updateMutation, instructors.data]);
 
    useEffect(() => {
       if (!resultCreate.loading && resultCreate.called) {

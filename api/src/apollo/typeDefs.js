@@ -9,7 +9,6 @@ const typeDefs = gql`
    type Cohorte {
       id: Int
       name: String
-      number: Int
       startDate: String
       instructor: User
       users: [User]
@@ -121,7 +120,6 @@ const typeDefs = gql`
    input CohorteInput {
       id: Int
       name: String
-      number: Int
       startDate: String
       instructor: Int
    }

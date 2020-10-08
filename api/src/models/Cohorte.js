@@ -13,10 +13,6 @@ module.exports = function (sequelize, DataTypes) {
             }
          },
       },
-      number: {
-         type: DataTypes.INTEGER,
-         unique: true,
-      },
       startDate: {
          type: DataTypes.DATE,
          allowNull: false,
