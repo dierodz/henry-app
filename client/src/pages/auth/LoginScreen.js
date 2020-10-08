@@ -173,16 +173,16 @@ export default function LoginScreen() {
                   Ingresar
                </Button>
                <Grid container>
-                  <Grid item xs>
+                  {/* <Grid item xs>
                      <Link href="/reset" variant="body2">
                         Olvidaste tu contraseña?
                      </Link>
-                  </Grid>
-                  <Grid item>
+                  </Grid> */}
+                  {/* <Grid item>
                      <Link href="/auth/register" variant="body2">
                         No tienes cuenta? Registrate!
                      </Link>
-                  </Grid>
+                  </Grid> */}
                </Grid>
                <Grid
                   container

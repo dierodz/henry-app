@@ -1,16 +1,21 @@
 import React, { useEffect, useMemo } from "react";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { getUserRol } from "apollo/querys/users";
+import { INVITE_USER } from "apollo/Mutations/users";
 
 function Alumns({ className }) {
-   const { loading, error, data } = useQuery(getUserRol, {
+   const { loading, error, data, refetch } = useQuery(getUserRol, {
       variables: { role: "student" },
    });
+   const [inviteMutation, resultInvite] = useMutation(INVITE_USER)
 
    useEffect(() => {
-      console.log(loading, error, data)
-   }, [loading, error, data])
+      if (!resultInvite.loading && resultInvite.called) {
+         refetch()
+      }
+   }, [resultInvite, refetch])
+
 
    const tableData = useMemo(() => ({
       loading,
@@ -21,8 +26,29 @@ function Alumns({ className }) {
          { key: 'familyName', label: 'Apellido', align: 'left' },
          { key: 'cohorte', label: 'Cohorte', align: 'left' },
       ],
-      addButtonLabel: 'Agregar alumnos'
-   }), [data, error, loading]);
+      addButtonLabel: 'Invitar estudiante',
+      actions: {
+         create: {
+            initialValues: {
+               email: undefined,
+            },
+            inputs: [
+               { key: 'email', label: "Email" },
+            ],
+            onSubmit: async (values) => {
+               const data = {
+                  variables: {
+                     ...values,
+                     role: 'student'
+                  }
+               }
+               await inviteMutation(data)
+            },
+            submitButtonLabel: 'Invitar',
+            title: 'Invitar estudiante'
+         },
+      }
+   }), [data, error, loading, inviteMutation]);
 
    return (
       <div className={className}>

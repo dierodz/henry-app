@@ -13,7 +13,6 @@ function TableDialog({ context, opened, onClose }) {
    const formik = useFormik(context)
 
    const handleSubmit = (e) => {
-
       e.preventDefault()
       formik.handleSubmit()
       onClose()
@@ -42,12 +41,15 @@ function TableDialog({ context, opened, onClose }) {
          </DialogContent>
 
          <DialogActions>
-            <Button onClick={onClose} color="primary">
-               Cancelar
-            </Button>
-            <Button onClick={handleSubmit} type="submit" color="primary">
-               {context.submitButtonLabel || 'Aceptar'}
-            </Button>
+            <form onSubmit={handleSubmit}>
+
+               <Button onClick={onClose} color="primary">
+                  Cancelar
+               </Button>
+               <Button onClick={handleSubmit} type="submit" color="primary">
+                  {context.submitButtonLabel || 'Aceptar'}
+               </Button>
+            </form>
          </DialogActions>
       </Dialog>
    );

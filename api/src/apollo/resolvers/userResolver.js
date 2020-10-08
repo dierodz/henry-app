@@ -23,20 +23,15 @@ const createUser = async (_, { input }) => {
 
 const inviteUser = async (_, { email, role: roleName }) => {
    const user = await getUserByEmail(email)
-   const role = await getOneRole(roleName)
-   if (role) {
+   if (user) {
+      return user
+   } else {
+      const user = await createOneUser({ email, role: roleName })
       if (user) {
-         await user.addRoles(role)
-         return user
-      } else {
-         const user = await createOneUser({ email, role: roleName })
-         if (user) {
-            await sendEmail({ email }, "userInivitation", roleName)
-         }
-         return user
+         await sendEmail({ email }, "userInivitation", roleName)
       }
+      return user
    }
-   return null
 }
 
 const updateUser = async (_, { id, input }) => {

@@ -87,7 +87,7 @@ export default function Header({ handleShowMenu }) {
          open={isMobileMenuOpen}
          onClose={handleMobileMenuClose}
       >
-         <MenuItem>
+         {/* <MenuItem>
             <IconButton aria-label="show 4 new mails" color="inherit">
                <Badge badgeContent={4} color="secondary">
                   <MailIcon />
@@ -102,7 +102,7 @@ export default function Header({ handleShowMenu }) {
                </Badge>
             </IconButton>
             <p>Notificaciones</p>
-         </MenuItem>
+         </MenuItem> */}
          <MenuItem onClick={handleProfileMenuOpen}>
             <IconButton
                aria-label="account of current user"
@@ -135,7 +135,7 @@ export default function Header({ handleShowMenu }) {
                </Link>
                <div className={classes.grow} />
                <div className={classes.sectionDesktop}>
-                  <IconButton aria-label="show 4 new mails" color="inherit">
+                  {/* <IconButton aria-label="show 4 new mails" color="inherit">
                      <Badge badgeContent={4} color="secondary">
                         <MailIcon />
                      </Badge>
@@ -147,7 +147,7 @@ export default function Header({ handleShowMenu }) {
                      <Badge badgeContent={17} color="secondary">
                         <NotificationsIcon />
                      </Badge>
-                  </IconButton>
+                  </IconButton> */}
                   <IconButton
                      edge="end"
                      aria-label="account of current user"
