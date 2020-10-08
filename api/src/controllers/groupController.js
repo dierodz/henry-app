@@ -1,24 +1,27 @@
 const { Group, User } = require("../db");
 const { getUserById } = require("./userController");
 
-const getMultipleUsers = async (id) => {
-   let users = [];
+const { _getMultipleUsers: getMultipleUsers } = require("./userController");
+
+const _getMultipleGroups = async (id) => {
+   let groups = [];
 
    if (id) {
       if (Array.isArray(id)) {
-         users = await id.map(async (id) => {
-            id = parseInt(id);
-            const user = await getUserById(id);
-            return user;
+         groups = await id.map(async (theId) => {
+            theId = parseInt(theId);
+            const group = await getOneGrup({ id: theId });
+            console.log(group);
+            return group;
          });
 
-         users = Promise.all(users);
+         groups = Promise.all(groups);
       } else {
-         const user = await getUserById(id);
-         users = [user];
+         const group = await getOneGrup({ id });
+         groups = [group];
       }
 
-      return users;
+      return groups;
    }
 
    return [];
@@ -233,4 +236,5 @@ module.exports = {
    getStudentOfGrups,
    removeUsersOfGroups,
    addUsersToGroups,
+   _getMultipleGroups,
 };

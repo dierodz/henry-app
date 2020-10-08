@@ -12,7 +12,7 @@ const createUser = async ({
    photoUrl,
    password,
    role,
-   roles
+   roles,
 }) => {
    let user = await User.create({
       givenName,
@@ -25,14 +25,13 @@ const createUser = async ({
       password,
    });
    if (roles) {
-      let dbRoles = []
+      let dbRoles = [];
       for (const specificRol of roles) {
-         const dbRole = await Role.findOne({ where: { name: specificRol } })
-         dbRoles.push(dbRole)
+         const dbRole = await Role.findOne({ where: { name: specificRol } });
+         dbRoles.push(dbRole);
       }
-      await user.setRoles(dbRoles)
-   }
-   else if (role) {
+      await user.setRoles(dbRoles);
+   } else if (role) {
       role = role.toLowerCase();
 
       if (
@@ -162,7 +161,7 @@ const updateUser = async (id, user) => {
       photoUrl,
       password,
       role,
-      roles
+      roles,
    } = user;
 
    const sendUser = await userdb.update({
@@ -177,17 +176,16 @@ const updateUser = async (id, user) => {
    });
 
    if (roles) {
-      let dbRoles = []
+      let dbRoles = [];
       for (const specificRol of roles) {
-         const dbRole = await Role.findOne({ where: { name: specificRol } })
-         dbRoles.push(dbRole)
+         const dbRole = await Role.findOne({ where: { name: specificRol } });
+         dbRoles.push(dbRole);
       }
-      await sendUser.setRoles(dbRoles)
-   }
-   else if (role) {
-      const dbRole = await Role.findOne({ where: { name: role } })
+      await sendUser.setRoles(dbRoles);
+   } else if (role) {
+      const dbRole = await Role.findOne({ where: { name: role } });
 
-      await sendUser.setRoles(dbRole)
+      await sendUser.setRoles(dbRole);
    }
 
    return await getUserById(sendUser.id);
@@ -213,9 +211,35 @@ const _internalGetUserByEmail = async (email) => {
 };
 
 const getUserbyRol = async (role) => {
-   const result =  await Role.findOne({ where: { name: role }, include: [{model: User, include: [Role]}]})
-   return result.users
-}
+   const result = await Role.findOne({
+      where: { name: role },
+      include: [{ model: User, include: [Role] }],
+   });
+   return result.users;
+};
+
+const _getMultipleUsers = async (id) => {
+   let users = [];
+
+   if (id) {
+      if (Array.isArray(id)) {
+         users = await id.map(async (id) => {
+            id = parseInt(id);
+            const user = await getUserById(id);
+            return user;
+         });
+
+         users = Promise.all(users);
+      } else {
+         const user = await getUserById(id);
+         users = [user];
+      }
+
+      return users;
+   }
+
+   return [];
+};
 module.exports = {
    createUser,
    getAllUsers,
@@ -228,4 +252,5 @@ module.exports = {
    setRolesToUser,
    _internalGetUserByEmail,
    getUserbyRol,
+   _getMultipleUsers,
 };

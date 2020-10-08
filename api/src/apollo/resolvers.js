@@ -1,9 +1,4 @@
-const {
-   cohortes,
-   createCohorte,
-   editCohorte,
-   deleteCohorte,
-} = require("./resolvers/cohorteResolver");
+const { cohortes, cohorteResolver } = require("./resolvers/cohorteResolver");
 const {
    users,
    createUser,
@@ -38,14 +33,7 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
-const {
-   groups,
-   createGroup,
-   updateGroup,
-   deleteGroup,
-   removeUsersOfGroups,
-   addUsersToGroups,
-} = require("./resolvers/groupResolver");
+const { groups, groupResolver } = require("./resolvers/groupResolver");
 
 const { getUserById } = require("../controllers/userController");
 const {
@@ -69,9 +57,7 @@ const resolvers = {
    },
    Mutation: {
       //Mutations for Cohortes
-      createCohorte,
-      editCohorte,
-      deleteCohorte,
+      ...cohorteResolver,
       // Mutations for Users
       createUser,
       inviteUser,
@@ -94,11 +80,7 @@ const resolvers = {
       updateScore,
       deleteScore,
       // Mutaciones para groups
-      createGroup,
-      updateGroup,
-      deleteGroup,
-      removeUsersOfGroups,
-      addUsersToGroups,
+      ...groupResolver,
    },
 
    Cohorte: {
