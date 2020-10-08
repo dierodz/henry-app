@@ -5,7 +5,6 @@ export default gql`
     cohortes {
       id
       name
-      number
       startDate
       instructor {
         id
