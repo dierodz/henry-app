@@ -11,10 +11,6 @@ module.exports = function (sequelize, DataTypes) {
             this.setDataValue("name", value.trim().toLowerCase());
          },
       },
-      number: {
-         type: DataTypes.INTEGER,
-         unique: true,
-      },
       startDate: {
          type: DataTypes.DATE,
          allowNull: false,

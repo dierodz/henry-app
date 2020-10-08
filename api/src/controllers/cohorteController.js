@@ -4,7 +4,7 @@ const createCohorte = async (cohorte) => {
    try {
       let result = await Cohorte.create({
          ...cohorte,
-         startDate: new Date(parseInt(cohorte.startDate))
+         startDate: new Date(cohorte.startDate)
       });
       return result;
    } catch (error) {
@@ -23,7 +23,7 @@ const upDateCohorte = async (cohorte) => {
    try {
       return await result.update({
          ...cohorte,
-         startDate: new Date(parseInt(cohorte.startDate))
+         startDate: new Date(cohorte.startDate)
       });
    } catch (error) {
       console.error(error)

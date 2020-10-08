@@ -40,13 +40,11 @@ function Cohortes({ className }) {
          create: {
             initialValues: {
                name: undefined,
-               number: undefined,
                instructor: undefined,
                startDate: new Date(),
             },
             inputs: [
                { key: 'name', label: "Nombre" },
-               { key: 'number', label: "Numero" },
                { key: 'instructor', label: "Instructor" },
                { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
@@ -55,7 +53,6 @@ function Cohortes({ className }) {
                   variables: {
                      ...values,
                      instructor: parseInt(values.instructor),
-                     number: parseInt(values.number)
                   }
                })
             },
@@ -65,7 +62,6 @@ function Cohortes({ className }) {
          update: {
             inputs: [
                { key: 'name', label: "Nombre" },
-               { key: 'number', label: "Numero" },
                { key: 'instructor', label: "Instructor" },
                { key: 'startDate', label: "Fecha de inicio", type: 'date' }
             ],
@@ -74,7 +70,6 @@ function Cohortes({ className }) {
                   variables: {
                      ...values,
                      instructor: parseInt(values.instructor),
-                     number: parseInt(values.number)
                   }
                })
             },

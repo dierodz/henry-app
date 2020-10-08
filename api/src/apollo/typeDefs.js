@@ -9,7 +9,6 @@ const typeDefs = gql`
    type Cohorte {
       id: Int
       name: String
-      number: Int
       startDate: String
       instructor: User
    }
@@ -133,14 +132,12 @@ const typeDefs = gql`
       # Mutations Cohorte
       createCohorte(
          name: String
-         number: Int
          instructor: Int
          startDate: String
       ): Cohorte!
       editCohorte(
          id: Int
          name: String
-         number: Int
          startDate: String
          instructor: Int
       ): Cohorte!

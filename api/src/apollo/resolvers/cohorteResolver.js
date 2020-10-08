@@ -10,19 +10,32 @@ const cohortes = async (_, { id }) => {
    if (id) {
       const result = await getEspecificCohorte(id);
       return [result];
-   } else return await getAllCohortes();
+   } else {
+      let result = await getAllCohortes();
+      // result = result.reduce((res, { dataValues: field }) => {
+      //    res = ([
+      //       ...res,
+      //       {
+      //          ...field,
+      //          startDate: field.startDate.toDateString()
+      //       }
+      //    ])
+      //    return res
+      // }, [])
+      return result
+   }
 };
 
-const createCohorte = async (_, {name,number, instructor, startDate}) =>{
-   return await createOneCohorte({name,number, instructor, startDate})
+const createCohorte = async (_, { name, instructor, startDate }) => {
+   return await createOneCohorte({ name, instructor, startDate })
 }
 
-const editCohorte = async(_, {id, name, number,instructor, startDate}) => {
-   return await editOneCohorte({id,name,number,instructor, startDate})
+const editCohorte = async (_, { id, name, instructor, startDate }) => {
+   return await editOneCohorte({ id, name, instructor, startDate })
 }
 
-const deleteCohorte = async(_, {id}) => {
+const deleteCohorte = async (_, { id }) => {
    return await deleteOneCohorte(id)
 }
 
-module.exports = { cohortes,createCohorte,editCohorte,deleteCohorte };
+module.exports = { cohortes, createCohorte, editCohorte, deleteCohorte };
