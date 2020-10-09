@@ -8,6 +8,9 @@ const passport = require("./passport");
 const { ApolloServer } = require("apollo-server-express");
 const { resolvers, typeDefs } = require("./apollo");
 
+const fetch = require("node-fetch");
+const { get } = require("./routes/index.js");
+
 require("./db.js");
 
 const server = express();
@@ -51,5 +54,16 @@ server.all("*", function (req, res, next) {
 server.use(passport.initialize());
 
 server.use("/", routes);
+
+// //Vimeo Api
+// let Vimeo = require('vimeo').Vimeo;
+// let client = new Vimeo("cd76cadcc03e452c4fe561aa8401dcbba33d5f1c", "UMKTV+hzJ/UjgD6JuFZoIM+HuF9YYRPnNwRl7qVKW0zdI8oSun1pS7fwF+zxbvekxns+DZnnWZ1fb2gJIu1QmfI0OTv20hcFoT1iwp6hcRKlM82vSL5H8ruJulpWdphE", "9af52953fb7efad0cd1ce43791d300ce");
+
+// client.request('https://api.vimeo.com/users/112886970/projects/2174805/videos',function (err, json){
+//    if(err){
+//       console.log(err)
+//    }
+//    console.log(json)
+// })
 
 module.exports = { server, apolloServer };
