@@ -22,7 +22,8 @@ const getOneMatesScore = async (id) => {
 };
 
 const getAllMatesScore = async () => {
-   const score = await MatesScoreType.findAll({ include : MateScoreProvided});
+ console.log('gggogo')
+   const score = await MatesScoreType.findAll();
 
    if (score.length < 1) {
       throw {

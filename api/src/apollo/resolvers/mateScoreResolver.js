@@ -1,5 +1,5 @@
 const {
-   getAllMatesScores,
+   getAllMatesScore,
    getOneMatesScore,
    createMatesScore: createOneMatesScore,
    deleteMatesScore: deleteOneMatesScore,
@@ -7,10 +7,11 @@ const {
 } = require("../../controllers/classmateScoreController");
 
 const matesScore = async (_, { id }) => {
+   console.log('llegué aquí')
    if (id) {
       const result = await getOneMatesScore(id);
       return [result];
-   } else return await getAllMatesScores();
+   } else return await getAllMatesScore();
 };
 
 const createMatesScore = async (_, { name }) => {

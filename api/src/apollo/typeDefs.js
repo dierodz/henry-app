@@ -82,7 +82,13 @@ const typeDefs = gql`
 
    type MatesScore {
       id: Int
-      type: String 
+      name: String 
+   }
+
+   type MateReview {
+      id: Int
+      score: Int
+      commentary: String
    }
 
    type Query {
@@ -95,7 +101,10 @@ const typeDefs = gql`
       scores(id: Int): [Score]
       users(id: Int): [User]
       getUserRol(role: String): [User]
-      matesScore(id: Int, name: String): [MatesScore]
+
+     matesScore(id: Int, name: String): [MatesScore]
+
+      mateReviews(id: Int, score: Int, commentary: String): [MateReview]
    }
 
    # Estos son los datos que acepta un usuario
@@ -185,9 +194,14 @@ const typeDefs = gql`
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
 
       # Mutaciones para MatesScore
-      createMatesScore(name: String): Role!
-      updateMatesScore(id: Int, name: String): Role!
+      createMatesScore(name: String): Score!
+      updateMatesScore(id: Int, name: String): Score!
       deleteMatesScore(id: Int, name: String): DeleteResolve!
+
+      # Mutaciones para MatesReview
+      createMatesReview(commentary: String): Score!
+      updateMatesReview(id: Int, commentary: String): Score!
+      deleteMatesReview(id: Int, commentary: String): DeleteResolve!
    }
 `;
 
