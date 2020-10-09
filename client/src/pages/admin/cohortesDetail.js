@@ -4,74 +4,85 @@ import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
 import { EDIT_COHORTE } from "apollo/Mutations/cohortes";
 
-
-function CohortesDetail({className}) {
-// falta ver como traemos la data. falta la mutations para poder implentar esta tabla.
+function CohortesDetail({ className }) {
+   // falta ver como traemos la data. falta la mutations para poder implentar esta tabla.
 
    const { loading, error, data: preData, refetch } = useQuery(COHORTES);
 
-   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE)
-
+   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE);
 
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
          return preData.cohortes.map((item) => {
             return {
                ...item,
-               instructorDisplay: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
+               instructorDisplay: `${item.instructor.givenName || ""} ${
+                  item.instructor.familyName || ""
+               }`,
                instructor: item.instructor.id,
                groups: 0,
-               alumns: 0
-            }
-         })
-      } else return preData
-   }, [preData])
+               alumns: 0,
+            };
+         });
+      } else return preData;
+   }, [preData]);
 
-   const tableData = useMemo(() => ({
-      loading,
-      error,
-      data: data,
-      columns: [
-         { key: 'name', label: 'Nombre de Usuario', align: 'left' },
-         { key: 'instructorDisplay', label: 'Nombre', align: 'left' },
-         { key: 'groups', label: 'Apellido', align: 'left' },
-         { key: 'pm', label: 'Rol', align: 'left' },
-      ],
-      actions: {
-        
-         update: {
-            inputs: [
-               { key: 'name', label: "Nombre" },
-               // {
-               //    key: 'instructor', label: "Instructor", type: "select", options: (() => {
-               //       return instructors.data?.getUserRol
-               //          ? instructors.data.getUserRol.map(({ givenName, familyName, id }) => ({ value: id, label: `${givenName} ${familyName}` }))
-               //          : []
-               //    })()
-               // },
-               { key: 'startDate', label: "Fecha de inicio", type: 'date' }
-            ],
-            onSubmit: async (values) => {
-               await updateMutation({
-                  variables: {
-                     ...values,
-                     instructor: parseInt(values.instructor),
-                  }
-               })
+   const tableData = useMemo(
+      () => ({
+         loading,
+         error,
+         data: data,
+         columns: [
+            { key: "name", label: "Nombre de Usuario", align: "left" },
+            { key: "instructorDisplay", label: "Nombre", align: "left" },
+            { key: "groups", label: "Apellido", align: "left" },
+            { key: "pm", label: "Rol", align: "left" },
+         ],
+         addButtonLabel: "Agregar alumno",
+         actions: {
+            create: {
+               initialValues: {
+                  name: undefined,
+               },
+               inputs: [{ key: "name", label: "Nombre" }],
+               onSubmit: async (values) => {
+                  console.log("submit");
+               },
+               submitButtonLabel: "Agregar",
+               title: "Agregar alumno",
             },
-            submitButtonLabel: 'Enviar cambios',
-            title: 'Editar cohorte'
-         }
-         }
-        
-   }), [data, error, loading, updateMutation]);
+            update: {
+               inputs: [
+                  { key: "name", label: "Nombre" },
+                  // {
+                  //    key: 'instructor', label: "Instructor", type: "select", options: (() => {
+                  //       return instructors.data?.getUserRol
+                  //          ? instructors.data.getUserRol.map(({ givenName, familyName, id }) => ({ value: id, label: `${givenName} ${familyName}` }))
+                  //          : []
+                  //    })()
+                  // },
+               ],
+               onSubmit: async (values) => {
+                  await updateMutation({
+                     variables: {
+                        ...values,
+                        instructor: parseInt(values.instructor),
+                     },
+                  });
+               },
+               submitButtonLabel: "Enviar cambios",
+               title: "Editar cohorte",
+            },
+         },
+      }),
+      [data, error, loading, updateMutation]
+   );
 
    useEffect(() => {
       if (!resultUpdate.loading && resultUpdate.called) {
-         refetch()
+         refetch();
       }
-   }, [resultUpdate, refetch])
-
+   }, [resultUpdate, refetch]);
 
    return (
       <div className={className}>
@@ -79,7 +90,5 @@ function CohortesDetail({className}) {
       </div>
    );
 }
-
-
 
 export default CohortesDetail;
