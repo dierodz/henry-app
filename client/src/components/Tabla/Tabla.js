@@ -16,7 +16,7 @@ import { useTheme } from "@material-ui/core/styles";
 import DialogDel from "./DialogDel";
 import empty from 'assets/empty.svg';
 import styles from './Tabla.module.scss';
-import { Button, ButtonGroup } from "@material-ui/core";
+import { Button, ButtonGroup, TablePagination } from "@material-ui/core";
 import TableDialog from "./TableDialog";
 
 export default function Tabla({ data, columnas, info }) {
@@ -54,7 +54,8 @@ export default function Tabla({ data, columnas, info }) {
    };
 
    return (
-      <TableContainer className={classes.container} component={Paper}>
+      <>
+      <TableContainer className={classes.container}>
          {data.data && data.data.length > 0
             ? <Table className={classes.table} aria-label="customized table">
                <TableHead>
@@ -142,5 +143,15 @@ export default function Tabla({ data, columnas, info }) {
             />
          }
       </TableContainer>
+      <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={32}
+          rowsPerPage={5}
+          page={1}
+          onChangePage={() => null}
+          onChangeRowsPerPage={()=> null}
+        />
+      </>
    );
 }

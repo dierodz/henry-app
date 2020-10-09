@@ -26,7 +26,8 @@ export const useStyles = makeStyles({
       //height: 'calc(100vh - 4rem - 1px)'
    },
    container: {
-      height: 'calc(100vh - 4rem - 1px)'
+      height: 'calc(100vh - 4rem - 1px)',
+      maxHeight: 'calc(100% - 52px)'
    },
    botones: {
       display: "flex",

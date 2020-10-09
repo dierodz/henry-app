@@ -33,6 +33,7 @@ export const COHORTE_BY_ID = gql`
         id
         givenName
         familyName
+        email
       }
       groups {
         name
