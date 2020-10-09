@@ -8,6 +8,7 @@ import Header from "components/Header/Header";
 import NavBar from "components/NavBar/NavBar";
 import Dashboard from "pages/Dashboard";
 import Cohortes from "pages/admin/Cohortes";
+import CohortesDetail from "pages/admin/cohortesDetail";
 import useStyles from "./GeneralRoutes.styles";
 import Alumns from "pages/admin/Alumns";
 import Instructors from "pages/admin/Instructors";
@@ -39,11 +40,13 @@ const GeneralRoutes = () => {
             <Switch>
                <Route exact path="/" component={Dashboard} />
                <Route exact path="/admin/cohortes" component={Cohortes} />
+               <Route exact path="/admin/cohorte/:id" component={CohortesDetail} />
                <Route exact path="/admin/instructors" component={Instructors} />
                <Route exact path="/admin/pm" component={PM} />
                <Route exact path="/admin/alumns" component={Alumns} />
                <Route path="/auth/signin" component={LoginScreen} />
                <Route path="/auth/signup" component={RegisterScreen} />
+
             </Switch>
          </div>
       </>

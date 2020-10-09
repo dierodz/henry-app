@@ -4,6 +4,7 @@ import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
 import { CREATE_COHORTE, DELETE_COHORTE, EDIT_COHORTE } from "apollo/Mutations/cohortes";
 import { getUserRol } from "apollo/querys/users";
+import { useHistory } from "react-router-dom";
 import Alumns from "./Cohortes/Alumns";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 
@@ -16,6 +17,7 @@ function Cohortes({ className }) {
    const [createMutation, resultCreate] = useMutation(CREATE_COHORTE)
    const [deleteMutation, resultDelete] = useMutation(DELETE_COHORTE)
    const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE)
+   const history = useHistory();
 
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
@@ -104,9 +106,14 @@ function Cohortes({ className }) {
                   }
                })
             }
+         },
+         view: {
+            onSubmit: (id) => {
+               history.push("/admin/cohorte/" + id)
+            }
          }
       }
-   }), [data, error, loading, createMutation, deleteMutation, updateMutation, instructors.data]);
+   }), [data, history, error, loading, createMutation, deleteMutation, updateMutation, instructors.data]);
 
    useEffect(() => {
       if (!resultCreate.loading && resultCreate.called) {

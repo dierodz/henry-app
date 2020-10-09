@@ -92,8 +92,12 @@ export default function Tabla({ data, columnas, info }) {
                         >
                            {data.actions &&
                               <ButtonGroup >
-                                 {data.actions.view && <Button>
-                                    <VisibilityIcon />
+                                 {data.actions.view && 
+                                 <Button
+                                 onClick={() => data.actions.view.onSubmit(el.id)}
+                                 >
+                                    <VisibilityIcon                                 
+                                    />
                                  </Button>}
                                  {data.actions.update &&
                                     <Button onClick={() => handleEditClickOpen(el.id)}>
