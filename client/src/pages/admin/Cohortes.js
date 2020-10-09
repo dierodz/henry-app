@@ -1,9 +1,11 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import COHORTES from "apollo/querys/cohortes";
 import { CREATE_COHORTE, DELETE_COHORTE, EDIT_COHORTE } from "apollo/Mutations/cohortes";
 import { getUserRol } from "apollo/querys/users";
+import Alumns from "./Cohortes/Alumns";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
 
 function Cohortes({ className }) {
 
@@ -18,12 +20,13 @@ function Cohortes({ className }) {
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
          return preData.cohortes.map((item) => {
+            debugger
             return {
                ...item,
                instructorDisplay: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
                instructor: item.instructor.id,
-               groups: 0,
-               alumns: 0
+               groups: item.groups.length,
+               alumns: item.users.length
             }
          })
       } else return preData
@@ -37,7 +40,9 @@ function Cohortes({ className }) {
          { key: 'name', label: 'Nombre del cohorte', align: 'left' },
          { key: 'instructorDisplay', label: 'Instructor', align: 'left' },
          { key: 'groups', label: 'Grupos', align: 'left' },
-         { key: 'alumns', label: 'Alumnos', align: 'left' },
+         {
+            key: 'alumns', label: 'Alumnos', align: 'left', component: (cohorte) => (<AlumnsComponent cohorte={cohorte} />)
+         },
       ],
       addButtonLabel: 'Agregar cohorte',
       actions: {
@@ -127,6 +132,26 @@ function Cohortes({ className }) {
          <Tabla data={tableData} />
       </div>
    );
+}
+
+function AlumnsComponent(cohorte) {
+   const [show, setShow] = useState(false)
+   return (
+      <>
+         <Button onClick={() => setShow(true)}>{cohorte.cohorte.alumns}</Button>
+         <Dialog open={show} onClose={() => setShow(false)} fullWidth maxWidth="md" >
+            <DialogTitle>Alumnos</DialogTitle>
+            <DialogContent>
+               <Alumns cohorte={cohorte.cohorte} />
+            </DialogContent>
+            <DialogActions>
+               <Button onClick={() => setShow(false)} color="primary">
+                  Cerrar
+               </Button>
+            </DialogActions>
+         </Dialog>
+      </>
+   )
 }
 
 export default Cohortes;

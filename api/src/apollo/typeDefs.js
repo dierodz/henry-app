@@ -76,7 +76,7 @@ const typeDefs = gql`
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
-      cohortes(name: String): [Cohorte]
+      cohortes(id: Int): [Cohorte]
       contents(topicName: String): [Content]
       groups(id: Int, name: String): [Group]
       modules(id: Int): [Module]
