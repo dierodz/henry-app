@@ -76,14 +76,14 @@ export default function Tabla({ data, columnas, info }) {
                <TableBody>
                   {data.data.map((el, i) => (
                      <StyledTableRow key={i}>
-                        {data.columns.map(({ key, align }) => (
+                        {data.columns.map(({ key, align, component }) => (
                            <StyledTableCell
                               align={align}
                               component="th"
                               //scope="cohorte"
                               key={key}
                            >
-                              {el[key]}
+                              { component ? component(el) : el[key]}
                            </StyledTableCell>
                         ))}
                         <StyledTableCell
@@ -91,8 +91,12 @@ export default function Tabla({ data, columnas, info }) {
                         >
                            {data.actions &&
                               <ButtonGroup >
-                                 {data.actions.view && <Button>
-                                    <VisibilityIcon />
+                                 {data.actions.view && 
+                                 <Button
+                                 onClick={() => data.actions.view.onSubmit(el.id)}
+                                 >
+                                    <VisibilityIcon                                 
+                                    />
                                  </Button>}
                                  {data.actions.update &&
                                     <Button onClick={() => handleEditClickOpen(el.id)}>
