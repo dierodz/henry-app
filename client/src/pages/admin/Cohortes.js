@@ -22,7 +22,6 @@ function Cohortes({ className }) {
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
          return preData.cohortes.map((item) => {
-            debugger
             return {
                ...item,
                instructorDisplay: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
