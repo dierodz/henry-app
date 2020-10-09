@@ -4,7 +4,7 @@ const {
    createMatesScore: createOneMatesScore,
    deleteMatesScore: deleteOneMatesScore,
    editMatesScore,
-} = require("../../controllers/roleController");
+} = require("../../controllers/classmateScoreController");
 
 const matesScore = async (_, { id }) => {
    if (id) {
@@ -13,16 +13,17 @@ const matesScore = async (_, { id }) => {
    } else return await getAllMatesScores();
 };
 
-const createMatesScore = async (_, { type }) => {
+const createMatesScore = async (_, { name }) => {
+   console.log('llegué hasta aquí', name);
    return await createOneMatesScore(name);
 };
 
-const updateMatesScore = async (_, { id, type }) => {
+const updateMatesScore = async (_, { id, name }) => {
    return await editMatesScore(id, {name});
 };
 
-const deleteMatesScore = async (_, { id, type }) => {
-   return await deleteOneMatesScore({ id, type });
+const deleteMatesScore = async (_, { id, name }) => {
+   return await deleteOneMatesScore({ id, name });
 };
 
 module.exports = { matesScore, createMatesScore, updateMatesScore, deleteMatesScore };

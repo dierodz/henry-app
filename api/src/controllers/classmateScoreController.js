@@ -1,8 +1,8 @@
-const { MatesScore } = require("../db"); 
+const { MatesScoreType } = require("../db"); 
 
 const getOneMatesScore = async (id) => {
    
-   const score = await MatesScore.findOne({ where: { id }, 
+   const score = await MatesScoreType.findOne({ where: { id }, 
                                            include: { model: MateScoreProvided } });
    console.log(score)
 
@@ -12,7 +12,7 @@ const getOneMatesScore = async (id) => {
          name: "score Error",
          error: {
             message: `the score with the name ${id} does not exist in the database`,
-            type: "data not found",s
+            type: "data not found",
             code: 404,
          },
       };
@@ -22,7 +22,7 @@ const getOneMatesScore = async (id) => {
 };
 
 const getAllMatesScore = async () => {
-   const score = await MatesScore.findAll({ include : MateScoreProvided});
+   const score = await MatesScoreType.findAll({ include : MateScoreProvided});
 
    if (score.length < 1) {
       throw {
@@ -40,11 +40,12 @@ const getAllMatesScore = async () => {
 };
 
 const createMatesScore = async (name) => {
-   return await MatesScore.create({ name, include: { model: MateScoreProvided} });
+  console.log('pleas', name)
+   return await MatesScoreType.create({ name });
 };
 
 const editMatesScore = async (id, name) => {
-   const score = await MatesScore.findOne({ where: { id }, include: { model: MateScoreProvided} });
+   const score = await MatesScoreType.findOne({ where: { id }});
 
    if (!score) {
       throw {
@@ -58,7 +59,7 @@ const editMatesScore = async (id, name) => {
       };
    }
 
-   return await score.update( type );
+   return await score.update( name );
 };
 
 const deleteMatesScore = async ({ id, name }) => {
@@ -66,7 +67,7 @@ const deleteMatesScore = async ({ id, name }) => {
    if (id) where.id = id;
    if (name) where.name = name;
 
-   const score = await MatesScore.findOne({ where });
+   const score = await MatesScoreType.findOne({ where });
    score.destroy();
 
    return { message: "successfully removed" };

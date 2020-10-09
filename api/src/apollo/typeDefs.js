@@ -185,9 +185,9 @@ const typeDefs = gql`
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
 
       # Mutaciones para MatesScore
-      createMatesScore(type: String): Role!
-      updateMatesScore(id: Int, type: String): Role!
-      deleteMatesScore(id: Int, type: String): DeleteResolve!
+      createMatesScore(name: String): Role!
+      updateMatesScore(id: Int, name: String): Role!
+      deleteMatesScore(id: Int, name: String): DeleteResolve!
    }
 `;
 
