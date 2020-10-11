@@ -42,4 +42,4 @@ export const COHORTE_BY_ID = gql`
   }
 `
 
-export default COHORTES
+

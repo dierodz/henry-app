@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import COHORTES from "apollo/querys/cohortes";
+import {COHORTES} from "apollo/querys/cohortes";
 import { CREATE_COHORTE, DELETE_COHORTE, EDIT_COHORTE } from "apollo/Mutations/cohortes";
 import { getUserRol } from "apollo/querys/users";
 import { useHistory } from "react-router-dom";
