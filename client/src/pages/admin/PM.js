@@ -1,12 +1,23 @@
-import React, { useMemo } from "react";
-import { useQuery } from "@apollo/client";
+import React, { useMemo, useEffect } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { getUserRol } from "apollo/querys/users";
+import { ADD_ROLE } from "apollo/Mutations/role";
+
 
 function PM({ className }) {
-   const { loading, error, data } = useQuery(getUserRol, {
+
+   const { loading, error, data, refetch } = useQuery(getUserRol, {
       variables: { role: "pm" },
    });
+   const [addRoleMutation, resultAddRole] = useMutation(ADD_ROLE);
+
+   useEffect(() => {
+      if (!resultAddRole.loading && resultAddRole.called) {
+         refetch()
+      }
+   }, [resultAddRole, refetch])
+
 
    const tableData = useMemo(() => ({
       loading,
@@ -20,6 +31,25 @@ function PM({ className }) {
       ],
       addButtonLabel: 'Agregar PM',
       actions: {
+         create: {
+            initialValues: {
+               email: undefined,
+            },
+            inputs: [
+               { key: 'email', label: "Email" },
+            ],
+            onSubmit: async (values) => {
+               const data = {
+                  variables: {
+                     ...values,
+                     role: 'pm'
+                  }
+               }
+               await addRoleMutation(data)
+            },
+            submitButtonLabel: 'Añadir',
+            title: 'Añadir PM'
+         },
          delete: {
             onSubmit: (id) => alert(id)
          }

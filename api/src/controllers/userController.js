@@ -199,16 +199,16 @@ const deleteUserById = async (id) => {
    return { message: "successfully removed" };
 };
 
-const setRoleToUser = async (id, roles) => {
-   const user = await getUserById(id);
+const setRoleToUser = async (email, roles) => {
+   const user = await getUserByEmail(email);
    const role = await Role.findOne({ where: { name: roles } });
 
    await user.addRoles(role);
    return await getUserById(user.id);
 };
 
-const removeRoleToUser = async (id, roles) => {
-   const user = await getUserById(id);
+const removeRoleToUser = async (email, roles) => {
+   const user = await getUserByEmail(email);
    const role = await Role.findOne({ where: { name: roles } });
 
    await user.removeRoles(role);

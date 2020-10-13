@@ -39,12 +39,12 @@ const userMutations = {
       return await createOneUser({ ...input });
    },
 
-   addRoleToUser: async (_, { userId, roleName }) => {
-      return await setRoleToUser(userId, roleName);
+   addRoleToUser: async (_, { email, roleName }) => {
+      return await setRoleToUser(email, roleName);
    },
 
-   removeRoleToUser: async (_, { userId, roleName }) => {
-      return await removeRoleToUser(userId, roleName);
+   removeRoleToUser: async (_, { email, roleName }) => {
+      return await removeRoleToUser(email, roleName);
    },
 };
 

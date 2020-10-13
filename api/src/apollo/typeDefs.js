@@ -130,8 +130,8 @@ const typeDefs = gql`
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
       inviteUser(email: String!, role: String!): User
-      addRoleToUser(userId: Int!, roleName: String!): User
-      removeRoleToUser(userId: Int!, roleName: String!): User
+      addRoleToUser(email: String!, roleName: String!): User
+      removeRoleToUser(email: String!, roleName: String!): User
 
       # Mutations Cohorte
       createCohorte(input: CohorteInput): Cohorte!
