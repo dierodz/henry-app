@@ -86,7 +86,9 @@ Group.belongsToMany(User, { through: Group_users });
 MatesScoreType.hasMany(MateReview);
 MateReview.belongsTo(MatesScoreType);
 
-
+// Relacion usuarios y reviews
+User.hasMany(MateReview)
+MateReview.belongsTo(User)
 // =================== FIN Relaciones entre las enteidades ==================
 
 // ==========================================================================
