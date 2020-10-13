@@ -198,12 +198,20 @@ const deleteUserById = async (id) => {
    return { message: "successfully removed" };
 };
 
-const setRolesToUser = async (id, roles) => {
+const setRoleToUser = async (id, roles) => {
    const user = await getUserById(id);
    const role = await Role.findOne({ where: { name: roles } });
 
-   const updatedUsser = await user.setRoles(role);
-   return await getUserById(updatedUsser.id);
+   await user.addRoles(role);
+   return await getUserById(user.id);
+};
+
+const removeRoleToUser = async (id, roles) => {
+   const user = await getUserById(id);
+   const role = await Role.findOne({ where: { name: roles } });
+
+   await user.removeRoles(role);
+   return await getUserById(user.id);
 };
 
 const _internalGetUserByEmail = async (email) => {
@@ -249,8 +257,9 @@ module.exports = {
    getUserByGithubID,
    deleteUserById,
    updateUser,
-   setRolesToUser,
+   setRoleToUser,
    _internalGetUserByEmail,
    getUserbyRol,
    _getMultipleUsers,
+   removeRoleToUser,
 };

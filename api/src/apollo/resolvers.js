@@ -1,12 +1,5 @@
 const { cohortes, cohorteResolver } = require("./resolvers/cohorteResolver");
-const {
-   users,
-   createUser,
-   inviteUser,
-   updateUser,
-   deleteUser,
-   getUserRol,
-} = require("./resolvers/userResolver");
+const { userMutations, userQuerys } = require("./resolvers/userResolver");
 const {
    checkPoints,
    updateCheckPoint,
@@ -45,7 +38,6 @@ const {
 
 const resolvers = {
    Query: {
-      users,
       checkPoints,
       cohortes,
       contents,
@@ -53,16 +45,13 @@ const resolvers = {
       roles,
       scores,
       groups,
-      getUserRol,
+      ...userQuerys,
    },
    Mutation: {
       //Mutations for Cohortes
       ...cohorteResolver,
       // Mutations for Users
-      createUser,
-      inviteUser,
-      updateUser,
-      deleteUser,
+      ...userMutations,
       // Mutations for CheckPoints
       createCheckPoint,
       updateCheckPoint,
