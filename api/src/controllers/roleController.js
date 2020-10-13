@@ -3,7 +3,6 @@ const { Role } = require("../db");
 const getOneRole = async (id) => {
    
    const role = await Role.findOne({ where: { id } });
-   console.log(role)
 
    if (!role) {
       throw {

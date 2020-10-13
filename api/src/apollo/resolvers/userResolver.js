@@ -5,11 +5,10 @@ const {
    updateUser: editUser,
    deleteUserById,
    getUserbyRol,
-   getUserByEmail,
    setRoleToUser,
    removeRoleToUser,
+   inviteOneUser,
 } = require("../../controllers/userController");
-const { sendEmail } = require("../../mailModels/sendEmail");
 
 const userQuerys = {
    users: async (_, { id }) => {
@@ -32,17 +31,8 @@ const userMutations = {
       return await deleteUserById(id);
    },
 
-   inviteUser: async (_, { email, role: roleName }) => {
-      const user = await getUserByEmail(email);
-      if (user) {
-         return user;
-      } else {
-         const user = await createOneUser({ email, role: roleName });
-         if (user) {
-            await sendEmail({ email }, "userInivitation", roleName);
-         }
-         return user;
-      }
+   inviteUser: async (_, { email, role }) => {
+      return await inviteOneUser(email, role);
    },
 
    createUser: async (_, { input }) => {

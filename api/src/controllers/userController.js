@@ -1,4 +1,5 @@
 const { User, Role } = require("../db");
+const { sendEmail } = require("../mailModels/sendEmail");
 
 const include = [Role];
 
@@ -248,6 +249,21 @@ const _getMultipleUsers = async (id) => {
 
    return [];
 };
+
+const inviteOneUser = async (email, role) => {
+   let user = await getUserByEmail(email);
+
+   if (!user) {
+      user = await createUser({ email, role });
+   }
+
+   await setRoleToUser(user.id, role);
+
+   sendEmail({ email }, "userInivitation", role);
+
+   return getUserById(user.id);
+};
+
 module.exports = {
    createUser,
    getAllUsers,
@@ -262,4 +278,5 @@ module.exports = {
    getUserbyRol,
    _getMultipleUsers,
    removeRoleToUser,
+   inviteOneUser,
 };
