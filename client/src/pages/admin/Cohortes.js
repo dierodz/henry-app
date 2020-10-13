@@ -10,6 +10,7 @@ import {
 import { getUserRol } from "apollo/querys/users";
 import { useHistory } from "react-router-dom";
 import Alumns from "./Cohortes/Alumns";
+import Groups from "./Cohortes/groups";
 import {
   Button,
   Dialog,
@@ -52,7 +53,11 @@ function Cohortes({ className }) {
       columns: [
         { key: "name", label: "Nombre del cohorte", align: "left" },
         { key: "instructorDisplay", label: "Instructor", align: "left" },
-        { key: "groups", label: "Grupos", align: "left" },
+        { key: "groups", 
+        label: "Grupos", 
+        align: "left",
+        component: (cohorte) => <GroupsComponent cohorte={cohorte} />,
+      },
         {
           key: "alumns",
           label: "Alumnos",
@@ -196,6 +201,30 @@ function AlumnsComponent(cohorte) {
         <DialogTitle>Alumnos</DialogTitle>
         <DialogContent>
           <Alumns cohorte={cohorte.cohorte} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShow(false)} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+function GroupsComponent(cohorte) {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setShow(true)}>{cohorte.cohorte.groups}</Button>
+      <Dialog
+        open={show}
+        onClose={() => setShow(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Groups</DialogTitle>
+        <DialogContent>
+          <Groups cohorte={cohorte.cohorte} />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShow(false)} color="primary">
