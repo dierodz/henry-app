@@ -26,39 +26,46 @@ function BasicInfo({ data: { givenName, familyName }, onSubmit }) {
     onSubmit: onSubmit,
   });
   return (
+    <ProfileCard
+      title="Información básica"
+      actions={<Button variant="outlined">Editar</Button>}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <TextField
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            label="Nombre"
+            value={formik.values.givenName}
+            onChange={formik.handleChange}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <TextField
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            label="Apellido"
+            value={formik.values.familyName}
+            onChange={formik.handleChange}
+          />
+        </Grid>
+      </Grid>
+    </ProfileCard>
+  );
+}
+
+function ProfileCard({ title, children, actions }) {
+  return (
     <Card variant="outlined" style={{ width: "100%" }}>
       <CardHeader>
         <Typography color="textSecondary" gutterBottom>
-          Información básica
+          {title}
         </Typography>
       </CardHeader>
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              label="Nombre"
-              value={formik.values.givenName}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              label="Apellido"
-              value={formik.values.familyName}
-              onChange={formik.handleChange}
-            />
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions style={style.AccordionActions}>
-        <Button variant="outlined">Editar</Button>
-      </CardActions>
+      <CardContent>{children}</CardContent>
+      <CardActions style={style.AccordionActions}>{actions}</CardActions>
     </Card>
   );
 }
