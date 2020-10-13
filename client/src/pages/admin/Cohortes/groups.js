@@ -1,19 +1,28 @@
 import React, { useEffect, useMemo } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import { useHistory } from "react-router-dom";
+import { CREATE_GROUP } from "apollo/Mutations/groups";
+import { ADD_GROUP_TO_COHORTE } from "apollo/Mutations/cohortes";
 
 function Groups({
   className,
   cohorte,
   data: componentData,
   loading: componentLoading,
+  onRefetch,
 }) {
   const [
     execute,
     { loading: queryLoading, error, data: preData },
   ] = useLazyQuery(COHORTE_BY_ID);
+
+  const [createGroup, { loading: createLoading }] = useMutation(CREATE_GROUP);
+  const [addGroupToCohorte, { loading: addLoading }] = useMutation(
+    ADD_GROUP_TO_COHORTE
+  );
+
   useEffect(() => {
     if (cohorte)
       execute({
@@ -21,10 +30,10 @@ function Groups({
       });
   }, [cohorte, execute]);
 
-  const loading = useMemo(() => queryLoading || componentLoading, [
-    queryLoading,
-    componentLoading,
-  ]);
+  const loading = useMemo(
+    () => queryLoading || componentLoading || createLoading || addLoading,
+    [queryLoading, componentLoading, createLoading, addLoading]
+  );
 
   const data = useMemo(() => preData || componentData, [
     preData,
@@ -41,14 +50,35 @@ function Groups({
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
       ],
-      addButtonLabel: "Invitar estudiante",
+      addButtonLabel: "Crear grupo",
       actions: {
         view: {
           onSubmit: (id) => push(`/group/${id}`),
         },
+        create: {
+          initialValues: {
+            name: "",
+            type: "standup",
+          },
+          onSubmit: async (values) => {
+            const result = await createGroup({
+              variables: values,
+            });
+            if (result?.data?.createGroup?.id) {
+              await addGroupToCohorte({
+                variables: {
+                  cohorteId: data.cohortes[0].id,
+                  groupId: [result.data.createGroup.id],
+                },
+              });
+            }
+            onRefetch && onRefetch();
+          },
+          inputs: [{ key: "name", label: "Nombre" }],
+        },
       },
     }),
-    [data, error, loading, push]
+    [data, error, loading, push, createGroup, addGroupToCohorte, onRefetch]
   );
 
   return (

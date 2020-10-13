@@ -114,7 +114,7 @@ function CohortesDetail({ className }) {
           <Card variant="outlined" style={{ position: "relative" }}>
             <CardHeader title="Grupos" />
             <CardContent>
-              <Groups data={data} loading={loading} />
+              <Groups data={data} loading={loading} onRefetch={refetch} />
             </CardContent>
           </Card>
         </Grid>
