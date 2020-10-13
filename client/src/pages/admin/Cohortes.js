@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import COHORTES from "apollo/querys/cohortes";
+import { COHORTES } from "apollo/querys/cohortes";
 import {
   CREATE_COHORTE,
   DELETE_COHORTE,
@@ -17,7 +17,6 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import Loading from "components/Loading";
 
 function Cohortes({ className }) {
   const { loading, error, data: preData, refetch } = useQuery(COHORTES);
