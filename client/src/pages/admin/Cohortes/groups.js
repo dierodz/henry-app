@@ -4,16 +4,27 @@ import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import { useHistory } from "react-router-dom";
 
-function Groups({ className, cohorte, data: componentData }) {
-  const [execute, { loading, error, data: preData }] = useLazyQuery(
-    COHORTE_BY_ID
-  );
+function Groups({
+  className,
+  cohorte,
+  data: componentData,
+  loading: componentLoading,
+}) {
+  const [
+    execute,
+    { loading: queryLoading, error, data: preData },
+  ] = useLazyQuery(COHORTE_BY_ID);
   useEffect(() => {
     if (cohorte)
       execute({
         variables: { id: cohorte.id },
       });
   }, [cohorte, execute]);
+
+  const loading = useMemo(() => queryLoading || componentLoading, [
+    queryLoading,
+    componentLoading,
+  ]);
 
   const data = useMemo(() => preData || componentData, [
     preData,
@@ -40,13 +51,9 @@ function Groups({ className, cohorte, data: componentData }) {
     [data, error, loading, push]
   );
 
-  console.log(data?.cohortes[0].users);
-
   return (
-    <div className={className}>
-      <div style={{ height: "50vh", width: "100%" }}>
-        <Tabla loading={loading} data={tableData} pageSize={5} />
-      </div>
+    <div className={className} style={{ height: "50vh", width: "100%" }}>
+      <Tabla loading={loading} data={tableData} pageSize={5} />
     </div>
   );
 }

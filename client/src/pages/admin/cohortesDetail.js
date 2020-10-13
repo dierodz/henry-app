@@ -100,21 +100,29 @@ function CohortesDetail({ className }) {
   }, [resultDelete, refetch]);
 
   return (
-    <Container className={className} style={{ paddingTop: "1rem" }}>
+    <Container style={{ paddingTop: "1rem" }}>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <Card variant="outlined">
-            <CardHeader title="Alumnos" />
+            <CardHeader title="Información" />
             <CardContent>
-              <Alumns data={data} loading={loading} />
+              <div style={{ height: "50vh", width: "100%" }}></div>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={6}>
+          <Card variant="outlined" style={{ position: "relative" }}>
+            <CardHeader title="Grupos" />
+            <CardContent>
+              <Groups data={data} loading={loading} />
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <Card variant="outlined">
-            <CardHeader title="Grupos" />
+          <Card variant="outlined" style={{ position: "relative" }}>
+            <CardHeader title="Alumnos" />
             <CardContent>
-              <Groups data={data} loading={loading} />
+              <Alumns data={data} loading={loading} />
             </CardContent>
           </Card>
         </Grid>

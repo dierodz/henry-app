@@ -8,16 +8,28 @@ import { useCopyToClipboard } from "react-use";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 
-function Alumns({ className, cohorte, data: componentData }) {
-  const [execute, { loading, error, data: preData }] = useLazyQuery(
-    COHORTE_BY_ID
-  );
+function Alumns({
+  className,
+  cohorte,
+  data: componentData,
+  loading: componentLoading,
+}) {
+  const [
+    execute,
+    { loading: queryLoading, error, data: preData },
+  ] = useLazyQuery(COHORTE_BY_ID);
+
   useEffect(() => {
     if (cohorte)
       execute({
         variables: { id: cohorte.id },
       });
   }, [cohorte, execute]);
+
+  const loading = useMemo(() => queryLoading || componentLoading, [
+    queryLoading,
+    componentLoading,
+  ]);
 
   const data = useMemo(() => preData || componentData, [
     preData,
@@ -76,10 +88,8 @@ function Alumns({ className, cohorte, data: componentData }) {
   console.log(data?.cohortes[0].users);
 
   return (
-    <div className={className}>
-      <div style={{ height: "50vh", width: "100%" }}>
-        <Tabla loading={loading} data={tableData} pageSize={5} />
-      </div>
+    <div className={className} style={{ height: "50vh", width: "100%" }}>
+      <Tabla loading={loading} data={tableData} pageSize={5} />
       <Snackbar
         open={showSnackbar}
         autoHideDuration={3000}
