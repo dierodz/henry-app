@@ -6,6 +6,7 @@ const {
    createGrup: createoneGrup,
    removeUsersOfGroups: removeUsers,
    addUsersToGroups: addUsers,
+   setParentToGroup,
 } = require("../../controllers/groupController");
 
 const groups = async (_, { id, name }) => {
@@ -35,6 +36,9 @@ const groupResolver = {
    addUsersToGroups: async (_, { id, name, input }) => {
       return await addUsers({ groupName: name, groupId: id, ...input });
    },
+   setParentToGroup: async (_, {parentId,sonId}) => {
+      return await setParentToGroup({parentId,sonId})
+   }
 };
 
 module.exports = {
