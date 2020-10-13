@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import { withStyles, makeStyles, withTheme } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 

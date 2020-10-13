@@ -1,25 +1,32 @@
 import React from "react";
-import { StyledAddButton, StyledTableCell, StyledTableRow, useStyles } from "./style";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import AddIcon from "@material-ui/icons/Add";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import "../../styles/components/TabCohortes.scss";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {
+   Button,
+   ButtonGroup,
+   useMediaQuery,
+   Table,
+   TableBody,
+   TableContainer,
+   TableHead,
+   TableRow,
+   TablePagination,
+} from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import DialogDel from "./DialogDel";
-import empty from 'assets/empty.svg';
-import styles from './Tabla.module.scss';
-import { Button, ButtonGroup, TablePagination } from "@material-ui/core";
-import TableDialog from "./TableDialog";
 
-export default function Tabla({ data, columnas, info }) {
+import DialogDel from "./DialogDel";
+import TableDialog from "./TableDialog";
+import empty from "assets/empty.svg";
+import {
+   StyledAddButton,
+   StyledTableCell,
+   StyledTableRow,
+   useStyles,
+} from "./style";
+import styles from "./Tabla.module.scss";
+import "../../styles/components/TabCohortes.scss";
+import { Add, Delete, Edit, Visibility } from "@material-ui/icons";
+import Loading from "components/Loading";
+
+export default function Tabla({ loading, data, columnas, info }) {
    const classes = useStyles();
    const [openDel, setOpenDel] = React.useState(false);
    const theme = useTheme();
@@ -55,107 +62,131 @@ export default function Tabla({ data, columnas, info }) {
 
    return (
       <>
-      <TableContainer className={classes.container}>
-         {data.data && data.data.length > 0
-            ? <Table className={classes.table} aria-label="customized table">
-               <TableHead>
-                  <TableRow>
-                     {data.columns.map(({ key, label, align }) => (
-                        <StyledTableCell key={key} align={align}>
-                           {label}
-                        </StyledTableCell>
-                     ))}
-                     <StyledTableCell align="right">
-                        {data.actions && data.actions.create &&
-                           <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
-                              {data.addButtonLabel}
-                           </Button>
-                        }
-                     </StyledTableCell>
-                  </TableRow>
-               </TableHead>
-               <TableBody>
-                  {data.data.map((el, i) => (
-                     <StyledTableRow key={i}>
-                        {data.columns.map(({ key, align, component }) => (
-                           <StyledTableCell
-                              align={align}
-                              component="th"
-                              //scope="cohorte"
-                              key={key}
-                           >
-                              { component ? component(el) : el[key]}
+         <TableContainer className={classes.container}>
+            {loading && <Loading />}
+            {data.data && data.data.length > 0 ? (
+               <Table className={classes.table} aria-label="customized table">
+                  <TableHead>
+                     <TableRow>
+                        {data.columns.map(({ key, label, align }) => (
+                           <StyledTableCell key={key} align={align}>
+                              {label}
                            </StyledTableCell>
                         ))}
-                        <StyledTableCell
-                           align="right"
-                        >
-                           {data.actions &&
-                              <ButtonGroup >
-                                 {data.actions.view && 
-                                 <Button
-                                 onClick={() => data.actions.view.onSubmit(el.id)}
-                                 >
-                                    <VisibilityIcon                                 
-                                    />
-                                 </Button>}
-                                 {data.actions.update &&
-                                    <Button onClick={() => handleEditClickOpen(el.id)}>
-                                       <EditIcon />
-                                    </Button>
-                                 }
-                                 {data.actions.delete &&
-                                    <Button onClick={() => handleDelClickOpen(el.id)}>
-                                       <DeleteIcon />
-                                    </Button>
-                                 }
-                              </ButtonGroup>
-                           }
+                        <StyledTableCell align="right">
+                           {data.actions && data.actions.create && (
+                              <Button
+                                 variant="outlined"
+                                 startIcon={<Add />}
+                                 onClick={handleAddClickOpen}
+                              >
+                                 {data.addButtonLabel}
+                              </Button>
+                           )}
                         </StyledTableCell>
-                        <DialogDel
-                           opened={openDel === el.id}
-                           onClose={handleDelClose}
-                           onSubmit={() => data.actions.delete.onSubmit(el.id)}
-                           fullScreen={fullScreen}
-                        />
-                        {data.actions && data.actions.update &&
-                           <TableDialog
-                              opened={openEdit === el.id}
-                              onClose={handleEditClose}
-                              context={{ ...data.actions.update, initialValues: el }}
+                     </TableRow>
+                  </TableHead>
+                  <TableBody>
+                     {data.data.map((el, i) => (
+                        <StyledTableRow key={i}>
+                           {data.columns.map(({ key, align, component }) => (
+                              <StyledTableCell
+                                 align={align}
+                                 component="th"
+                                 //scope="cohorte"
+                                 key={key}
+                              >
+                                 {component ? component(el) : el[key]}
+                              </StyledTableCell>
+                           ))}
+                           <StyledTableCell align="right">
+                              {data.actions && (
+                                 <ButtonGroup>
+                                    {data.actions.view && (
+                                       <Button
+                                          onClick={() =>
+                                             data.actions.view.onSubmit(el.id)
+                                          }
+                                       >
+                                          <Visibility />
+                                       </Button>
+                                    )}
+                                    {data.actions.update && (
+                                       <Button
+                                          onClick={() =>
+                                             handleEditClickOpen(el.id)
+                                          }
+                                       >
+                                          <Edit />
+                                       </Button>
+                                    )}
+                                    {data.actions.delete && (
+                                       <Button
+                                          onClick={() =>
+                                             handleDelClickOpen(el.id)
+                                          }
+                                       >
+                                          <Delete />
+                                       </Button>
+                                    )}
+                                 </ButtonGroup>
+                              )}
+                           </StyledTableCell>
+                           <DialogDel
+                              opened={openDel === el.id}
+                              onClose={handleDelClose}
+                              onSubmit={() =>
+                                 data.actions.delete.onSubmit(el.id)
+                              }
+                              fullScreen={fullScreen}
                            />
-                        }
-
-                     </StyledTableRow>
-                  ))}
-               </TableBody>
-            </Table>
-            : <div className={styles.empty}>
-               <img src={empty} alt="sin datos" />
-               <div className={styles.info} >
-                  <StyledAddButton size="large" startIcon={<AddIcon />} onClick={handleAddClickOpen}>
-                     {data.addButtonLabel}
-                  </StyledAddButton>
-               </div>
-            </div>
-         }
-         {data.actions && data.actions.create &&
-            <TableDialog
-               opened={openAdd}
-               onClose={handleAddClose}
-               context={data.actions.create}
-            />
-         }
-      </TableContainer>
-      <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={32}
-          rowsPerPage={5}
-          page={1}
-          onChangePage={() => null}
-          onChangeRowsPerPage={()=> null}
-        />
+                           {data.actions && data.actions.update && (
+                              <TableDialog
+                                 opened={openEdit === el.id}
+                                 onClose={handleEditClose}
+                                 context={{
+                                    ...data.actions.update,
+                                    initialValues: el,
+                                 }}
+                              />
+                           )}
+                        </StyledTableRow>
+                     ))}
+                  </TableBody>
+               </Table>
+            ) : (
+               !loading && (
+                  <div className={styles.empty}>
+                     <img src={empty} alt="sin datos" />
+                     <div className={styles.info}>
+                        <StyledAddButton
+                           size="large"
+                           startIcon={<Add />}
+                           onClick={handleAddClickOpen}
+                        >
+                           {data.addButtonLabel}
+                        </StyledAddButton>
+                     </div>
+                  </div>
+               )
+            )}
+            {data.actions && data.actions.create && (
+               <TableDialog
+                  opened={openAdd}
+                  onClose={handleAddClose}
+                  context={data.actions.create}
+               />
+            )}
+         </TableContainer>
+         <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={32}
+            rowsPerPage={5}
+            page={1}
+            onChangePage={() => null}
+            onChangeRowsPerPage={() => null}
+         />
       </>
    );
 }
