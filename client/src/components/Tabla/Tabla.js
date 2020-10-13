@@ -147,13 +147,15 @@ export default function Tabla({ loading, data, columnas, info }) {
             <div className={styles.empty}>
               <img src={empty} alt="sin datos" />
               <div className={styles.info}>
-                <StyledAddButton
-                  size="large"
-                  startIcon={<Add />}
-                  onClick={handleAddClickOpen}
-                >
-                  {data.addButtonLabel}
-                </StyledAddButton>
+                {data.actions?.create && (
+                  <StyledAddButton
+                    size="large"
+                    startIcon={<Add />}
+                    onClick={handleAddClickOpen}
+                  >
+                    {data.addButtonLabel}
+                  </StyledAddButton>
+                )}
               </div>
             </div>
           )

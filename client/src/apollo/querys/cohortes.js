@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const COHORTES = gql`
   query {
@@ -30,8 +30,26 @@ export const COHORTE_BY_ID = gql`
         familyName
         email
       }
+      groups {
+        id
+        name
+        type
+        instructor {
+          id
+          givenName
+          familyName
+        }
+        pms {
+          id
+          givenName
+          familyName
+        }
+        students {
+          id
+          givenName
+          familyName
+        }
+      }
     }
   }
 `;
-
-
