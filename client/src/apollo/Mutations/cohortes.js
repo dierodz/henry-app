@@ -72,3 +72,11 @@ mutation($cohorteId: Int!, $groupId: [Int]!) {
   }
 }
 `;
+
+export const REMOVE_GROUP_TO_COHORTE = gql`
+mutation($cohorteId: Int!, $groupId: [Int]!) {
+  removeGroupsFromCohorte(cohorteId: $cohorteId, groupId: $groupId) {
+    id
+  }
+}
+`;

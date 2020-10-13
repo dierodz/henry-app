@@ -64,7 +64,7 @@ export default function Tabla({ loading, data, columnas, info }) {
     <>
       <TableContainer className={classes.container}>
         {loading && <Loading />}
-        {data.data && data.data.length > 0 ? (
+        {!loading && data.data && data.data.length > 0 ? (
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
