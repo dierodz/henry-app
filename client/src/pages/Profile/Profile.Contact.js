@@ -3,27 +3,23 @@ import ProfileCard from "components/Profile/Card";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 
-function BasicInfo({ data, onSubmit, onlyView }) {
-  const { givenName, familyName } = data;
+function Contact({ data: { email }, onSubmit, onlyView }) {
   const formik = useFormik({
-    initialValues: { givenName, familyName },
+    initialValues: { email },
     onSubmit: onSubmit,
   });
-
   const [readOnly, setReadOnly] = useState(true);
+
   return (
     <ProfileCard
-      title="Información básica"
+      title="Contacto"
       onlyView={onlyView}
       actions={
         readOnly ? (
           <Button
             type="button"
             variant="outlined"
-            onClick={() => {
-              setReadOnly(false);
-              formik.setValues({ givenName, familyName });
-            }}
+            onClick={() => setReadOnly(false)}
           >
             Editar
           </Button>
@@ -58,27 +54,13 @@ function BasicInfo({ data, onSubmit, onlyView }) {
             fullWidth
             margin="normal"
             variant="outlined"
-            label="Nombre"
-            value={readOnly ? givenName : formik.values.givenName}
+            label="Email"
+            name="email"
+            value={readOnly ? email : formik.values.email}
             onChange={formik.handleChange}
             InputProps={{
               readOnly,
             }}
-            name="givenName"
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <TextField
-            fullWidth
-            margin="normal"
-            variant="outlined"
-            label="Apellido"
-            value={readOnly ? familyName : formik.values.familyName}
-            onChange={formik.handleChange}
-            InputProps={{
-              readOnly,
-            }}
-            name="familyName"
           />
         </Grid>
       </Grid>
@@ -86,4 +68,4 @@ function BasicInfo({ data, onSubmit, onlyView }) {
   );
 }
 
-export default BasicInfo;
+export default Contact;
