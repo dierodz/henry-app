@@ -64,3 +64,11 @@ export const DELETE_USER_TO_COHORTE = gql`
       }
    }
 `;
+
+export const ADD_GROUP_TO_COHORTE = gql`
+mutation($cohorteId: Int!, $groupId: [Int]!) {
+  addGroupsToCohorte(cohorteId: $cohorteId, groupId: $groupId) {
+    id
+  }
+}
+`;
