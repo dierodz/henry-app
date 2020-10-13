@@ -20,18 +20,14 @@ const getMateReview = async () => {
 
 // Controlador para crear una review
 const createMateReview = async ({ score, commentary }) => {
-   console.log(score, commentary)
    const review = await MateReview.create({ score, commentary });
    return review;
 };
 
-// Controlador para editar una review
+// Controlador para editar una review 
 const editMateReview = async (id, score, commentary) => {
-   console.log(id, score, commentary)
    let review = await MateReview.findOne({ where: { id } });
-   console.log(review.dataValues)
    review = await review.update( score, commentary );
-   console.log(review.dataValues)
    return review.save();
 };
 
