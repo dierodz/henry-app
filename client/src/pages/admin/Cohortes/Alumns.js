@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
@@ -8,10 +8,21 @@ import { useCopyToClipboard } from "react-use";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 
-function Alumns({ className, cohorte }) {
-  const { loading, error, data } = useQuery(COHORTE_BY_ID, {
-    variables: { id: cohorte.id },
-  });
+function Alumns({ className, cohorte, data: componentData }) {
+  const [execute, { loading, error, data: preData }] = useLazyQuery(
+    COHORTE_BY_ID
+  );
+  useEffect(() => {
+    if (cohorte)
+      execute({
+        variables: { id: cohorte.id },
+      });
+  }, [cohorte, execute]);
+
+  const data = useMemo(() => preData || componentData, [
+    preData,
+    componentData,
+  ]);
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 

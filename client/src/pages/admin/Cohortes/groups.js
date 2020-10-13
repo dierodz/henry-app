@@ -1,16 +1,26 @@
-import React, { useMemo } from "react";
-import { useQuery } from "@apollo/client";
+import React, { useEffect, useMemo } from "react";
+import { useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import { useHistory } from "react-router-dom";
 
-function Groups({ className, cohorte }) {
-  const { loading, error, data } = useQuery(COHORTE_BY_ID, {
-    variables: { id: cohorte.id },
-  });
+function Groups({ className, cohorte, data: componentData }) {
+  const [execute, { loading, error, data: preData }] = useLazyQuery(
+    COHORTE_BY_ID
+  );
+  useEffect(() => {
+    if (cohorte)
+      execute({
+        variables: { id: cohorte.id },
+      });
+  }, [cohorte, execute]);
+
+  const data = useMemo(() => preData || componentData, [
+    preData,
+    componentData,
+  ]);
 
   const { push } = useHistory();
-
   const tableData = useMemo(
     () => ({
       loading,
