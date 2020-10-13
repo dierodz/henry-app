@@ -8,8 +8,10 @@ mutation createGroup(
   }
   ) {
    createGroup(
-     name: $name
-     type: $type
+    input:{
+      name:$name, 
+      type: $type
+    }
   ) {
      id
    }
