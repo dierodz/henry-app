@@ -22,6 +22,7 @@ function Cohortes({ className }) {
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
          return preData.cohortes.map((item) => {
+            console.log(item)
             return {
                ...item,
                instructorDisplay: `${item.instructor.givenName || ''} ${item.instructor.familyName || ''}`,
@@ -32,6 +33,7 @@ function Cohortes({ className }) {
          })
       } else return preData
    }, [preData])
+
 
    const tableData = useMemo(() => ({
       loading,
@@ -110,6 +112,7 @@ function Cohortes({ className }) {
          view: {
             onSubmit: (id) => {
                history.push("/admin/cohorte/" + id)
+
             }
          }
       }

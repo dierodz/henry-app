@@ -24,22 +24,13 @@ export const COHORTES = gql`
 export const COHORTE_BY_ID = gql`
   query COHORTES_BY_ID($id: Int) {
     cohortes(id: $id) {
-      instructor {
-        id
-        givenName
-        familyName
-      }
       users {
         id
         givenName
         familyName
       }
-      groups {
-        name
-        type
-      }
     }
   }
-`
+`;
 
 

@@ -38,8 +38,28 @@ export const EDIT_COHORTE = gql`
    }
 `;
 export const ADD_USER_TO_COHORTE = gql`
-   mutation addUsersToCohorte($cohorteId: Int!, $userId: [Int]!) {
-      addUsersToCohorte(cohorteId: $cohorteId, userId: $userId) {
+   mutation addUsersToCohorte(
+   $cohorteId: Int!, 
+   $userId: [Int]!
+   ) {
+      addUsersToCohorte(
+      cohorteId: $cohorteId, 
+      userId: $userId
+      ) {
+         id
+      }
+   }
+`;
+
+export const DELETE_USER_TO_COHORTE = gql`
+   mutation removeUsersFromCohorte(
+   $cohorteId: Int!, 
+   $userId: [Int]!
+   ) {
+      removeUsersFromCohorte(
+      cohorteId: $cohorteId, 
+      userId: $userId
+      ) {
          id
       }
    }

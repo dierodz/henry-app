@@ -94,6 +94,7 @@ export default function Tabla({ data, columnas, info }) {
                                  {data.actions.view && 
                                  <Button
                                  onClick={() => data.actions.view.onSubmit(el.id)}
+                                 
                                  >
                                     <VisibilityIcon                                 
                                     />

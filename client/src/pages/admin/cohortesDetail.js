@@ -1,43 +1,49 @@
-import React, {useMemo} from "react";
+import React, {useMemo, useEffect} from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import {COHORTES, COHORTE_BY_ID} from "apollo/querys/cohortes";
-import { EDIT_COHORTE } from "apollo/Mutations/cohortes";
-import { useParams } from "react-router-dom";
+import {COHORTE_BY_ID} from "apollo/querys/cohortes";
+import { EDIT_COHORTE, ADD_USER_TO_COHORTE, DELETE_USER_TO_COHORTE } from "apollo/Mutations/cohortes";
+import { useParams, useRouteMatch } from "react-router-dom";
+
 
 function CohortesDetail({className}) {
 
-const {index} = useParams()
+let {id} = useParams()
 
-   const {loading, error, data: preData}= useQuery(COHORTE_BY_ID, {
-      variables: { id: index},
-   });
 
-   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE);
+const [addUsersToCohorteMutation, resultCreate] = useMutation(ADD_USER_TO_COHORTE);
+const [deleteUsersToCohorteMutation, resultDelete] = useMutation(DELETE_USER_TO_COHORTE);
+
+ const variables = { variables: id ? id : id }
+
+ const {loading, error, data: preData, refetch}= useQuery(COHORTE_BY_ID, variables);
+ 
   
    const data = useMemo(() => {
       if (Array.isArray(preData?.cohortes)) {
          return preData.cohortes.map((item) => {
-            console.log(item.users)
-            return {
-               ...item,
-               id: item.users.id,
-               givenName: item.users.givenName,
-               familyName: item.users.familyName,
-               
+          return item.users.map((user) => {
+              return {
+               ...user,
+               id: user.id,
+               givenName: user.givenName,
+               familyName: user.familyName
             };
-         
+            })
          });
       } else return preData;
    }, [preData]);
+
+console.log(data)
 
    const tableData = useMemo(
       () => ({
          loading,
          error,
-         data: data,
+         data: data? data[variables.variables-2] : data,
+
          columns: [
-            { key: "id", label: "ID", align: "left" },
+            { key: "id", label: "id", align: "left" },
             { key: "givenName", label: "Nombre", align: "left" },
             { key: "familyName", label: "Apellido", align: "left" },
             
@@ -46,36 +52,50 @@ const {index} = useParams()
          actions: {
             create: {
                initialValues: {
-                  name: undefined,
+                  cohorteId: variables.variables,
+                  userId: undefined,
                },
-               inputs: [{ key: "name", label: "Nombre" }],
+               inputs: [{ key: "userId", label: "id", type: "number" }],
                onSubmit: async (values) => {
-                  console.log("submit");
+                 
+                   await addUsersToCohorteMutation({
+                     variables: {
+                        cohorteId: parseInt(values.cohorteId),
+                        userId: parseInt(values.userId),
+                     }
+                  })
                },
                submitButtonLabel: "Agregar",
                title: "Agregar alumno",
             },
-            update: {
-               inputs: [
-                  { key: "name", label: "Nombre" },
-                 
-               ],
-               onSubmit: async (values) => {
-                  await updateMutation({
-                     variables: {
-                        ...values,
-                        instructor: parseInt(values.instructor),
-                     },
-                  });
-               },
-               submitButtonLabel: "Enviar cambios",
-               title: "Editar cohorte",
-            },
+            
+            delete: {
+                                           
+               onSubmit: async (userId) => {
+               await deleteUsersToCohorteMutation({
+                  variables: {
+                     cohorteId: parseInt(variables.variables),
+                     userId: parseInt(userId),
+                  }
+               })
+             }
+            }
          },
       }),
-      [data, error, loading, updateMutation]
+      [data, error, loading, addUsersToCohorteMutation, deleteUsersToCohorteMutation]
    );
 
+   useEffect(() => {
+      if (!resultCreate.loading && resultCreate.called) {
+         refetch()
+      }
+   }, [resultCreate, refetch])
+
+      useEffect(() => {
+      if (!resultDelete.loading && resultDelete.called) {
+         refetch()
+      }
+   }, [resultDelete, refetch])
 
 
    return (
