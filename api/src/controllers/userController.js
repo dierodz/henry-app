@@ -107,7 +107,7 @@ const getUserById = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-   return await User.findOne({ where: { email }, include });
+   return await User.findOne({ where: { email } });
 };
 
 const getUserByGoogleID = async (googleId) => {
@@ -200,7 +200,9 @@ const deleteUserById = async (id) => {
 };
 
 const setRoleToUser = async (email, roles) => {
+   console.log(email);
    const user = await getUserByEmail(email);
+   // console.log(user)
    const role = await Role.findOne({ where: { name: roles } });
 
    await user.addRoles(role);
@@ -257,7 +259,7 @@ const inviteOneUser = async (email, role) => {
       user = await createUser({ email, role });
    }
 
-   await setRoleToUser(user.id, role);
+   await setRoleToUser(user.email, role);
 
    sendEmail({ email }, "userInivitation", role);
 
