@@ -6,9 +6,9 @@ const {
    editMatesScore,
 } = require("../../controllers/classmateScoreController");
 
-const matesScore = async (_, { id }) => {
-   console.log('llegué aquí')
+const matesScore = async (_, {id} ) => {
    if (id) {
+      console.log('I am a idiot', id)
       const result = await getOneMatesScore(id);
       return [result];
    } else return await getAllMatesScore();

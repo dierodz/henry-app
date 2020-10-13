@@ -83,12 +83,14 @@ const typeDefs = gql`
    type MatesScore {
       id: Int
       name: String 
+      reviews: [MateReview]
    }
 
    type MateReview {
       id: Int
       score: Int
       commentary: String
+
    }
 
    type Query {

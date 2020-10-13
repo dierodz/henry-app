@@ -2,9 +2,8 @@ const { MatesScoreType } = require("../db");
 
 const getOneMatesScore = async (id) => {
    
-   const score = await MatesScoreType.findOne({ where: { id }, 
-                                           include: { model: MateScoreProvided } });
-   console.log(score)
+   const score = await MatesScoreType.findOne({ where: { id } });
+   
 
    if (!score) {
       throw {
@@ -22,7 +21,7 @@ const getOneMatesScore = async (id) => {
 };
 
 const getAllMatesScore = async () => {
- console.log('gggogo')
+ 
    const score = await MatesScoreType.findAll();
 
    if (score.length < 1) {
@@ -41,7 +40,6 @@ const getAllMatesScore = async () => {
 };
 
 const createMatesScore = async (name) => {
-  console.log('pleas', name)
    return await MatesScoreType.create({ name });
 };
 
