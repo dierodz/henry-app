@@ -1,8 +1,8 @@
 const {
-review, 
-createMatesReview, 
-updateMatesReview, 
-deleteMatesReview,
+   mateReview, 
+   createReview , 
+   updateReview, 
+   deleteReview,
 } = require("./resolvers/mateReviewResolver");
 const {
    matesScore,
@@ -79,7 +79,7 @@ const resolvers = {
       groups,
       getUserRol,
       matesScore,
-      
+      mateReview,      
    },
 
 
@@ -119,7 +119,10 @@ const resolvers = {
       deleteMatesScore,
       updateMatesScore,
       createMatesScore,
-      //mutations para reviews       
+      //mutations para reviews
+      createReview , 
+      updateReview, 
+      deleteReview,       
       
 
    },

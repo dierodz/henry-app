@@ -102,9 +102,9 @@ const typeDefs = gql`
       users(id: Int): [User]
       getUserRol(role: String): [User]
 
-     matesScore(id: Int, name: String): [MatesScore]
+      matesScore(id: Int, name: String): [MatesScore]
 
-      mateReviews(id: Int, score: Int, commentary: String): [MateReview]
+      mateReview(id: Int, score: Int, commentary: String): [MateReview]
    }
 
    # Estos son los datos que acepta un usuario
@@ -199,9 +199,9 @@ const typeDefs = gql`
       deleteMatesScore(id: Int, name: String): DeleteResolve!
 
       # Mutaciones para MatesReview
-      createMatesReview(commentary: String): Score!
-      updateMatesReview(id: Int, commentary: String): Score!
-      deleteMatesReview(id: Int, commentary: String): DeleteResolve!
+      createReview(score: Int, commentary: String): Score!
+      updateReview(id: Int, score: Int,commentary: String): Score!
+      deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
    }
 `;
 

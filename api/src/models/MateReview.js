@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) =>
    sequelize.define("mate_review", {
       score: {
          type: DataTypes.INTEGER,
-         allowNull: false,
+         allowNull: true,
         },
        commentary: {
        	  type: DataTypes.STRING,       	  

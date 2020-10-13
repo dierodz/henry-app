@@ -1,6 +1,6 @@
 const { MateReview } = require("../db");
 
-// Controlador para obtener todos los modulos
+// Controlador para obtener todas las reviews
 
 const getMateReview = async () => {
    const review = await MateReview.findAll();
@@ -18,20 +18,24 @@ const getMateReview = async () => {
    return review;
 };
 
-// Controlador para crear un modulo
+// Controlador para crear una review
 const createMateReview = async ({ score, commentary }) => {
+   console.log(score, commentary)
    const review = await MateReview.create({ score, commentary });
-   return review;reviewreview
+   return review;
 };
 
-// Controlador para editar un modulo
+// Controlador para editar una review
 const editMateReview = async (id, score, commentary) => {
+   console.log(id, score, commentary)
    let review = await MateReview.findOne({ where: { id } });
-   review = await review.update({ score, commentary });
-   return rreview.save();
+   console.log(review.dataValues)
+   review = await review.update( score, commentary );
+   console.log(review.dataValues)
+   return review.save();
 };
 
-// Controlador para obtener un modulo por ID
+// Controlador para obtener una review por ID
 const getMateReviewId = async ({ id, score }) => {
    const where = {};
    if (id) where.id = id;
@@ -57,7 +61,7 @@ const getMateReviewId = async ({ id, score }) => {
    return review;
 };
 
-// Controlador para eliminar un modulo
+// Controlador para eliminar una review
 const deleteMateReview = async (id) => {
    const review = await MateReview.findOne({ where: { id } });
    await review.destroy();

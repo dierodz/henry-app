@@ -1,28 +1,28 @@
-const {
+const {   
    getMateReview,
-   createMateReview: createOneReview,
-   deleteMateReview: deleteReview,
+   createMateReview,
+   deleteMateReview,
    editMateReview,
    getMateReviewId,
 } = require("../../controllers/mateReviewsController");
 
-const review = async (_, { id, name }) => {
-   if (id || name) {
-      const result = await getMateReviewId({ id, name });
+const mateReview = async (_, { id, score }) => {
+   if (id || score) {
+      const result = await getMateReviewId({ id, score });
       return [result];
-   } else return await getModules();
+   } else return await getMateReview();
 };
 
-const createMateReview = async (_, { name, description}) => {
-   return await createOneReview({ name,description });
+const createReview = async (_, { score, commentary}) => {
+   return await createMateReview({ score, commentary });
 };
 
-const updateReview = async (_, { id, name, description }) => {
-   return await editMateReview(id, {name, description});
+const updateReview = async (_, { id, score, commentary }) => {
+   return await editMateReview(id, { score, commentary});
 };
 
-const deleteMateReview = async (_, { id }) => {
-   return await deleteReview(id);
+const deleteReview = async (_, { id }) => {
+   return await deleteMateReview(id);
 };
 
-module.exports = { review, createMateReview , updateReview, deleteMateReview };  
+module.exports = { mateReview, createReview , updateReview, deleteReview };  
