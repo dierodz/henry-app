@@ -11,7 +11,6 @@ const _getMultipleGroups = async (id) => {
          groups = await id.map(async (theId) => {
             theId = parseInt(theId);
             const group = await getOneGrup({ id: theId });
-            console.log(group);
             return group;
          });
 
@@ -191,6 +190,12 @@ const removeUsersOfGroups = async ({ groupId, groupName, userId }) => {
    return await getOneGrup({ id: group.id });
 };
 
+const setParentToGroup = async (parentId, sonId) => {
+   const hijo = await getOneGrup({id: sonId})
+   hijo.parent = parentId 
+   return await hijo.save()
+}
+
 const addUsersToGroups = async ({
    groupId,
    groupName,
@@ -237,4 +242,5 @@ module.exports = {
    removeUsersOfGroups,
    addUsersToGroups,
    _getMultipleGroups,
+   setParentToGroup,
 };

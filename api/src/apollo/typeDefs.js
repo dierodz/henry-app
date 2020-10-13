@@ -35,6 +35,7 @@ const typeDefs = gql`
       pms: [User]
       staff: [User]
       students: [User]
+      parent: Int
    }
 
    input GroupInput {
@@ -130,6 +131,8 @@ const typeDefs = gql`
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
       inviteUser(email: String!, role: String!): User
+      addRoleToUser(userId: Int!, roleName: String!): User
+      removeRoleToUser(userId: Int!, roleName: String!): User
 
       # Mutations Cohorte
       createCohorte(input: CohorteInput): Cohorte!
@@ -171,6 +174,7 @@ const typeDefs = gql`
       deleteGroup(id: Int, name: String): DeleteResolve!
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
+      setParentToGroup(parendId: Int, sonId: Int): Group! 
    }
 `;
 
