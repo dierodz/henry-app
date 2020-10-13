@@ -1,37 +1,82 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
-import { DataGrid } from "@material-ui/data-grid";
+import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
+import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
+import { useCopyToClipboard } from "react-use";
+import { Alert } from "@material-ui/lab";
+import { useHistory } from "react-router-dom";
 
 function Alumns({ className, cohorte }) {
   const { loading, error, data } = useQuery(COHORTE_BY_ID, {
     variables: { id: cohorte.id },
   });
 
-  // const tableData = useMemo(() => ({
-  //   loading,
-  //   error,
-  //   data: data ? data.getUserRol : undefined,
-  //   columns: [
-  //     { key: 'givenName', label: 'Nombre', align: 'left' },
-  //     { key: 'familyName', label: 'Apellido', align: 'left' },
-  //   ],
-  //   addButtonLabel: 'Invitar estudiante',
-  // }), [data, error, loading]);
+  const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
-  console.log(data?.cohortes[0].users )
+  const [showSnackbar, setShowSnackbar] = useState(false);
 
-  const columns = [
-    { field: 'givenName', headerName: 'Nombre' },
-    { field: 'familyName', headerName: 'Apellido' },
-  ];
+  const { push } = useHistory();
+
+  useEffect(() => {
+    if (copyValue) {
+      setShowSnackbar(true);
+    }
+  }, [copyValue]);
+
+  const tableData = useMemo(
+    () => ({
+      loading,
+      error,
+      data: data?.cohortes[0].users || undefined,
+      columns: [
+        { key: "givenName", label: "Nombre", align: "left" },
+        { key: "familyName", label: "Apellido", align: "left" },
+        {
+          key: "email",
+          label: "Email",
+          align: "left",
+          component: (el) => (
+            <ButtonGroup>
+              <Button
+                startIcon={<MailOutlineRounded />}
+                href={`mailto: ${el.email}`}
+              >
+                Enviar
+              </Button>
+              <Button onClick={() => copyToClipboard(el.email)}>
+                <FileCopyRounded />
+              </Button>
+            </ButtonGroup>
+          ),
+        },
+      ],
+      addButtonLabel: "Invitar estudiante",
+      actions: {
+        view: {
+          onSubmit: (id) => push(`/profile/${id}`),
+        },
+      },
+    }),
+    [data, error, loading, copyToClipboard, push]
+  );
+
+  console.log(data?.cohortes[0].users);
 
   return (
     <div className={className}>
-      <div style={{ height: '50vh', width: '100%' }}>
-      <DataGrid rows={data?.cohortes ? data?.cohortes[0].users : [] } columns={columns} pageSize={5} />
+      <div style={{ height: "50vh", width: "100%" }}>
+        <Tabla loading={loading} data={tableData} pageSize={5} />
       </div>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity="info">Email copiado al potapapeles</Alert>
+      </Snackbar>
     </div>
   );
 }
