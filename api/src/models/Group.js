@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
          },
       },
       type: {
-         type: DataTypes.ENUM("pp", "standup", "general"),
+         type: DataTypes.ENUM('pp', 'standup', 'general')
       },
-   });
-};
+      parent: {
+         type: DataTypes.INTEGER, 
+      }
+ })
+ };
+ 
