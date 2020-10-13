@@ -1,4 +1,5 @@
 const { User, Role } = require("../db");
+const { sendEmail } = require("../mailModels/sendEmail");
 
 const include = [Role];
 
@@ -198,12 +199,20 @@ const deleteUserById = async (id) => {
    return { message: "successfully removed" };
 };
 
-const setRolesToUser = async (id, roles) => {
+const setRoleToUser = async (id, roles) => {
    const user = await getUserById(id);
    const role = await Role.findOne({ where: { name: roles } });
 
-   const updatedUsser = await user.setRoles(role);
-   return await getUserById(updatedUsser.id);
+   await user.addRoles(role);
+   return await getUserById(user.id);
+};
+
+const removeRoleToUser = async (id, roles) => {
+   const user = await getUserById(id);
+   const role = await Role.findOne({ where: { name: roles } });
+
+   await user.removeRoles(role);
+   return await getUserById(user.id);
 };
 
 const _internalGetUserByEmail = async (email) => {
@@ -240,6 +249,21 @@ const _getMultipleUsers = async (id) => {
 
    return [];
 };
+
+const inviteOneUser = async (email, role) => {
+   let user = await getUserByEmail(email);
+
+   if (!user) {
+      user = await createUser({ email, role });
+   }
+
+   await setRoleToUser(user.id, role);
+
+   sendEmail({ email }, "userInivitation", role);
+
+   return getUserById(user.id);
+};
+
 module.exports = {
    createUser,
    getAllUsers,
@@ -249,8 +273,10 @@ module.exports = {
    getUserByGithubID,
    deleteUserById,
    updateUser,
-   setRolesToUser,
+   setRoleToUser,
    _internalGetUserByEmail,
    getUserbyRol,
    _getMultipleUsers,
+   removeRoleToUser,
+   inviteOneUser,
 };

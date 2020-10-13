@@ -11,7 +11,6 @@ const _getMultipleGroups = async (id) => {
          groups = await id.map(async (theId) => {
             theId = parseInt(theId);
             const group = await getOneGrup({ id: theId });
-            console.log(group);
             return group;
          });
 
