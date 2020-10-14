@@ -1,7 +1,7 @@
-const { User, Role } = require("../db");
+const { User, Role, Cohorte, parseWhere } = require("../db");
 const { sendEmail } = require("../mailModels/sendEmail");
 
-const include = [Role];
+const include = [Role, Cohorte];
 
 const createUser = async ({
    givenName,
@@ -65,9 +65,25 @@ const createUser = async ({
    return await getUserById(user.id);
 };
 
-const getAllUsers = async () => {
+const getAllUsers = async ({ where, limit, offset, order }) => {
+   let localInclude = [...include];
+   if (where) {
+      where = parseWhere(where);
+      if (where["Role"]) {
+         localInclude[0] = { model: Role, where: parseWhere(where.Role) };
+         delete where.Role;
+      }
+      if (where["Cohorte"]) {
+         localInclude[1] = { model: Cohorte, where: parseWhere(where.Cohorte) };
+         delete where.Cohorte;
+      }
+   }
    const users = await User.findAll({
-      include,
+      where,
+      limit,
+      offset,
+      order,
+      include: localInclude,
    });
 
    if (users.length < 1) {
@@ -266,6 +282,32 @@ const inviteOneUser = async (email, role) => {
    return getUserById(user.id);
 };
 
+const countUsers = async ({ where }) => {
+   let localInclude = [];
+   if (where) {
+      where = parseWhere(where);
+      if (where["Role"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Role, where: parseWhere(where.Role) },
+         ];
+         delete where.Role;
+      }
+      if (where["Cohorte"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Cohorte, where: parseWhere(where.Cohorte) },
+         ];
+         delete where.Cohorte;
+      }
+   }
+   const result = await User.count({
+      where,
+      include: localInclude,
+   });
+   return result;
+};
+
 module.exports = {
    createUser,
    getAllUsers,
@@ -281,4 +323,5 @@ module.exports = {
    _getMultipleUsers,
    removeRoleToUser,
    inviteOneUser,
+   countUsers,
 };

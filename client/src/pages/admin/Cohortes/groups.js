@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { useHistory } from "react-router-dom";
 import { CREATE_GROUP } from "apollo/Mutations/groups";

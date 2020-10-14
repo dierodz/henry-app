@@ -75,6 +75,7 @@ const typeDefs = gql`
       githubId: String
       photoUrl: String
       roles: [Role]
+      cohortes: [Cohorte]
    }
 
    type Lesson {
@@ -106,7 +107,8 @@ const typeDefs = gql`
       modules(id: Int): [Module]
       roles(id: Int): [Role]
       scores(id: Int): [Score]
-      users(id: Int): [User]
+      users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
+      countUsers(where: JSON): Int
       getUserRol(role: String): [User]
       lessons(id: Int, name: String, link: String): [Lesson]
    }
