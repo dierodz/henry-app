@@ -1,6 +1,5 @@
 import React from "react";
 import { Redirect, Route } from "react-router-dom";
-import PropTypes from "prop-types";
 
 /*
  ! Este un componente de rutas - (Especial para auth).
@@ -11,29 +10,25 @@ import PropTypes from "prop-types";
 */
 
 const PublicRoutes = ({
-  isAuthenticated,
-  component: Component,
-  redirectTo,
-  ...rest
+   isAuthenticated,
+   component: Component,
+   redirectTo,
+   ...rest
 }) => {
-  return (
-    <Route
-      {...rest}
-      component={(props) =>
-        !isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={redirectTo} />
-        )
-      }
-    />
-  );
-};
+   const lastPath = localStorage.getItem("lastPath");
 
-PublicRoutes.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  component: PropTypes.func.isRequired,
-  redirectTo: PropTypes.string.isRequired,
+   return (
+      <Route
+         {...rest}
+         component={(props) =>
+            !isAuthenticated ? (
+               <Component {...props} />
+            ) : (
+                  <Redirect to={lastPath || redirectTo} />
+               )
+         }
+      />
+   );
 };
 
 export default PublicRoutes;

@@ -1,24 +1,33 @@
-import React from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
-import AuthRouter from "./AuthRouter";
-import PublicRoutes from "./PublicRoutes";
+import { BrowserRouter as Router } from "react-router-dom";
+
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { signInWithToken, initialize } from "dispatchers/auth";
+import GeneralRoutes from "./GeneralRoutes";
 
 const AppRouter = () => {
-  return (
-    <Router>
-      <div>
-        <Switch>
-          <PublicRoutes
-            // Cambiar, luego, el false por una variable de autenticación
-            component={AuthRouter}
-            isAuthenticated={false}
-            path="/auth"
-            redirectTo="/"
-          />
-        </Switch>
-      </div>
-    </Router>
-  );
+   const dispatch = useDispatch();
+   const [checking, setChecking] = useState(true);
+   const localToken = JSON.parse(localStorage.getItem("token"));
+
+   useEffect(() => {
+      if (localToken) {
+         initialize();
+         dispatch(signInWithToken(localToken));
+      }
+      setChecking(false);
+   }, [localToken, dispatch]);
+
+   if (checking) {
+      return <h1>Please Wait...</h1>;
+   }
+
+   return (
+      <Router>
+         <GeneralRoutes />
+      </Router>
+   );
 };
 
 export default AppRouter;

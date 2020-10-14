@@ -1,0 +1,55 @@
+.userMenu {
+   width: 300px;
+   height: 250px;
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+}
+.userMenu img {
+   width: 80px;
+   height: 80px;
+   border-radius: 50%;
+   box-shadow: 0.3px 0.3px 1px 1px grey;
+   margin-top: 20px;
+}
+#primary-search-account-menu {
+   margin-top: 52px;
+}
+.userName {
+   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+   margin-top: 10px;
+}
+.perfilBtn {
+   width: 50%;
+   height: 16%;
+   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+   border-style: none;
+   color: #444444;
+   box-shadow: 0.3px 0.3px 1px grey;
+   background: yellow;
+   border-radius: 5px;
+   margin-top: 10px;
+   cursor: pointer;
+}
+.perfilBtn:hover {
+   box-shadow: 0.3px 0.3px 2px grey;
+}
+.logoutBtn {
+   width: 51%;
+   height: 17%;
+   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+   color: white;
+   border-style: solid;
+   border-color: yellow;
+   border-width: 0.6px;
+   background: #444444;
+   border-radius: 5px;
+   margin-top: 10px;
+   cursor: pointer;
+}
+.logoutBtn:hover {
+   border-style: none;
+}
