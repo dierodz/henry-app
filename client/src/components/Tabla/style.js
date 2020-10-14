@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import { withStyles, makeStyles, withTheme } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 
@@ -26,7 +26,8 @@ export const useStyles = makeStyles({
       //height: 'calc(100vh - 4rem - 1px)'
    },
    container: {
-      height: 'calc(100vh - 4rem - 1px)'
+      height: 'calc(100vh - 4rem - 1px)',
+      maxHeight: 'calc(100% - 52px)'
    },
    botones: {
       display: "flex",

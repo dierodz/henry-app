@@ -6,7 +6,7 @@ const createCohorte = async (cohorte) => {
    try {
       let result = await Cohorte.create({
          ...cohorte,
-         startDate: new Date(cohorte.startDate)
+         startDate: new Date(cohorte.startDate),
       });
       return result;
    } catch (error) {
@@ -25,17 +25,22 @@ const upDateCohorte = async (cohorte) => {
    try {
       return await result.update({
          ...cohorte,
-         startDate: new Date(cohorte.startDate)
+         startDate: new Date(cohorte.startDate),
       });
    } catch (error) {
       console.error(error);
    }
 };
 
-const getAllCohortes = async () => {
+const getAllCohortes = async ({ where, limit, offset, order }) => {
    const cohortes = await Cohorte.findAll({
+      where,
+      limit,
+      offset,
+      order,
       include: [{ model: User, inclue: [Role] }, Group],
    });
+
    return cohortes;
 };
 
@@ -100,6 +105,10 @@ const removeGroupsOfCohorte = async (cohorteId, groupId) => {
    return await getEspecificCohorte(cohorteId);
 };
 
+const countCohortes = async ({ where }) => {
+   return await Cohorte.count({ where });
+};
+
 module.exports = {
    createCohorte,
    deleteCohorteById,
@@ -110,4 +119,5 @@ module.exports = {
    removeUsersOfCohorte,
    addGropusToCohorte,
    removeGroupsOfCohorte,
+   countCohortes,
 };

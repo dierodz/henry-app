@@ -1,4 +1,3 @@
-const { getOneRole } = require("../../controllers/roleController");
 const {
    getAllUsers,
    getUserById,
@@ -6,44 +5,50 @@ const {
    updateUser: editUser,
    deleteUserById,
    getUserbyRol,
-   getUserByEmail,
+   setRoleToUser,
+   removeRoleToUser,
+   inviteOneUser,
 } = require("../../controllers/userController");
-const { sendEmail } = require("../../mailModels/sendEmail");
 
-const users = async (_, { id }) => {
-   if (id) {
-      const result = await getUserById(id);
-      return [result];
-   } else return await getAllUsers();
+const userQuerys = {
+   users: async (_, { id }) => {
+      if (id) {
+         const result = await getUserById(id);
+         return [result];
+      } else return await getAllUsers();
+   },
+   getUserRol: async (_, { role }) => {
+      return await getUserbyRol(role);
+   },
 };
 
-const createUser = async (_, { input }) => {
-   return await createOneUser({ ...input });
+const userMutations = {
+   updateUser: async (_, { id, input }) => {
+      return await editUser(id, { ...input });
+   },
+
+   deleteUser: async (_, { id }) => {
+      return await deleteUserById(id);
+   },
+
+   inviteUser: async (_, { email, role }) => {
+      return await inviteOneUser(email, role);
+   },
+
+   createUser: async (_, { input }) => {
+      return await createOneUser({ ...input });
+   },
+
+   addRoleToUser: async (_, { email, roleName }) => {
+      return await setRoleToUser(email, roleName);
+   },
+
+   removeRoleToUser: async (_, { email, roleName }) => {
+      return await removeRoleToUser(email, roleName);
+   },
 };
 
-const inviteUser = async (_, { email, role: roleName }) => {
-   const user = await getUserByEmail(email)
-   if (user) {
-      return user
-   } else {
-      const user = await createOneUser({ email, role: roleName })
-      if (user) {
-         await sendEmail({ email }, "userInivitation", roleName)
-      }
-      return user
-   }
-}
-
-const updateUser = async (_, { id, input }) => {
-   return await editUser(id, { ...input });
+module.exports = {
+   userMutations,
+   userQuerys,
 };
-
-const deleteUser = async (_, { id }) => {
-   return await deleteUserById(id);
-};
-
-const getUserRol = async (_, { role }) => {
-   return await getUserbyRol(role)
-}
-
-module.exports = { users, createUser, updateUser, deleteUser, getUserRol, inviteUser };

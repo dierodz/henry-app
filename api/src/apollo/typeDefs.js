@@ -1,6 +1,8 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+   scalar JSON
+
    type CheckPoint {
       id: Int
       name: String
@@ -35,6 +37,7 @@ const typeDefs = gql`
       pms: [User]
       staff: [User]
       students: [User]
+      parent: Int
    }
 
    input GroupInput {
@@ -82,9 +85,24 @@ const typeDefs = gql`
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
-      cohortes(name: String): [Cohorte]
+      countCohortes(where: JSON): Int
+      cohortes(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Cohorte]
       contents(topicName: String): [Content]
-      groups(id: Int, name: String): [Group]
+      countGroups(where: JSON): Int
+      groups(
+         id: Int
+         name: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Group]
       modules(id: Int): [Module]
       roles(id: Int): [Role]
       scores(id: Int): [Score]
@@ -137,6 +155,8 @@ const typeDefs = gql`
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
       inviteUser(email: String!, role: String!): User
+      addRoleToUser(email: String!, roleName: String!): User
+      removeRoleToUser(email: String!, roleName: String!): User
 
       # Mutations Cohorte
       createCohorte(input: CohorteInput): Cohorte!
@@ -178,6 +198,7 @@ const typeDefs = gql`
       deleteGroup(id: Int, name: String): DeleteResolve!
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
+      setParentToGroup(parendId: Int, sonId: Int): Group!
    }
 `;
 

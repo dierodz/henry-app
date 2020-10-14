@@ -8,14 +8,21 @@ const {
    addUsersToCohorte,
    addGropusToCohorte,
    removeUsersOfCohorte,
+   countCohortes: dbCount,
 } = require("../../controllers/cohorteController");
+const { parseWhere } = require("../../db");
 
-const cohortes = async (_, { id }) => {
+const countCohortes = async (_, { where }) => {
+   return await dbCount({ where });
+};
+
+const cohortes = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await getEspecificCohorte(id);
       return [result];
    } else {
-      let result = await getAllCohortes();
+      if (where) where = parseWhere(where);
+      let result = await getAllCohortes({ where, limit, offset, order });
       // result = result.reduce((res, { dataValues: field }) => {
       //    res = ([
       //       ...res,
@@ -26,7 +33,7 @@ const cohortes = async (_, { id }) => {
       //    ])
       //    return res
       // }, [])
-      return result
+      return result;
    }
 };
 
@@ -60,4 +67,7 @@ const cohorteResolver = {
    },
 };
 
-module.exports = { cohortes, cohorteResolver };
+module.exports = {
+   cohortesQuery: { countCohortes, cohortes },
+   cohorteResolver,
+};

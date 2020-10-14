@@ -1,12 +1,8 @@
-const { cohortes, cohorteResolver } = require("./resolvers/cohorteResolver");
 const {
-   users,
-   createUser,
-   inviteUser,
-   updateUser,
-   deleteUser,
-   getUserRol,
-} = require("./resolvers/userResolver");
+   cohortesQuery,
+   cohorteResolver,
+} = require("./resolvers/cohorteResolver");
+const { userMutations, userQuerys } = require("./resolvers/userResolver");
 const {
    checkPoints,
    updateCheckPoint,
@@ -33,7 +29,7 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
-const { groups, groupResolver } = require("./resolvers/groupResolver");
+const { groupQuerys, groupResolver } = require("./resolvers/groupResolver");
 
 const { getUserById } = require("../controllers/userController");
 const {
@@ -47,25 +43,20 @@ const { lessons } = require("./resolvers/lessonsResolver");
 
 const resolvers = {
    Query: {
-      users,
       checkPoints,
-      cohortes,
+      ...cohortesQuery,
       contents,
       modules,
       roles,
       scores,
-      groups,
-      getUserRol,
-      lessons,
+      ...groupQuerys,
+      ...userQuerys,
    },
    Mutation: {
       //Mutations for Cohortes
       ...cohorteResolver,
       // Mutations for Users
-      createUser,
-      inviteUser,
-      updateUser,
-      deleteUser,
+      ...userMutations,
       // Mutations for CheckPoints
       createCheckPoint,
       updateCheckPoint,

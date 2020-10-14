@@ -92,29 +92,59 @@ Lesson.belongsTo(Content)
 // CREACIÓN DE LOS ROLES
 
 const createRoles = async () => {
-   const staffRole = await Role.findOne({ where: { name: "staff" } });
-   const instructorRole = await Role.findOne({
+   let staffRole = await Role.findOne({ where: { name: "staff" } });
+   let instructorRole = await Role.findOne({
       where: { name: "instructor" },
    });
-   const pmRole = await Role.findOne({ where: { name: "pm" } });
-   const alumnoRole = await Role.findOne({ where: { name: "student" } });
+   let pmRole = await Role.findOne({ where: { name: "pm" } });
+   let alumnoRole = await Role.findOne({ where: { name: "student" } });
 
    if (!staffRole) {
-      await Role.create({ name: "staff" });
+      staffRole = await Role.create({ name: "staff" });
    }
    if (!instructorRole) {
-      await Role.create({ name: "instructor" });
+      instructorRole = await Role.create({ name: "instructor" });
    }
    if (!pmRole) {
-      await Role.create({ name: "pm" });
+      pmRole = await Role.create({ name: "pm" });
    }
    if (!alumnoRole) {
-      await Role.create({ name: "student" });
+      alumnoRole = await Role.create({ name: "student" });
+   }
+
+   const RootUser = await User.findOne({
+      where: { email: "rootuser@root.com" },
+   });
+
+   if (!RootUser) {
+      const RootUser = await User.create({
+         givenName: "root",
+         familyName: "root",
+         nickName: "root",
+         email: "rootuser@root.com",
+         password: "123456789",
+      });
+
+      RootUser.addRole(staffRole);
    }
 };
 
+function parseWhere(where) {
+   for (let prop in where) {
+      const splitProp = prop.split("_");
+      if (splitProp.length === 2) {
+         where[splitProp[0]] = {
+            [Op[splitProp[1]]]: where[prop],
+         };
+         delete where[prop];
+      }
+   }
+   return where;
+}
+
 module.exports = {
    conn: sequelize,
+   parseWhere,
    Op,
    DataTypes,
    Cohorte,

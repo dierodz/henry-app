@@ -1,4 +1,4 @@
-const { Group, User } = require("../db");
+const { Group, User, parseWhere } = require("../db");
 const { getUserById } = require("./userController");
 
 const { _getMultipleUsers: getMultipleUsers } = require("./userController");
@@ -11,7 +11,6 @@ const _getMultipleGroups = async (id) => {
          groups = await id.map(async (theId) => {
             theId = parseInt(theId);
             const group = await getOneGrup({ id: theId });
-            console.log(group);
             return group;
          });
 
@@ -100,8 +99,9 @@ const getOneGrup = async ({ id, name }) => {
    return group;
 };
 
-const getAllGrups = async () => {
-   return await Group.findAll();
+const getAllGrups = async ({ where, limit, offset, order }) => {
+   if (where) where = parseWhere(where);
+   return await Group.findAll({ where, limit, offset, order });
 };
 
 const getInstructorOfGrups = async (id) => {
@@ -191,6 +191,12 @@ const removeUsersOfGroups = async ({ groupId, groupName, userId }) => {
    return await getOneGrup({ id: group.id });
 };
 
+const setParentToGroup = async (parentId, sonId) => {
+   const hijo = await getOneGrup({ id: sonId });
+   hijo.parent = parentId;
+   return await hijo.save();
+};
+
 const addUsersToGroups = async ({
    groupId,
    groupName,
@@ -224,6 +230,10 @@ const addUsersToGroups = async ({
    return await getOneGrup({ id: group.id });
 };
 
+const countGroups = async ({ where }) => {
+   return await Group.count({ where });
+};
+
 module.exports = {
    createGrup,
    editGrup,
@@ -237,4 +247,6 @@ module.exports = {
    removeUsersOfGroups,
    addUsersToGroups,
    _getMultipleGroups,
+   setParentToGroup,
+   countGroups,
 };

@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const getUserRol = gql`
   query UserByRole($role: String) {
@@ -11,4 +11,21 @@ export const getUserRol = gql`
       }
     }
   }
-`
+`;
+
+export const USER_FULL = gql`
+  query userFull($id: Int) {
+    users(id: $id) {
+      id
+      givenName
+      familyName
+      nickName
+      email
+      photoUrl
+      roles {
+        id
+        name
+      }
+    }
+  }
+`;
