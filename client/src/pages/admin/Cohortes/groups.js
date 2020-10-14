@@ -15,7 +15,7 @@ function Groups({
 }) {
   const [
     execute,
-    { loading: queryLoading, error, data: preData },
+    { loading: queryLoading, error, data: preData, refetch: preRefetch },
   ] = useLazyQuery(COHORTE_BY_ID);
 
   const [createGroup, { loading: createLoading }] = useMutation(CREATE_GROUP);
@@ -72,13 +72,24 @@ function Groups({
                 },
               });
             }
-            onRefetch && onRefetch();
+            if (cohorte) preRefetch();
+            else onRefetch && onRefetch();
           },
           inputs: [{ key: "name", label: "Nombre" }],
         },
       },
     }),
-    [data, error, loading, push, createGroup, addGroupToCohorte, onRefetch]
+    [
+      data,
+      error,
+      loading,
+      push,
+      createGroup,
+      addGroupToCohorte,
+      onRefetch,
+      preRefetch,
+      cohorte,
+    ]
   );
 
   return (
