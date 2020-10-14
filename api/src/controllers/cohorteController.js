@@ -32,9 +32,12 @@ const upDateCohorte = async (cohorte) => {
    }
 };
 
-const getAllCohortes = async ({ where }) => {
+const getAllCohortes = async ({ where, limit, offset, order }) => {
    const cohortes = await Cohorte.findAll({
       where,
+      limit,
+      offset,
+      order,
       include: [{ model: User, inclue: [Role] }, Group],
    });
    return cohortes;

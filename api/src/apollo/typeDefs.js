@@ -79,7 +79,13 @@ const typeDefs = gql`
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
-      cohortes(id: Int, where: JSON): [Cohorte]
+      cohortes(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Cohorte]
       contents(topicName: String): [Content]
       groups(id: Int, name: String): [Group]
       modules(id: Int): [Module]

@@ -11,13 +11,13 @@ const {
 } = require("../../controllers/cohorteController");
 const { parseWhere } = require("../../db");
 
-const cohortes = async (_, { id, where }) => {
+const cohortes = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await getEspecificCohorte(id);
       return [result];
    } else {
       if (where) where = parseWhere(where);
-      let result = await getAllCohortes({ where });
+      let result = await getAllCohortes({ where, limit, offset, order });
       // result = result.reduce((res, { dataValues: field }) => {
       //    res = ([
       //       ...res,
