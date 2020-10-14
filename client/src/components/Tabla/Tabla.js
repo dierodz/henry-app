@@ -26,7 +26,15 @@ import "../../styles/components/TabCohortes.scss";
 import { Add, Delete, Edit, Visibility } from "@material-ui/icons";
 import Loading from "components/Loading";
 
-export default function Tabla({ loading, data, columnas, info }) {
+export default function Tabla({
+  loading,
+  data,
+  count,
+  page,
+  rowsPerPage,
+  onChangePage,
+  onChangeRowsPerPage,
+}) {
   const classes = useStyles();
   const [openDel, setOpenDel] = React.useState(false);
   const theme = useTheme();
@@ -64,7 +72,7 @@ export default function Tabla({ loading, data, columnas, info }) {
     <>
       <TableContainer className={classes.container}>
         {loading && <Loading />}
-        {data.data && data.data.length > 0 ? (
+        {!loading && data.data && data.data.length > 0 ? (
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
               <TableRow>
@@ -147,13 +155,15 @@ export default function Tabla({ loading, data, columnas, info }) {
             <div className={styles.empty}>
               <img src={empty} alt="sin datos" />
               <div className={styles.info}>
-                <StyledAddButton
-                  size="large"
-                  startIcon={<Add />}
-                  onClick={handleAddClickOpen}
-                >
-                  {data.addButtonLabel}
-                </StyledAddButton>
+                {data.actions?.create && (
+                  <StyledAddButton
+                    size="large"
+                    startIcon={<Add />}
+                    onClick={handleAddClickOpen}
+                  >
+                    {data.addButtonLabel}
+                  </StyledAddButton>
+                )}
               </div>
             </div>
           )
@@ -166,15 +176,17 @@ export default function Tabla({ loading, data, columnas, info }) {
           />
         )}
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={32}
-        rowsPerPage={5}
-        page={1}
-        onChangePage={() => null}
-        onChangeRowsPerPage={() => null}
-      />
+      {count && (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          component="div"
+          count={count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangeRowsPerPage}
+        />
+      )}
     </>
   );
 }

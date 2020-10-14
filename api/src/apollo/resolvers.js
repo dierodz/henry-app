@@ -1,4 +1,7 @@
-const { cohortes, cohorteResolver } = require("./resolvers/cohorteResolver");
+const {
+   cohortesQuery,
+   cohorteResolver,
+} = require("./resolvers/cohorteResolver");
 const { userMutations, userQuerys } = require("./resolvers/userResolver");
 const {
    checkPoints,
@@ -39,7 +42,7 @@ const {
 const resolvers = {
    Query: {
       checkPoints,
-      cohortes,
+      ...cohortesQuery,
       contents,
       modules,
       roles,

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
@@ -8,10 +8,33 @@ import { useCopyToClipboard } from "react-use";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 
-function Alumns({ className, cohorte }) {
-  const { loading, error, data } = useQuery(COHORTE_BY_ID, {
-    variables: { id: cohorte.id },
-  });
+function Alumns({
+  className,
+  cohorte,
+  data: componentData,
+  loading: componentLoading,
+}) {
+  const [
+    execute,
+    { loading: queryLoading, error, data: preData },
+  ] = useLazyQuery(COHORTE_BY_ID);
+
+  useEffect(() => {
+    if (cohorte)
+      execute({
+        variables: { id: cohorte.id },
+      });
+  }, [cohorte, execute]);
+
+  const loading = useMemo(() => queryLoading || componentLoading, [
+    queryLoading,
+    componentLoading,
+  ]);
+
+  const data = useMemo(() => preData || componentData, [
+    preData,
+    componentData,
+  ]);
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
@@ -65,10 +88,8 @@ function Alumns({ className, cohorte }) {
   console.log(data?.cohortes[0].users);
 
   return (
-    <div className={className}>
-      <div style={{ height: "50vh", width: "100%" }}>
-        <Tabla loading={loading} data={tableData} pageSize={5} />
-      </div>
+    <div className={className} style={{ height: "50vh", width: "100%" }}>
+      <Tabla loading={loading} data={tableData} pageSize={5} />
       <Snackbar
         open={showSnackbar}
         autoHideDuration={3000}
