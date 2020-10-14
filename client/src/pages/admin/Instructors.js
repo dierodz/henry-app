@@ -48,7 +48,7 @@ function Instructors({ className }) {
            onSubmit: (id) => alert(id),
          },
        },
-   }), [data, error, loading]);
+   }), [addRoleMutation,data, error, loading]);
 
    return (
       <div className={className}>
