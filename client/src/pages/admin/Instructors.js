@@ -1,12 +1,20 @@
-import React, { useMemo } from "react";
-import { useQuery } from "@apollo/client";
+import React, { useMemo, useEffect } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { getUserRol } from "apollo/querys/users";
+import { ADD_ROLE } from "apollo/Mutations/role";
 
 function Instructors({ className }) {
-   const { loading, error, data } = useQuery(getUserRol, {
+   const { loading, error, data, refetch } = useQuery(getUserRol, {
       variables: { role: "instructor" },
    });
+   const [addRoleMutation, resultAddRole] = useMutation(ADD_ROLE);
+
+   useEffect(() => {
+      if (!resultAddRole.loading && resultAddRole.called) {
+        refetch();
+      }
+    }, [resultAddRole, refetch]);
 
    const tableData = useMemo(() => ({
       loading,
@@ -17,7 +25,29 @@ function Instructors({ className }) {
          { key: 'familyName', label: 'Apellido', align: 'left' },
          { key: 'cohortes', label: 'Cohortes', align: 'left' },
       ],
-      addButtonLabel: 'Agregar instructor'
+      addButtonLabel: 'Agregar instructor',
+      actions: {
+         create: {
+           initialValues: {
+             email: undefined,
+           },
+           inputs: [{ key: "email", label: "Email" }],
+           onSubmit: async (values) => {
+             const data = {
+               variables: {
+                 ...values,
+                 roleName: "instructor",
+               },
+             };
+             await addRoleMutation(data);
+           },
+           submitButtonLabel: "Añadir",
+           title: "Añadir Instructor",
+         },
+         delete: {
+           onSubmit: (id) => alert(id),
+         },
+       },
    }), [data, error, loading]);
 
    return (
