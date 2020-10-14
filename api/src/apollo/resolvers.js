@@ -39,6 +39,8 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
+const { lessons } = require("./resolvers/lessonsResolver");
+
 const resolvers = {
    Query: {
       checkPoints,

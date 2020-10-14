@@ -12,6 +12,7 @@ const checkPointModels = require("./models/CheckPoint");
 const moduleModels = require("./models/Module");
 const groupModels = require("./models/Group");
 const group_userModels = require("./models/Group_users");
+const LessonModels = require("./models/Lesson");
 
 // ======================= FIN Importación de modelos =======================
 
@@ -41,6 +42,7 @@ const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Module = moduleModels(sequelize, DataTypes);
 const Group = groupModels(sequelize, DataTypes);
 const Group_users = group_userModels(sequelize, DataTypes);
+const Lesson = LessonModels(sequelize,DataTypes)
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -78,6 +80,10 @@ Group.belongsToMany(User, { through: Group_users });
 // Relación entre cohortes y grupos
 Cohorte.hasMany(Group);
 Group.belongsTo(Cohorte);
+
+//Relacion entre Clases y Contenidos.
+Content.hasMany(Lesson)
+Lesson.belongsTo(Content)
 
 // =================== FIN Relaciones entre las enteidades ==================
 
@@ -150,4 +156,5 @@ module.exports = {
    CheckPoint,
    Module,
    Group,
+   Lesson
 };

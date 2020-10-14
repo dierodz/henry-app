@@ -78,6 +78,12 @@ const typeDefs = gql`
       cohortes: [Cohorte]
    }
 
+   type Lesson {
+      id: Int
+      link: String
+      name: String
+   }
+
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
       countCohortes(where: JSON): Int
@@ -104,6 +110,7 @@ const typeDefs = gql`
       users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
       countUsers(where: JSON): Int
       getUserRol(role: String): [User]
+      lessons(id: Int, name: String, link: String): [Lesson]
    }
 
    # Estos son los datos que acepta un usuario
