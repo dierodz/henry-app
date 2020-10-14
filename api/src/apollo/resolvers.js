@@ -1,4 +1,16 @@
 const {
+   mateReview,
+   createReview,
+   updateReview,
+   deleteReview,
+} = require("./resolvers/mateReviewResolver");
+const {
+   matesScore,
+   deleteMatesScore,
+   updateMatesScore,
+   createMatesScore,
+} = require("./resolvers/mateScoreResolver");
+const {
    cohortesQuery,
    cohorteResolver,
 } = require("./resolvers/cohorteResolver");
@@ -49,9 +61,12 @@ const resolvers = {
       modules,
       roles,
       scores,
+      matesScore,
+      mateReview,
       ...groupQuerys,
       ...userQuerys,
    },
+
    Mutation: {
       //Mutations for Cohortes
       ...cohorteResolver,
@@ -75,6 +90,14 @@ const resolvers = {
       deleteScore,
       // Mutaciones para groups
       ...groupResolver,
+      //mutations para mateScores
+      deleteMatesScore,
+      updateMatesScore,
+      createMatesScore,
+      //mutations para reviews
+      createReview,
+      updateReview,
+      deleteReview,
    },
 
    Cohorte: {

@@ -84,6 +84,18 @@ const typeDefs = gql`
       name: String
    }
 
+   type MatesScore {
+      id: Int
+      name: String
+      reviews: [MateReview]
+   }
+
+   type MateReview {
+      id: Int
+      score: Int
+      commentary: String
+   }
+
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
       countCohortes(where: JSON): Int
@@ -110,6 +122,8 @@ const typeDefs = gql`
       users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
       countUsers(where: JSON): Int
       getUserRol(role: String): [User]
+      matesScore(id: Int, name: String): [MatesScore]
+      mateReview(id: Int, score: Int, commentary: String): [MateReview]
       lessons(id: Int, name: String, link: String): [Lesson]
    }
 
@@ -201,6 +215,16 @@ const typeDefs = gql`
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
       setParentToGroup(parendId: Int, sonId: Int): Group!
+
+      # Mutaciones para MatesScore
+      createMatesScore(name: String): Score!
+      updateMatesScore(id: Int, name: String): Score!
+      deleteMatesScore(id: Int, name: String): DeleteResolve!
+
+      # Mutaciones para MatesReview
+      createReview(score: Int, commentary: String): Score!
+      updateReview(id: Int, score: Int, commentary: String): Score!
+      deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
    }
 `;
 

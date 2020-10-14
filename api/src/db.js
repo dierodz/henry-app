@@ -14,6 +14,9 @@ const groupModels = require("./models/Group");
 const group_userModels = require("./models/Group_users");
 const LessonModels = require("./models/Lesson");
 
+const matesScoreModels = require("./models/ClassmatesScore");
+const mateReviewModels = require("./models/MateReview");
+
 // ======================= FIN Importación de modelos =======================
 
 // ==========================================================================
@@ -42,7 +45,9 @@ const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Module = moduleModels(sequelize, DataTypes);
 const Group = groupModels(sequelize, DataTypes);
 const Group_users = group_userModels(sequelize, DataTypes);
-const Lesson = LessonModels(sequelize,DataTypes)
+const MatesScoreType = matesScoreModels(sequelize, DataTypes);
+const MateReview = mateReviewModels(sequelize, DataTypes);
+const Lesson = LessonModels(sequelize, DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -77,14 +82,20 @@ CheckPoint.hasMany(Module);
 User.belongsToMany(Group, { through: Group_users });
 Group.belongsToMany(User, { through: Group_users });
 
+// Relación calificación y opinión con el tipo
+MatesScoreType.hasMany(MateReview);
+MateReview.belongsTo(MatesScoreType);
 // Relación entre cohortes y grupos
 Cohorte.hasMany(Group);
 Group.belongsTo(Cohorte);
 
 //Relacion entre Clases y Contenidos.
-Content.hasMany(Lesson)
-Lesson.belongsTo(Content)
+Content.hasMany(Lesson);
+Lesson.belongsTo(Content);
 
+// Relacion usuarios y reviews
+User.hasMany(MateReview);
+MateReview.belongsTo(User);
 // =================== FIN Relaciones entre las enteidades ==================
 
 // ==========================================================================
@@ -156,5 +167,7 @@ module.exports = {
    CheckPoint,
    Module,
    Group,
-   Lesson
+   MatesScoreType,
+   MateReview,
+   Lesson,
 };
