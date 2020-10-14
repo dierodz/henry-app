@@ -6,7 +6,7 @@ const createCohorte = async (cohorte) => {
    try {
       let result = await Cohorte.create({
          ...cohorte,
-         startDate: new Date(cohorte.startDate)
+         startDate: new Date(cohorte.startDate),
       });
       return result;
    } catch (error) {
@@ -25,15 +25,16 @@ const upDateCohorte = async (cohorte) => {
    try {
       return await result.update({
          ...cohorte,
-         startDate: new Date(cohorte.startDate)
+         startDate: new Date(cohorte.startDate),
       });
    } catch (error) {
       console.error(error);
    }
 };
 
-const getAllCohortes = async () => {
+const getAllCohortes = async ({ where }) => {
    const cohortes = await Cohorte.findAll({
+      where,
       include: [{ model: User, inclue: [Role] }, Group],
    });
    return cohortes;

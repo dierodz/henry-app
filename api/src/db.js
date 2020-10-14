@@ -123,8 +123,22 @@ const createRoles = async () => {
    }
 };
 
+function parseWhere(where) {
+   for (let prop in where) {
+      const splitProp = prop.split("_");
+      if (splitProp.length === 2) {
+         where[splitProp[0]] = {
+            [Op[splitProp[1]]]: where[prop],
+         };
+         delete where[prop];
+      }
+   }
+   return where;
+}
+
 module.exports = {
    conn: sequelize,
+   parseWhere,
    Op,
    DataTypes,
    Cohorte,
