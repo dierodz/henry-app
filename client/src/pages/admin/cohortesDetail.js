@@ -130,7 +130,7 @@ function CohortesDetail({ className }) {
             <Card variant="outlined" style={{ position: "relative" }}>
               <CardHeader title="Alumnos" />
               <CardContent>
-                <Alumns data={data} loading={loading} />
+                <Alumns cohorte={data.cohortes[0]} loading={loading} />
               </CardContent>
             </Card>
           </Grid>

@@ -12,10 +12,26 @@ export const getUserRol = gql`
     }
   }
 `;
-
+export const COUNT_USERS = gql`
+  query countUsers($where: JSON) {
+    countUsers(where: $where)
+  }
+`;
 export const USER_FULL = gql`
-  query userFull($id: Int) {
-    users(id: $id) {
+  query userFull(
+    $id: Int
+    $where: JSON
+    $limit: Int
+    $offset: Int
+    $order: JSON
+  ) {
+    users(
+      id: $id
+      where: $where
+      limit: $limit
+      offset: $offset
+      order: $order
+    ) {
       id
       givenName
       familyName
@@ -23,6 +39,10 @@ export const USER_FULL = gql`
       email
       photoUrl
       roles {
+        id
+        name
+      }
+      cohortes {
         id
         name
       }
