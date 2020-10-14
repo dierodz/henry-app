@@ -1,6 +1,8 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+   scalar JSON
+
    type CheckPoint {
       id: Int
       name: String
@@ -9,9 +11,10 @@ const typeDefs = gql`
    type Cohorte {
       id: Int
       name: String
-      number: Int
       startDate: String
       instructor: User
+      users: [User]
+      groups: [Group]
    }
 
    type Content {
@@ -34,6 +37,7 @@ const typeDefs = gql`
       pms: [User]
       staff: [User]
       students: [User]
+      parent: Int
    }
 
    input GroupInput {
@@ -51,13 +55,6 @@ const typeDefs = gql`
       description: String
    }
 
-   #enum RoleTypes {
-   #   instructor
-   #   pm
-   #   student
-   #   staff
-   #}
-   
    type Role {
       id: Int
       name: String
@@ -78,11 +75,18 @@ const typeDefs = gql`
       githubId: String
       photoUrl: String
       roles: [Role]
+      cohortes: [Cohorte]
+   }
+
+   type Lesson {
+      id: Int
+      link: String
+      name: String
    }
 
    type MatesScore {
       id: Int
-      name: String 
+      name: String
       reviews: [MateReview]
    }
 
@@ -90,23 +94,37 @@ const typeDefs = gql`
       id: Int
       score: Int
       commentary: String
-
    }
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
-      cohortes(name: String): [Cohorte]
+      countCohortes(where: JSON): Int
+      cohortes(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Cohorte]
       contents(topicName: String): [Content]
-      groups(id: Int, name: String): [Group]
+      countGroups(where: JSON): Int
+      groups(
+         id: Int
+         name: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Group]
       modules(id: Int): [Module]
       roles(id: Int): [Role]
       scores(id: Int): [Score]
-      users(id: Int): [User]
+      users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
+      countUsers(where: JSON): Int
       getUserRol(role: String): [User]
-
       matesScore(id: Int, name: String): [MatesScore]
-
       mateReview(id: Int, score: Int, commentary: String): [MateReview]
+      lessons(id: Int, name: String, link: String): [Lesson]
    }
 
    # Estos son los datos que acepta un usuario
@@ -140,28 +158,30 @@ const typeDefs = gql`
       error: Error
    }
 
+   input CohorteInput {
+      id: Int
+      name: String
+      startDate: String
+      instructor: Int
+   }
+
    type Mutation {
       # Mutaciones para usuarios
       createUser(input: UserInput): User!
       updateUser(id: Int, input: UserInput): User!
       deleteUser(id: Int): DeleteResolve!
       inviteUser(email: String!, role: String!): User
+      addRoleToUser(email: String!, roleName: String!): User
+      removeRoleToUser(email: String!, roleName: String!): User
 
       # Mutations Cohorte
-      createCohorte(
-         name: String
-         number: Int
-         instructor: Int
-         startDate: String
-      ): Cohorte!
-      editCohorte(
-         id: Int
-         name: String
-         number: Int
-         startDate: String
-         instructor: Int
-      ): Cohorte!
+      createCohorte(input: CohorteInput): Cohorte!
+      editCohorte(input: CohorteInput): Cohorte!
       deleteCohorte(id: Int): DeleteResolve!
+      addUsersToCohorte(cohorteId: Int!, userId: [Int]!): Cohorte!
+      removeUsersFromCohorte(cohorteId: Int!, userId: [Int]!): Cohorte!
+      addGroupsToCohorte(cohorteId: Int!, groupId: [Int]!): Cohorte!
+      removeGroupsFromCohorte(cohorteId: Int!, groupId: [Int]!): Cohorte!
 
       # Mutaciones para los modulos
       createModule(name: String!): Module!
@@ -188,12 +208,13 @@ const typeDefs = gql`
       updateScore(id: Int, score: Float): Score!
       deleteScore(id: Int): DeleteResolve!
 
-      # Mutaciones pra Gtoups
+      # Mutaciones pra Groups
       createGroup(input: GroupInput): Group!
       updateGroup(id: Int, name: String, type: GroupTypes): Group!
       deleteGroup(id: Int, name: String): DeleteResolve!
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
+      setParentToGroup(parendId: Int, sonId: Int): Group!
 
       # Mutaciones para MatesScore
       createMatesScore(name: String): Score!
@@ -202,7 +223,7 @@ const typeDefs = gql`
 
       # Mutaciones para MatesReview
       createReview(score: Int, commentary: String): Score!
-      updateReview(id: Int, score: Int,commentary: String): Score!
+      updateReview(id: Int, score: Int, commentary: String): Score!
       deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
    }
 `;

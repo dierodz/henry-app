@@ -1,7 +1,7 @@
 const {
-   mateReview, 
-   createReview , 
-   updateReview, 
+   mateReview,
+   createReview,
+   updateReview,
    deleteReview,
 } = require("./resolvers/mateReviewResolver");
 const {
@@ -11,19 +11,10 @@ const {
    createMatesScore,
 } = require("./resolvers/mateScoreResolver");
 const {
-   cohortes,
-   createCohorte,
-   editCohorte,
-   deleteCohorte,
+   cohortesQuery,
+   cohorteResolver,
 } = require("./resolvers/cohorteResolver");
-const {
-   users,
-   createUser,
-   inviteUser,
-   updateUser,
-   deleteUser,
-   getUserRol,
-} = require("./resolvers/userResolver");
+const { userMutations, userQuerys } = require("./resolvers/userResolver");
 const {
    checkPoints,
    updateCheckPoint,
@@ -50,14 +41,7 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
-const {
-   groups,
-   createGroup,
-   updateGroup,
-   deleteGroup,
-   removeUsersOfGroups,
-   addUsersToGroups,
-} = require("./resolvers/groupResolver");
+const { groupQuerys, groupResolver } = require("./resolvers/groupResolver");
 
 const { getUserById } = require("../controllers/userController");
 const {
@@ -67,32 +51,27 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
+const { lessons } = require("./resolvers/lessonsResolver");
+
 const resolvers = {
    Query: {
-      users,
       checkPoints,
-      cohortes,
+      ...cohortesQuery,
       contents,
       modules,
       roles,
       scores,
-      groups,
-      getUserRol,
       matesScore,
-      mateReview,      
+      mateReview,
+      ...groupQuerys,
+      ...userQuerys,
    },
-
 
    Mutation: {
       //Mutations for Cohortes
-      createCohorte,
-      editCohorte,
-      deleteCohorte,
+      ...cohorteResolver,
       // Mutations for Users
-      createUser,
-      inviteUser,
-      updateUser,
-      deleteUser,
+      ...userMutations,
       // Mutations for CheckPoints
       createCheckPoint,
       updateCheckPoint,
@@ -110,21 +89,15 @@ const resolvers = {
       updateScore,
       deleteScore,
       // Mutaciones para groups
-      createGroup,
-      updateGroup,
-      deleteGroup,
-      removeUsersOfGroups,
-      addUsersToGroups,
+      ...groupResolver,
       //mutations para mateScores
       deleteMatesScore,
       updateMatesScore,
       createMatesScore,
       //mutations para reviews
-      createReview , 
-      updateReview, 
-      deleteReview,       
-      
-
+      createReview,
+      updateReview,
+      deleteReview,
    },
 
    Cohorte: {

@@ -8,12 +8,10 @@ module.exports = function (sequelize, DataTypes) {
             notEmpty: false,
          },
          set(value) {
-            this.setDataValue("name", value.trim().toLowerCase());
+            if (value) {
+               this.setDataValue("name", value.trim().toLowerCase());
+            }
          },
-      },
-      number: {
-         type: DataTypes.INTEGER,
-         unique: true,
       },
       startDate: {
          type: DataTypes.DATE,
@@ -25,8 +23,7 @@ module.exports = function (sequelize, DataTypes) {
       instructor: {
          type: DataTypes.INTEGER,
          allowNull: false,
-      }
-
+      },
    });
    return Cohorte;
 };

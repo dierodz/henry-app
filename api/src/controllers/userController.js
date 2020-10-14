@@ -1,6 +1,7 @@
-const { User, Role } = require("../db");
+const { User, Role, Cohorte, parseWhere } = require("../db");
+const { sendEmail } = require("../mailModels/sendEmail");
 
-const include = [Role];
+const include = [Role, Cohorte];
 
 const createUser = async ({
    givenName,
@@ -12,7 +13,7 @@ const createUser = async ({
    photoUrl,
    password,
    role,
-   roles
+   roles,
 }) => {
    let user = await User.create({
       givenName,
@@ -25,14 +26,13 @@ const createUser = async ({
       password,
    });
    if (roles) {
-      let dbRoles = []
+      let dbRoles = [];
       for (const specificRol of roles) {
-         const dbRole = await Role.findOne({ where: { name: specificRol } })
-         dbRoles.push(dbRole)
+         const dbRole = await Role.findOne({ where: { name: specificRol } });
+         dbRoles.push(dbRole);
       }
-      await user.setRoles(dbRoles)
-   }
-   else if (role) {
+      await user.setRoles(dbRoles);
+   } else if (role) {
       role = role.toLowerCase();
 
       if (
@@ -65,9 +65,25 @@ const createUser = async ({
    return await getUserById(user.id);
 };
 
-const getAllUsers = async () => {
+const getAllUsers = async ({ where, limit, offset, order }) => {
+   let localInclude = [...include];
+   if (where) {
+      where = parseWhere(where);
+      if (where["Role"]) {
+         localInclude[0] = { model: Role, where: parseWhere(where.Role) };
+         delete where.Role;
+      }
+      if (where["Cohorte"]) {
+         localInclude[1] = { model: Cohorte, where: parseWhere(where.Cohorte) };
+         delete where.Cohorte;
+      }
+   }
    const users = await User.findAll({
-      include,
+      where,
+      limit,
+      offset,
+      order,
+      include: localInclude,
    });
 
    if (users.length < 1) {
@@ -107,7 +123,7 @@ const getUserById = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-   return await User.findOne({ where: { email }, include });
+   return await User.findOne({ where: { email } });
 };
 
 const getUserByGoogleID = async (googleId) => {
@@ -162,7 +178,7 @@ const updateUser = async (id, user) => {
       photoUrl,
       password,
       role,
-      roles
+      roles,
    } = user;
 
    const sendUser = await userdb.update({
@@ -177,17 +193,16 @@ const updateUser = async (id, user) => {
    });
 
    if (roles) {
-      let dbRoles = []
+      let dbRoles = [];
       for (const specificRol of roles) {
-         const dbRole = await Role.findOne({ where: { name: specificRol } })
-         dbRoles.push(dbRole)
+         const dbRole = await Role.findOne({ where: { name: specificRol } });
+         dbRoles.push(dbRole);
       }
-      await sendUser.setRoles(dbRoles)
-   }
-   else if (role) {
-      const dbRole = await Role.findOne({ where: { name: role } })
+      await sendUser.setRoles(dbRoles);
+   } else if (role) {
+      const dbRole = await Role.findOne({ where: { name: role } });
 
-      await sendUser.setRoles(dbRole)
+      await sendUser.setRoles(dbRole);
    }
 
    return await getUserById(sendUser.id);
@@ -200,12 +215,22 @@ const deleteUserById = async (id) => {
    return { message: "successfully removed" };
 };
 
-const setRolesToUser = async (id, roles) => {
-   const user = await getUserById(id);
+const setRoleToUser = async (email, roles) => {
+   console.log(email);
+   const user = await getUserByEmail(email);
+   // console.log(user)
    const role = await Role.findOne({ where: { name: roles } });
 
-   const updatedUsser = await user.setRoles(role);
-   return await getUserById(updatedUsser.id);
+   await user.addRoles(role);
+   return await getUserById(user.id);
+};
+
+const removeRoleToUser = async (email, roles) => {
+   const user = await getUserByEmail(email);
+   const role = await Role.findOne({ where: { name: roles } });
+
+   await user.removeRoles(role);
+   return await getUserById(user.id);
 };
 
 const _internalGetUserByEmail = async (email) => {
@@ -213,9 +238,76 @@ const _internalGetUserByEmail = async (email) => {
 };
 
 const getUserbyRol = async (role) => {
-   const result =  await Role.findOne({ where: { name: role }, include: [{model: User, include: [Role]}]})
-   return result.users
-}
+   const result = await Role.findOne({
+      where: { name: role },
+      include: [{ model: User, include: [Role] }],
+   });
+   return result.users;
+};
+
+const _getMultipleUsers = async (id) => {
+   let users = [];
+
+   if (id) {
+      if (Array.isArray(id)) {
+         users = await id.map(async (id) => {
+            id = parseInt(id);
+            const user = await getUserById(id);
+            return user;
+         });
+
+         users = Promise.all(users);
+      } else {
+         const user = await getUserById(id);
+         users = [user];
+      }
+
+      return users;
+   }
+
+   return [];
+};
+
+const inviteOneUser = async (email, role) => {
+   let user = await getUserByEmail(email);
+
+   if (!user) {
+      user = await createUser({ email, role });
+   }
+
+   await setRoleToUser(user.email, role);
+
+   sendEmail({ email }, "userInivitation", role);
+
+   return getUserById(user.id);
+};
+
+const countUsers = async ({ where }) => {
+   let localInclude = [];
+   if (where) {
+      where = parseWhere(where);
+      if (where["Role"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Role, where: parseWhere(where.Role) },
+         ];
+         delete where.Role;
+      }
+      if (where["Cohorte"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Cohorte, where: parseWhere(where.Cohorte) },
+         ];
+         delete where.Cohorte;
+      }
+   }
+   const result = await User.count({
+      where,
+      include: localInclude,
+   });
+   return result;
+};
+
 module.exports = {
    createUser,
    getAllUsers,
@@ -225,7 +317,11 @@ module.exports = {
    getUserByGithubID,
    deleteUserById,
    updateUser,
-   setRolesToUser,
+   setRoleToUser,
    _internalGetUserByEmail,
    getUserbyRol,
+   _getMultipleUsers,
+   removeRoleToUser,
+   inviteOneUser,
+   countUsers,
 };

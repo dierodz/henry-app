@@ -6,40 +6,54 @@ const {
    createGrup: createoneGrup,
    removeUsersOfGroups: removeUsers,
    addUsersToGroups: addUsers,
+   setParentToGroup,
+   countGroups: dbCount,
 } = require("../../controllers/groupController");
 
-const groups = async (_, { id, name }) => {
+const countGroups = async (_, { where }) => {
+   return await dbCount({ where });
+};
+
+const groups = async (_, { id, name, where, limit, offset, order }) => {
    if (id || name) {
-      const result = await getOneGrup({ id, name });
+      const result = await getOneGrup({
+         id,
+         name,
+         where,
+         limit,
+         offset,
+         order,
+      });
       return [result];
-   } else return await getAllGrups();
+   } else return await getAllGrups({ where, limit, offset, order });
 };
 
-const createGroup = async (_, { input }) => {
-   return await createoneGrup({ ...input });
-};
+const groupResolver = {
+   createGroup: async (_, { input }) => {
+      return await createoneGrup({ ...input });
+   },
 
-const updateGroup = async (_, { id, name, type }) => {
-   return await editGrup(id, { name, type });
-};
+   updateGroup: async (_, { id, name, type }) => {
+      return await editGrup(id, { name, type });
+   },
 
-const deleteGroup = async (_, { id, name }) => {
-   return await deleteOneGrup({ id, name });
-};
+   deleteGroup: async (_, { id, name }) => {
+      return await deleteOneGrup({ id, name });
+   },
 
-const removeUsersOfGroups = async (_, { id, name, userId }) => {
-   return await removeUsers({ groupId: id, groupName: name, userId });
-};
+   removeUsersOfGroups: async (_, { id, name, userId }) => {
+      return await removeUsers({ groupId: id, groupName: name, userId });
+   },
 
-const addUsersToGroups = async (_, { id, name, input }) => {   
-   return await addUsers({ groupName: name, groupId: id, ...input });
+   addUsersToGroups: async (_, { id, name, input }) => {
+      return await addUsers({ groupName: name, groupId: id, ...input });
+   },
+   setParentToGroup: async (_, { parentId, sonId }) => {
+      return await setParentToGroup({ parentId, sonId });
+   },
 };
 
 module.exports = {
-   groups,
-   createGroup,
-   updateGroup,
-   deleteGroup,
-   removeUsersOfGroups,
-   addUsersToGroups,
+   groupQuerys: { groups, countGroups },
+   groupResolver,
 };

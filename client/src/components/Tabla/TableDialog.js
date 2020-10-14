@@ -8,6 +8,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import { useFormik } from "formik";
 import { DatePicker } from "@material-ui/pickers";
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Autocomplete } from '@material-ui/lab';
 
 function TableDialog({ context, opened, onClose }) {
    const formik = useFormik(context)
@@ -56,7 +58,7 @@ function TableDialog({ context, opened, onClose }) {
 }
 
 function Field({ input }) {
-   const { type, key, label, value, handleChange, setFieldValue } = input
+   const { type, key, label, value, options, handleChange, setFieldValue } = input
 
    switch (type) {
       case 'date': return (
@@ -71,6 +73,27 @@ function Field({ input }) {
             fullWidth
             margin="normal"
          />
+      )
+      case 'select': return (
+         <Autocomplete
+            name={key}
+            options={options}
+            getOptionLabel={(option) => option.label}
+            onChange={(_, { value }) => setFieldValue(key, value)}
+            value={(() => options.find(op => op.value === value))()}
+            renderInput={(params) => (
+               <TextField
+                  {...params}
+                  label={label}
+                  type="text"
+                  fullWidth
+                  name={key}
+                  variant="outlined"
+                  margin="normal"
+               />
+            )}
+         />
+
       )
       default: return (<TextField
          label={label}
