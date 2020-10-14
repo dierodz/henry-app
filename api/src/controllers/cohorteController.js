@@ -40,6 +40,7 @@ const getAllCohortes = async ({ where, limit, offset, order }) => {
       order,
       include: [{ model: User, inclue: [Role] }, Group],
    });
+
    return cohortes;
 };
 
@@ -104,6 +105,10 @@ const removeGroupsOfCohorte = async (cohorteId, groupId) => {
    return await getEspecificCohorte(cohorteId);
 };
 
+const countCohortes = async ({ where }) => {
+   return await Cohorte.count({ where });
+};
+
 module.exports = {
    createCohorte,
    deleteCohorteById,
@@ -114,4 +119,5 @@ module.exports = {
    removeUsersOfCohorte,
    addGropusToCohorte,
    removeGroupsOfCohorte,
+   countCohortes,
 };

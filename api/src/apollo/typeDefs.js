@@ -79,6 +79,7 @@ const typeDefs = gql`
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
+      countCohortes(where: JSON): Int
       cohortes(
          id: Int
          where: JSON

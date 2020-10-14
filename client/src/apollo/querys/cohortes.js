@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const COHORTES = gql`
-  query {
-    cohortes {
+  query cohortes($limit: Int, $offset: Int) {
+    cohortes(limit: $limit, offset: $offset) {
       id
       name
       startDate
@@ -20,7 +20,11 @@ export const COHORTES = gql`
     }
   }
 `;
-
+export const COUNT_COHORTES = gql`
+  query {
+    countCohortes
+  }
+`;
 export const COHORTE_BY_ID = gql`
   query COHORTES_BY_ID($id: Int) {
     cohortes(id: $id) {

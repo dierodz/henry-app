@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import { COHORTES } from "apollo/querys/cohortes";
+import { COHORTES, COUNT_COHORTES } from "apollo/querys/cohortes";
 import {
   CREATE_COHORTE,
   DELETE_COHORTE,
@@ -20,7 +20,29 @@ import {
 } from "@material-ui/core";
 
 function Cohortes({ className }) {
-  const { loading, error, data: preData, refetch } = useQuery(COHORTES);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  function onChangePage(_, page) {
+    setPage(page);
+    refetch({
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    });
+  }
+  function onChangeRowsPerPage(e) {
+    setRowsPerPage(e.target.value);
+    refetch({
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    });
+  }
+  const { loading, error, data: preData, refetch } = useQuery(COHORTES, {
+    variables: {
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    },
+  });
+  const { data: count } = useQuery(COUNT_COHORTES);
   const instructors = useQuery(getUserRol, {
     variables: { role: "instructor" },
   });
@@ -53,11 +75,12 @@ function Cohortes({ className }) {
       columns: [
         { key: "name", label: "Nombre del cohorte", align: "left" },
         { key: "instructorDisplay", label: "Instructor", align: "left" },
-        { key: "groups", 
-        label: "Grupos", 
-        align: "left",
-        component: (cohorte) => <GroupsComponent cohorte={cohorte} />,
-      },
+        {
+          key: "groups",
+          label: "Grupos",
+          align: "left",
+          component: (cohorte) => <GroupsComponent cohorte={cohorte} />,
+        },
         {
           key: "alumns",
           label: "Alumnos",
@@ -179,10 +202,18 @@ function Cohortes({ className }) {
       refetch();
     }
   }, [resultDelete, refetch]);
-
+  console.log(count);
   return (
     <div style={{ height: "calc(100vh - 65px)" }}>
-      <Tabla loading={loading} data={tableData} />
+      <Tabla
+        loading={loading}
+        data={tableData}
+        count={count?.countCohortes || undefined}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
+      />
     </div>
   );
 }
