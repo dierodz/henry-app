@@ -8,17 +8,21 @@ const {
    setRoleToUser,
    removeRoleToUser,
    inviteOneUser,
+   countUsers: dbCount,
 } = require("../../controllers/userController");
 
 const userQuerys = {
-   users: async (_, { id }) => {
+   users: async (_, { id, where, limit, offset, order }) => {
       if (id) {
          const result = await getUserById(id);
          return [result];
-      } else return await getAllUsers();
+      } else return await getAllUsers({ where, limit, offset, order });
    },
    getUserRol: async (_, { role }) => {
       return await getUserbyRol(role);
+   },
+   countUsers: async (_, { where }) => {
+      return await dbCount({ where });
    },
 };
 

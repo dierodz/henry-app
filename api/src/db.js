@@ -12,6 +12,7 @@ const checkPointModels = require("./models/CheckPoint");
 const moduleModels = require("./models/Module");
 const groupModels = require("./models/Group");
 const group_userModels = require("./models/Group_users");
+const LessonModels = require("./models/Lesson");
 
 // ======================= FIN Importación de modelos =======================
 
@@ -41,6 +42,7 @@ const CheckPoint = checkPointModels(sequelize, DataTypes);
 const Module = moduleModels(sequelize, DataTypes);
 const Group = groupModels(sequelize, DataTypes);
 const Group_users = group_userModels(sequelize, DataTypes);
+const Lesson = LessonModels(sequelize,DataTypes)
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -78,6 +80,10 @@ Group.belongsToMany(User, { through: Group_users });
 // Relación entre cohortes y grupos
 Cohorte.hasMany(Group);
 Group.belongsTo(Cohorte);
+
+//Relacion entre Clases y Contenidos.
+Content.hasMany(Lesson)
+Lesson.belongsTo(Content)
 
 // =================== FIN Relaciones entre las enteidades ==================
 
@@ -123,8 +129,22 @@ const createRoles = async () => {
    }
 };
 
+function parseWhere(where) {
+   for (let prop in where) {
+      const splitProp = prop.split("_");
+      if (splitProp.length === 2) {
+         where[splitProp[0]] = {
+            [Op[splitProp[1]]]: where[prop],
+         };
+         delete where[prop];
+      }
+   }
+   return where;
+}
+
 module.exports = {
    conn: sequelize,
+   parseWhere,
    Op,
    DataTypes,
    Cohorte,
@@ -136,4 +156,5 @@ module.exports = {
    CheckPoint,
    Module,
    Group,
+   Lesson
 };

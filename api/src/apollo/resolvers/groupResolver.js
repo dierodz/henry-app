@@ -6,13 +6,26 @@ const {
    createGrup: createoneGrup,
    removeUsersOfGroups: removeUsers,
    addUsersToGroups: addUsers,
+   setParentToGroup,
+   countGroups: dbCount,
 } = require("../../controllers/groupController");
 
-const groups = async (_, { id, name }) => {
+const countGroups = async (_, { where }) => {
+   return await dbCount({ where });
+};
+
+const groups = async (_, { id, name, where, limit, offset, order }) => {
    if (id || name) {
-      const result = await getOneGrup({ id, name });
+      const result = await getOneGrup({
+         id,
+         name,
+         where,
+         limit,
+         offset,
+         order,
+      });
       return [result];
-   } else return await getAllGrups();
+   } else return await getAllGrups({ where, limit, offset, order });
 };
 
 const groupResolver = {
@@ -35,9 +48,12 @@ const groupResolver = {
    addUsersToGroups: async (_, { id, name, input }) => {
       return await addUsers({ groupName: name, groupId: id, ...input });
    },
+   setParentToGroup: async (_, { parentId, sonId }) => {
+      return await setParentToGroup({ parentId, sonId });
+   },
 };
 
 module.exports = {
-   groups,
+   groupQuerys: { groups, countGroups },
    groupResolver,
 };

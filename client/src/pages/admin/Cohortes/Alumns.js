@@ -1,17 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import { COHORTE_BY_ID } from "apollo/querys/cohortes";
+import { USER_FULL, COUNT_USERS } from "apollo/querys/users";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
 import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
 import { useCopyToClipboard } from "react-use";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 
-function Alumns({ className, cohorte }) {
-  const { loading, error, data } = useQuery(COHORTE_BY_ID, {
-    variables: { id: cohorte.id },
-  });
+function Alumns({
+  className,
+  cohorte,
+  data: componentData,
+  loading: componentLoading,
+}) {
+  const [
+    execute,
+    { loading: queryLoading, error, data: preData, refetch: preRefetch },
+  ] = useLazyQuery(USER_FULL);
+
+  const [executeCount, { data: count }] = useLazyQuery(COUNT_USERS);
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
@@ -25,11 +33,47 @@ function Alumns({ className, cohorte }) {
     }
   }, [copyValue]);
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  function onChangePage(_, page) {
+    setPage(page);
+  }
+  function onChangeRowsPerPage(e) {
+    setRowsPerPage(e.target.value);
+  }
+
+  const variables = useMemo(
+    () => ({
+      where: cohorte ? { Cohorte: { id: cohorte.id } } : undefined,
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    }),
+    [rowsPerPage, page, cohorte]
+  );
+
+  useEffect(() => {
+    if (cohorte) {
+      execute({
+        variables,
+      });
+      executeCount({ variables });
+    }
+  }, [cohorte, execute, executeCount, variables]);
+
+  const data = useMemo(
+    () => preData?.users || componentData?.cohortes[0].users,
+    [preData, componentData]
+  );
+  const loading = useMemo(() => queryLoading || componentLoading, [
+    queryLoading,
+    componentLoading,
+  ]);
+
   const tableData = useMemo(
     () => ({
       loading,
       error,
-      data: data?.cohortes[0].users || undefined,
+      data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
@@ -62,13 +106,17 @@ function Alumns({ className, cohorte }) {
     [data, error, loading, copyToClipboard, push]
   );
 
-  console.log(data?.cohortes[0].users);
-
   return (
-    <div className={className}>
-      <div style={{ height: "50vh", width: "100%" }}>
-        <Tabla loading={loading} data={tableData} pageSize={5} />
-      </div>
+    <div className={className} style={{ height: "50vh", width: "100%" }}>
+      <Tabla
+        loading={loading}
+        data={tableData}
+        count={count?.countUsers || undefined}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
+      />{" "}
       <Snackbar
         open={showSnackbar}
         autoHideDuration={3000}

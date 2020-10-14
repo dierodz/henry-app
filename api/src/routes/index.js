@@ -8,6 +8,7 @@ const router = require("express").Router(),
   modulesRoutes = require('./modulesRoutes'),
   PairProgrammingRoutes = require('./pairProgramming'),
   roleRoutes = require('./routeRoles');
+  lessonsRoutes = require('./vimeo')
 
 
 router.use('/auth', auth);
@@ -19,5 +20,6 @@ router.use('/scores', scoresRoutes);
 router.use('/pair', PairProgrammingRoutes);
 router.use('/contents', contentRoutes);
 router.use('/roles', roleRoutes);
+router.use('/clasesGrabadas', lessonsRoutes);
 
 module.exports = router;

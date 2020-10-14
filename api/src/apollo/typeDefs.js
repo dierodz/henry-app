@@ -1,6 +1,8 @@
 const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
+   scalar JSON
+
    type CheckPoint {
       id: Int
       name: String
@@ -35,6 +37,7 @@ const typeDefs = gql`
       pms: [User]
       staff: [User]
       students: [User]
+      parent: Int
    }
 
    input GroupInput {
@@ -72,18 +75,42 @@ const typeDefs = gql`
       githubId: String
       photoUrl: String
       roles: [Role]
+      cohortes: [Cohorte]
+   }
+
+   type Lesson {
+      id: Int
+      link: String
+      name: String
    }
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
-      cohortes(id: Int): [Cohorte]
+      countCohortes(where: JSON): Int
+      cohortes(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Cohorte]
       contents(topicName: String): [Content]
-      groups(id: Int, name: String): [Group]
+      countGroups(where: JSON): Int
+      groups(
+         id: Int
+         name: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Group]
       modules(id: Int): [Module]
       roles(id: Int): [Role]
       scores(id: Int): [Score]
-      users(id: Int): [User]
+      users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
+      countUsers(where: JSON): Int
       getUserRol(role: String): [User]
+      lessons(id: Int, name: String, link: String): [Lesson]
    }
 
    # Estos son los datos que acepta un usuario
@@ -173,6 +200,7 @@ const typeDefs = gql`
       deleteGroup(id: Int, name: String): DeleteResolve!
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
+      setParentToGroup(parendId: Int, sonId: Int): Group!
    }
 `;
 

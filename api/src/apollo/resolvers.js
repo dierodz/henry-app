@@ -1,4 +1,7 @@
-const { cohortes, cohorteResolver } = require("./resolvers/cohorteResolver");
+const {
+   cohortesQuery,
+   cohorteResolver,
+} = require("./resolvers/cohorteResolver");
 const { userMutations, userQuerys } = require("./resolvers/userResolver");
 const {
    checkPoints,
@@ -26,7 +29,7 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
-const { groups, groupResolver } = require("./resolvers/groupResolver");
+const { groupQuerys, groupResolver } = require("./resolvers/groupResolver");
 
 const { getUserById } = require("../controllers/userController");
 const {
@@ -36,15 +39,17 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
+const { lessons } = require("./resolvers/lessonsResolver");
+
 const resolvers = {
    Query: {
       checkPoints,
-      cohortes,
+      ...cohortesQuery,
       contents,
       modules,
       roles,
       scores,
-      groups,
+      ...groupQuerys,
       ...userQuerys,
    },
    Mutation: {
