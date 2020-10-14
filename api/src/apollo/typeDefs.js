@@ -88,7 +88,15 @@ const typeDefs = gql`
          order: JSON
       ): [Cohorte]
       contents(topicName: String): [Content]
-      groups(id: Int, name: String): [Group]
+      countGroups(where: JSON): Int
+      groups(
+         id: Int
+         name: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Group]
       modules(id: Int): [Module]
       roles(id: Int): [Role]
       scores(id: Int): [Score]

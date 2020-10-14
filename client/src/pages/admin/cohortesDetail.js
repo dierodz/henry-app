@@ -17,6 +17,7 @@ import {
   Container,
   Grid,
 } from "@material-ui/core";
+import Loading from "components/Loading";
 
 function CohortesDetail({ className }) {
   let { id } = useParams();
@@ -101,32 +102,40 @@ function CohortesDetail({ className }) {
 
   return (
     <Container style={{ paddingTop: "1rem" }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-          <Card variant="outlined">
-            <CardHeader title="Información" />
-            <CardContent>
-              <div style={{ height: "50vh", width: "100%" }}></div>
-            </CardContent>
-          </Card>
+      {loading ? (
+        <Loading />
+      ) : (
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <Card variant="outlined">
+              <CardHeader title="Información" />
+              <CardContent>
+                <div style={{ height: "50vh", width: "100%" }}></div>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={6}>
+            <Card variant="outlined" style={{ position: "relative" }}>
+              <CardHeader title="Grupos" />
+              <CardContent>
+                <Groups
+                  cohorte={data.cohortes[0]}
+                  loading={loading}
+                  onRefetch={refetch}
+                />
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card variant="outlined" style={{ position: "relative" }}>
+              <CardHeader title="Alumnos" />
+              <CardContent>
+                <Alumns data={data} loading={loading} />
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Card variant="outlined" style={{ position: "relative" }}>
-            <CardHeader title="Grupos" />
-            <CardContent>
-              <Groups data={data} loading={loading} onRefetch={refetch} />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          <Card variant="outlined" style={{ position: "relative" }}>
-            <CardHeader title="Alumnos" />
-            <CardContent>
-              <Alumns data={data} loading={loading} />
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+      )}
     </Container>
   );
 }

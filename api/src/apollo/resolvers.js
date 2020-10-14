@@ -29,7 +29,7 @@ const {
    createScore,
 } = require("./resolvers/scoreResolver");
 
-const { groups, groupResolver } = require("./resolvers/groupResolver");
+const { groupQuerys, groupResolver } = require("./resolvers/groupResolver");
 
 const { getUserById } = require("../controllers/userController");
 const {
@@ -47,7 +47,7 @@ const resolvers = {
       modules,
       roles,
       scores,
-      groups,
+      ...groupQuerys,
       ...userQuerys,
    },
    Mutation: {

@@ -73,7 +73,11 @@ export default function Tabla({
       <TableContainer className={classes.container}>
         {loading && <Loading />}
         {!loading && data.data && data.data.length > 0 ? (
-          <Table className={classes.table} aria-label="customized table">
+          <Table
+            stickyHeader
+            className={classes.table}
+            aria-label="customized table"
+          >
             <TableHead>
               <TableRow>
                 {data.columns.map(({ key, label, align }) => (
