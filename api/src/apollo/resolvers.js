@@ -1,4 +1,10 @@
 const {
+   createPost, 
+   getPost, 
+   editPost, 
+   deletePost,
+} = require("./resolvers/postResolver");
+const {
    mateReview,
    createReview,
    updateReview,
@@ -63,6 +69,7 @@ const resolvers = {
       scores,
       matesScore,
       mateReview,
+      getPost,
       ...groupQuerys,
       ...userQuerys,
    },
@@ -98,6 +105,10 @@ const resolvers = {
       createReview,
       updateReview,
       deleteReview,
+      //mutation para posts
+      createPost,
+      editPost,
+      deletePost,
    },
 
    Cohorte: {

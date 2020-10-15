@@ -96,6 +96,14 @@ const typeDefs = gql`
       commentary: String
    }
 
+   type Post {
+      id: Int
+      tittle: String
+      content: String
+      userId: Int
+      cohorteId: Int      
+   }
+
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
       countCohortes(where: JSON): Int
@@ -125,6 +133,7 @@ const typeDefs = gql`
       matesScore(id: Int, name: String): [MatesScore]
       mateReview(id: Int, score: Int, commentary: String): [MateReview]
       lessons(id: Int, name: String, link: String): [Lesson]
+      getPost(id: Int): [Post]
    }
 
    # Estos son los datos que acepta un usuario
@@ -225,6 +234,11 @@ const typeDefs = gql`
       createReview(score: Int, commentary: String): Score!
       updateReview(id: Int, score: Int, commentary: String): Score!
       deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
+
+      # Mutaciones para los posts
+      createPost(tittle: String, content: String, userId: Int, cohorteId: Int): Post!
+      editPost(id: Int, tittle: String, content: String): Post!
+      deletePost(id: Int): DeleteResolve!
    }
 `;
 
