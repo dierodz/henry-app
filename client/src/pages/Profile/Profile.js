@@ -29,10 +29,10 @@ function Profile() {
   const { uid } = useSelector((store) => store.auth);
   const { data: preData, loading, refetch } = useQuery(USER_FULL, {
     variables: {
-      id: parseInt(id),
+      id: parseInt(id) || parseInt(uid)
     },
   });
-
+  
   const [update, updateResponse] = useMutation(UPDATE_USER);
   const data = preData?.users[0] ? { ...preData?.users[0] } : undefined;
 
