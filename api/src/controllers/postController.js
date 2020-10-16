@@ -2,12 +2,7 @@ const { Post, User, Cohorte } = require("../db");
 const { getUserById } = require("./userController");
 const{ getEspecificCohorte } = require("./cohorteController");
 
-/*
-const createPost = async (tittle, content, userId, cohorteId) => {
-   const post = await Post.create( tittle, content, userId, cohorteId );
-   return post;
-};
-*/
+
 
 // Este controller crea un post y los setea a usuario y cohorte
 const createPost = async (tittle, content, userId, cohorteId) => {
