@@ -20,8 +20,6 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { useHistory } from "react-router-dom";
 import {
-  signInWithEmail,
-  signInWithToken,
   signInWithGithub,
   signInWithGoogle,
 } from "dispatchers/auth";
