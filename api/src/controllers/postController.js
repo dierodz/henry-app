@@ -4,9 +4,7 @@ const{ getEspecificCohorte } = require("./cohorteController");
 
 /*
 const createPost = async (tittle, content, userId, cohorteId) => {
-   console.log(tittle, content, userId, cohorteId)
    const post = await Post.create( tittle, content, userId, cohorteId );
-   console.log('Este es el post: ', post)
    return post;
 };
 */
@@ -34,7 +32,6 @@ const createPost = async (tittle, content, userId, cohorteId) => {
 // Este controller busca y retorna un post en especifico
 const getPost = async (id) => {
    const post = await Post.findByPk(id);
-   console.log(post)
    if (!post) {
       throw {
          name: "ApiFindError",

@@ -9,11 +9,8 @@ const {
 } = require("../../controllers/postController");
 
 // Crea un post en la base de datos
-const createPost = async (_, { tittle, content, userId, cohorteId}) => {
-   console.log('sí pude llegar')
-   console.log(tittle, content, userId, cohorteId)
-   const post = await create({ tittle, content, userId, cohorteId });
-   console.log(post)
+const createPost = async (_, { tittle, content, userId, cohorteId}) => {   
+   const post = await create({ tittle, content, userId, cohorteId });   
    return post;
 };
 
