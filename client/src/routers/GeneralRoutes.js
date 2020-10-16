@@ -10,6 +10,7 @@ import NavBarAlumno from "pages/alumnos/components/NabvarAlumno";
 import Dashboard from "pages/Dashboard";
 import Cohortes from "pages/admin/Cohortes";
 import CohortesDetail from "pages/admin/cohortesDetail";
+import CohortesDetailAlumno from "pages/alumnos/cohortesDetailAlumno";
 import useStyles from "./GeneralRoutes.styles";
 import Alumns from "pages/admin/Alumns";
 import Instructors from "pages/admin/Instructors";
@@ -67,7 +68,7 @@ const GeneralRoutes = () => {
           <Route exact path="/profile/:id" component={Profile} />
           <Route path="/auth/signin" component={LoginScreen} />
           <Route path="/auth/signup" component={RegisterScreen} />
-          <Route exact path="/student/cohortes" component={Cohortes} />
+          <Route exact path="/student/cohorte/:id" component={CohortesDetailAlumno} />
           <Route exact path="/student/groups" component={GroupStudent} />
           <Route exact path="/student/modules" component={Cohortes} />
         </Switch>
