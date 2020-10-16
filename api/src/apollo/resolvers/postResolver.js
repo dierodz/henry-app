@@ -25,6 +25,12 @@ const getPost = async (_, { id }) => {
    } else return await returnAllPosts();
 };
 
+// Optiene los post según cohorte
+const getCohortePosts = async (_, {cohorteId}) => {
+    const posts = await createPost(cohorteId)
+    return posts;
+}
+
 // Edita in post
 const editPost = async (_, { id, tittle, content }) => {
    return await updatePost(id, { tittle, content});
@@ -32,8 +38,13 @@ const editPost = async (_, { id, tittle, content }) => {
 
 //Elimina un post
 const deletePost = async (_, { id }) => {
-   return await deleteMateReview(id);
+   return await removePost(id);
 };
 
+// Obtiene los posts por usuario
+const getUserPosts = async (_, {userId}) => {
+   const posts = await returnUserPosts(userId)
+   return posts;
+}
 
-module.exports = { createPost, getPost , editPost, deletePost };  
+module.exports = { createPost, getPost , editPost, deletePost, getCohortePosts, getUserPosts };  

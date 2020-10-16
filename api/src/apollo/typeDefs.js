@@ -134,6 +134,8 @@ const typeDefs = gql`
       mateReview(id: Int, score: Int, commentary: String): [MateReview]
       lessons(id: Int, name: String, link: String): [Lesson]
       getPost(id: Int): [Post]
+      getCohortePosts(cohorteId: Int): [Post]
+      getUserPosts(userId: Int): [Post]
    }
 
    # Estos son los datos que acepta un usuario
@@ -239,6 +241,7 @@ const typeDefs = gql`
       createPost(tittle: String, content: String, userId: Int, cohorteId: Int): Post!
       editPost(id: Int, tittle: String, content: String): Post!
       deletePost(id: Int): DeleteResolve!
+
    }
 `;
 

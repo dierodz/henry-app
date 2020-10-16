@@ -1,18 +1,41 @@
 const { Post, User, Cohorte } = require("../db");
 const { getUserById } = require("./userController");
+const{ getEspecificCohorte } = require("./cohorteController");
 
-
+/*
 const createPost = async (tittle, content, userId, cohorteId) => {
    console.log(tittle, content, userId, cohorteId)
    const post = await Post.create( tittle, content, userId, cohorteId );
    console.log('Este es el post: ', post)
    return post;
 };
+*/
+
+// Este controller crea un post y los setea a usuario y cohorte
+const createPost = async (tittle, content, userId, cohorteId) => {
+   let post = await Post.create(tittle, content);
+   if (userId) {
+      const user = await getUserById(userId)
+      await user.setPost(post);
+   } 
+   if (cohorteId) {
+      const cohorte = await getEspecificCohorte(cohorteId)
+      await cohorte.setPost(post)
+   }
+
+
+   return post;
+};
+
+
+
+
 
 // Este controller busca y retorna un post en especifico
 const getPost = async (id) => {
-   const post = await Post.findAll({where: {id}});
-   if (posts.length < 1) {
+   const post = await Post.findByPk(id);
+   console.log(post)
+   if (!post) {
       throw {
          name: "ApiFindError",
          type: "Search Error",
@@ -30,7 +53,7 @@ const getPost = async (id) => {
 // Este controller busca y retorna los posts de un cohorte en especifico
 const getCohortePosts = async (cohorteId) => {
    const posts = await Post.findAll({where: {cohorteId}});
-   if (posts.length < 1) {
+   if (!posts) {
       throw {
          name: "ApiFindError",
          type: "Search Error",
@@ -68,7 +91,7 @@ const getAllPosts = async () => {
 // Este controller retorna todos los posts que ha hecho una persona
 const getUserPosts = async (userId) => {
    const posts = await Post.findAll({where: {userId}})
-   if (!post) {
+   if (!posts) {
       throw {
          name: "ApiFindError",
          type: "Search Error",
