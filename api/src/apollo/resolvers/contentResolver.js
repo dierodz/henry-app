@@ -14,7 +14,7 @@ const contents = async (_, { id, topicName }) => {
    } else return await getAllTopics();
 };
 const createContenido = async (_, { topicName,durationTime }) => {
-   return await createContent(topicName,durationTime);
+   return await createContent({topicName,durationTime});
 };
 
 const updateTopics = async (_, { id, topic }) => {

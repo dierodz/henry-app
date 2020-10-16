@@ -9,6 +9,7 @@ import NavBar from "components/NavBar/NavBar";
 import NavBarAlumno from "pages/alumnos/components/NabvarAlumno";
 import Dashboard from "pages/Dashboard";
 import Cohortes from "pages/admin/Cohortes";
+import CohortesAlumno from "pages/alumnos/Cohortes";
 import CohortesDetail from "pages/admin/cohortesDetail";
 import useStyles from "./GeneralRoutes.styles";
 import Alumns from "pages/admin/Alumns";
@@ -17,6 +18,7 @@ import PM from "pages/admin/PM";
 import RegisterScreen from "pages/auth/RegisterScreen";
 import Profile from "pages/Profile/Profile";
 import GroupStudent from "pages/alumnos/components/GroupStudent";
+import Modules from "../pages/alumnos/components/modules"
 
 const GeneralRoutes = () => {
   const { authenticated, user } = useSelector((state) => state.auth);
@@ -58,7 +60,7 @@ const GeneralRoutes = () => {
       <div className={classes.content}>
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route exact path="/admin/cohortes" component={Cohortes} />
+          <Route exact path="/admin/cohortes" component={CohortesAlumno} />
           <Route exact path="/admin/cohorte/:id" component={CohortesDetail} />
           <Route exact path="/admin/instructors" component={Instructors} />
           <Route exact path="/admin/pm" component={PM} />
@@ -69,7 +71,7 @@ const GeneralRoutes = () => {
           <Route path="/auth/signup" component={RegisterScreen} />
           <Route exact path="/student/cohortes" component={Cohortes} />
           <Route exact path="/student/groups" component={GroupStudent} />
-          <Route exact path="/student/modules" component={Cohortes} />
+          <Route exact path="/student/modules" component={Modules} />
         </Switch>
       </div>
     </>

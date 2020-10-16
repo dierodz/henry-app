@@ -9,8 +9,8 @@ import {
 } from "apollo/Mutations/cohortes";
 import { getUserRol } from "apollo/querys/users";
 import { useHistory } from "react-router-dom";
-import Alumns from "./Cohortes/Alumns";
-import Groups from "./Cohortes/groups";
+import Alumns from "pages/admin/Cohortes/Alumns";
+import Groups from "pages/admin/Cohortes/groups";
 import {
   Button,
   Dialog,
