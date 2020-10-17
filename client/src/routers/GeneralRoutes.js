@@ -9,7 +9,6 @@ import NavBar from "components/NavBar/NavBar";
 import NavBarAlumno from "pages/alumnos/components/NabvarAlumno";
 import Dashboard from "pages/Dashboard";
 import Cohortes from "pages/admin/Cohortes";
-import CohortesAlumno from "pages/alumnos/Cohortes";
 import CohortesDetail from "pages/admin/cohortesDetail";
 import CohortesDetailAlumno from "pages/alumnos/cohortesDetailAlumno";
 import useStyles from "./GeneralRoutes.styles";
@@ -61,7 +60,7 @@ const GeneralRoutes = () => {
       <div className={classes.content}>
         <Switch>
           <Route exact path="/" component={Dashboard} />
-          <Route exact path="/admin/cohortes" component={CohortesAlumno} />
+          <Route exact path="/admin/cohortes" component={Cohortes} />
           <Route exact path="/admin/cohorte/:id" component={CohortesDetail} />
           <Route exact path="/admin/instructors" component={Instructors} />
           <Route exact path="/admin/pm" component={PM} />
