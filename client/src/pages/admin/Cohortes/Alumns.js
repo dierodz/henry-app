@@ -42,6 +42,10 @@ function Alumns({
     setRowsPerPage(e.target.value);
   }
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const variables = useMemo(
     () => ({
       where: cohorte ? { Cohorte: { id: cohorte.id } } : undefined,
@@ -61,7 +65,20 @@ function Alumns({
   }, [cohorte, execute, executeCount, variables]);
 
   const data = useMemo(
-    () => preData?.users || componentData?.cohortes[0].users,
+    () => preData?.users.map((user)=> {
+      var usuario = {
+        __typename: user.__typename,
+        givenName: capitalizeFirstLetter(user.givenName), 
+      familyName: capitalizeFirstLetter(user.familyName),  
+      email: user.email,
+      id: user.id,
+      nickName: user.nickName,
+      photoUrl: user.photoUrl,
+      roles: user.roles,
+      cohortes: user.cohortes
+      };
+      return usuario;
+      }) || componentData?.cohortes[0].users,
     [preData, componentData]
   );
   const loading = useMemo(() => queryLoading || componentLoading, [

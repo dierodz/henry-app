@@ -20,7 +20,6 @@ function NavBarAlumno({ show, children }) {
          paper: [classShow, classes.drawerPaper].join(' ')
       }}
    >
-      {console.log(user)}
       <List>
          <NavBarItem title="Dashboard" icon={DashboardRounded} to="/" exact />
          <NavBarItem title="Cohortes" icon={ClassRounded} to={`/student/cohorte/${user.cohortes[0].id}`} />

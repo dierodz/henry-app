@@ -56,8 +56,9 @@ function Cohortes({ className }) {
       return preData.cohortes.map((item) => {
         return {
           ...item,
-          instructorDisplay: `${item.instructor.givenName || ""} ${
-            item.instructor.familyName || ""
+          name: item.name.toUpperCase(),
+          instructorDisplay: `${capitalizeFirstLetter(item.instructor.givenName) || ""} ${
+            capitalizeFirstLetter(item.instructor.familyName) || ""
           }`,
           instructor: item.instructor.id,
           groups: item.groups.length,
@@ -67,6 +68,9 @@ function Cohortes({ className }) {
     } else return preData;
   }, [preData]);
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   const tableData = useMemo(
     () => ({
       loading,
@@ -202,7 +206,6 @@ function Cohortes({ className }) {
       refetch();
     }
   }, [resultDelete, refetch]);
-  console.log(count);
   return (
     <div style={{ height: "calc(100vh - 65px)" }}>
       <Tabla

@@ -42,6 +42,10 @@ function Alumns({
     setRowsPerPage(e.target.value);
   }
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const variables = useMemo(
     () => ({
       where: cohorte ? { Cohorte: { id: cohorte.id } } : undefined,
@@ -73,7 +77,13 @@ function Alumns({
     () => ({
       loading,
       error,
-      data,
+      data: data ? data.map((user)=> {
+        return {
+          ...user,
+          familyName: capitalizeFirstLetter(user.familyName),
+          givenName: capitalizeFirstLetter(user.givenName)
+        }
+      }) : data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
