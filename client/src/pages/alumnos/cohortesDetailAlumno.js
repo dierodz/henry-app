@@ -13,7 +13,7 @@ import {
   Grid,
 } from "@material-ui/core";
 import Loading from "components/Loading";
-import "styles/components/CohortesDetailAlumno.scss"
+import "styles/components/CohortesDetailAlumno.scss";
 
 function CohortesDetailAlumno({ className }) {
   let { id } = useParams();
@@ -48,8 +48,9 @@ function CohortesDetailAlumno({ className }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-
-{data && console.log(data)}
+  {
+    data && console.log(data);
+  }
   return (
     <Container style={{ paddingTop: "1rem" }}>
       {loading ? (
@@ -60,23 +61,46 @@ function CohortesDetailAlumno({ className }) {
             <Card variant="outlined">
               <CardHeader title="Información" />
               <CardContent>
-                <div style={{ height: "50vh", width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around", alignItems: "center" }}>
+                <div
+                  style={{
+                    height: "50vh",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                  }}
+                >
                   <div className="cohorteDetailItem">
-                    <p>Nombre del cohorte: </p> 
-                 <span>{data.cohortes[0].name.toUpperCase()}</span>
-                 </div>
-                 <div className="cohorteDetailItem">
-                 <p>Nombre del instructor: </p> 
-                 <span>{capitalizeFirstLetter(data.cohortes[0].instructor.givenName) + ' ' + capitalizeFirstLetter(data.cohortes[0].instructor.familyName)}</span>
-                </div>
-        <div className="cohorteDetailItem">
-      <p>Fecha de inicio: </p>   
-      <span>{data && new Date(Number(data.cohortes[0].startDate.substring(0,data.cohortes[0].startDate.length-1))).toLocaleDateString()}</span>
-      </div>
-      <div className="cohorteDetailItem">
-      <p>Cantidad de alumnos: </p> 
-      <span>{data.cohortes[0].users.length}</span>
-      </div>
+                    <p>Nombre del cohorte: </p>
+                    <span>{data.cohortes[0].name.toUpperCase()}</span>
+                  </div>
+                  <div className="cohorteDetailItem">
+                    <p>Nombre del instructor: </p>
+                    <span>
+                      {capitalizeFirstLetter(
+                        data.cohortes[0].instructor.givenName
+                      ) +
+                        " " +
+                        capitalizeFirstLetter(
+                          data.cohortes[0].instructor.familyName
+                        )}
+                    </span>
+                  </div>
+                  <div className="cohorteDetailItem">
+                    <p>Fecha de inicio: </p>
+                    <span>
+                      {data &&
+                        new Date(
+                          Number(data.cohortes[0].startDate)
+                        ).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className="cohorteDetailItem">
+                    <p>Cantidad de alumnos: </p>
+                    <span>{data.cohortes[0].users.length}</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
