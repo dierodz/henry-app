@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Avatar } from "react-native-paper";
 
 const UserImage = ({ photoUrl, givenName, familyName }) => {
+
   return (
     <>
       {photoUrl ? (

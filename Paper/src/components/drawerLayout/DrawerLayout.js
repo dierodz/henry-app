@@ -15,7 +15,7 @@ import {
 } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import UserImage from "./UserImage";
+import UserImage from "../userImage/UserImage";
 
 export default function DrawerLayout(props) {
   const { user } = useSelector((state) => state.auth);
@@ -96,13 +96,6 @@ export default function DrawerLayout(props) {
             label="Configuración"
             onPress={() => {}}
           />
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="tune" color={color} size={size} />
-            )}
-            label="LogOut"
-            onPress={() => dispatch(signOut())}
-          />
         </Drawer.Section>
         <Drawer.Section title="Estilo">
           <TouchableRipple onPress={() => props.handleTheme()}>
@@ -113,6 +106,20 @@ export default function DrawerLayout(props) {
               </View>
             </View>
           </TouchableRipple>
+        </Drawer.Section>
+
+        <Drawer.Section>
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons
+                name="logout-variant"
+                color={color}
+                size={size}
+              />
+            )}
+            label="LogOut"
+            onPress={() => dispatch(signOut())}
+          />
         </Drawer.Section>
       </View>
     </DrawerContentScrollView>

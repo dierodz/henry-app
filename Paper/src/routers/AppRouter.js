@@ -6,7 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-community/async-storage";
 
-import DrawerLayout from "../components/DrawerLayout/DrawerLayout";
+import DrawerLayout from "../components/drawerLayout/DrawerLayout";
 import HomeScreen from "../screens/LoginScreen/LoginScreen";
 import SignUp from "../screens/SignUp/SignUp";
 import Settings from "../screens/Settings/Settings";

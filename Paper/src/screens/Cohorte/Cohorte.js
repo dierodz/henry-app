@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { IconButton, Paragraph, Card, Title } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import UserImage from "../../components/DrawerLayout/UserImage";
+import UserImage from "../../components/userImage/UserImage";
 
 export default function Cohorte({ navigation }) {
   const { user } = useSelector((state) => state.auth);

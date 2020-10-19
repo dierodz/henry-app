@@ -8,11 +8,9 @@ import { signInWithEmail } from "../../dispatchers/auth";
 
 import {
   Avatar,
-  // Colors,
   TextInput,
   Button,
   Caption,
-  // IconButton,
 } from "react-native-paper";
 
 export default function LoginScreen({ navigation }) {
@@ -25,7 +23,7 @@ export default function LoginScreen({ navigation }) {
   const [{ email, password }, handleInputChange] = useForm(initialForm);
 
   const handleSubmit = () => {
-    dispatch(signInWithEmail(email.toLowerCase(), password));
+    dispatch(signInWithEmail(email.trim().toLowerCase(), password));
   };
 
   return (
