@@ -14,6 +14,7 @@ import {
 import AppRouter from "./src/routes/AppRouter";
 import store from "./src/store/store";
 
+
 const CombinedDarkTheme = {
   ...PaperDarkTheme,
   ...NavigationDarkTheme,
