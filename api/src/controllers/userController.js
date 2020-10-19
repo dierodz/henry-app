@@ -78,27 +78,19 @@ const getAllUsers = async ({ where, limit, offset, order }) => {
          delete where.Cohorte;
       }
    }
-   const users = await User.findAll({
-      where,
-      limit,
-      offset,
-      order,
-      include: localInclude,
-   });
-
-   if (users.length < 1) {
-      throw {
-         name: "ApiFindError",
-         type: "Users Error",
-         error: {
-            message: "there are no users in the database",
-            type: "data not found",
-            code: 404,
-         },
-      };
+   try {
+      const users = await User.findAll({
+         where,
+         limit,
+         offset,
+         order,
+         include: localInclude,
+      });
+      console.log(users);
+      return users;
+   } catch (error) {
+      console.error(error);
    }
-
-   return users;
 };
 
 const getUserById = async (id) => {
