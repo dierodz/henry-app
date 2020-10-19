@@ -21,8 +21,8 @@ export default function LoginScreen({ navigation }) {
   const dispatch = useDispatch()
 
   const initialForm = {
-    email: "",
-    password: "",
+    email: "rootuser@root.com",
+    password: "123456789",
   };
   const [{ email, password }, handleInputChange] = useForm(initialForm);
 
