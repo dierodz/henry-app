@@ -1,25 +1,34 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import { USER_FULL, COUNT_USERS } from "apollo/querys/users";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
 import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
 import { useCopyToClipboard } from "react-use";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
+import { hooks } from "shared";
 
-function Alumns({
-  className,
-  cohorte,
-  data: componentData,
-  loading: componentLoading,
-}) {
-  const [
-    execute,
-    { loading: queryLoading, error, data: preData, refetch: preRefetch },
-  ] = useLazyQuery(USER_FULL);
+const { useUsers } = hooks;
 
-  const [executeCount, { data: count }] = useLazyQuery(COUNT_USERS);
+function Alumns({ className, cohorte, loading: componentLoading }) {
+  const {
+    fetch,
+    //refetch,
+    result,
+    count,
+    loading: fetchLoading,
+    rowsPerPageOptions,
+    rowsPerPage,
+    onChangePage,
+    onChangeRowsPerPage,
+    page,
+  } = useUsers({
+    where: {
+      Cohorte: {
+        id: 2,
+      },
+    },
+    order: ["givenName", "familyName"],
+  });
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
@@ -33,47 +42,19 @@ function Alumns({
     }
   }, [copyValue]);
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  function onChangePage(_, page) {
-    setPage(page);
-  }
-  function onChangeRowsPerPage(e) {
-    setRowsPerPage(e.target.value);
-  }
-
-  const variables = useMemo(
-    () => ({
-      where: cohorte ? { Cohorte: { id: cohorte.id } } : undefined,
-      limit: rowsPerPage,
-      offset: rowsPerPage * page,
-    }),
-    [rowsPerPage, page, cohorte]
-  );
-
   useEffect(() => {
-    if (cohorte) {
-      execute({
-        variables,
-      });
-      executeCount({ variables });
-    }
-  }, [cohorte, execute, executeCount, variables]);
+    fetch();
+  }, [rowsPerPage, page, fetch]);
 
-  const data = useMemo(
-    () => preData?.users || componentData?.cohortes[0].users,
-    [preData, componentData]
-  );
-  const loading = useMemo(() => queryLoading || componentLoading, [
-    queryLoading,
+  const loading = useMemo(() => fetchLoading || componentLoading, [
+    fetchLoading,
     componentLoading,
   ]);
 
   const tableData = useMemo(
     () => ({
       loading,
-      error,
-      data,
+      data: result,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
@@ -103,19 +84,22 @@ function Alumns({
         },
       },
     }),
-    [data, error, loading, copyToClipboard, push]
+    [result, loading, copyToClipboard, push]
   );
+
+  console.log(result);
 
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
       <Tabla
         loading={loading}
         data={tableData}
-        count={count?.countUsers || undefined}
+        count={count}
         page={page}
         rowsPerPage={rowsPerPage}
-        onChangePage={onChangePage}
-        onChangeRowsPerPage={onChangeRowsPerPage}
+        rowsPerPageOptions={rowsPerPageOptions}
+        onChangePage={(_, page) => onChangePage(page)}
+        onChangeRowsPerPage={(e) => onChangeRowsPerPage(e.target.value)}
       />{" "}
       <Snackbar
         open={showSnackbar}
