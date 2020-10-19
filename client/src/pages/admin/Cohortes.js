@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import { COHORTES, COUNT_COHORTES } from "apollo/querys/cohortes";
 import {
   CREATE_COHORTE,
   DELETE_COHORTE,
@@ -18,42 +17,41 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
+import { hooks } from "shared";
+const { useCohortes } = hooks;
 
 function Cohortes({ className }) {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  function onChangePage(_, page) {
-    setPage(page);
-    refetch({
-      limit: rowsPerPage,
-      offset: rowsPerPage * page,
-    });
-  }
-  function onChangeRowsPerPage(e) {
-    setRowsPerPage(e.target.value);
-    refetch({
-      limit: rowsPerPage,
-      offset: rowsPerPage * page,
-    });
-  }
-  const { loading, error, data: preData, refetch } = useQuery(COHORTES, {
-    variables: {
-      limit: rowsPerPage,
-      offset: rowsPerPage * page,
-    },
-  });
-  const { data: count } = useQuery(COUNT_COHORTES);
-  const instructors = useQuery(getUserRol, {
-    variables: { role: "instructor" },
-  });
   const [createMutation, resultCreate] = useMutation(CREATE_COHORTE);
   const [deleteMutation, resultDelete] = useMutation(DELETE_COHORTE);
   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE);
   const history = useHistory();
 
+  const instructors = useQuery(getUserRol, {
+    variables: { role: "instructor" },
+  });
+
+  const {
+    fetch,
+    refetch,
+    result,
+    count,
+    loading,
+    rowsPerPageOptions,
+    rowsPerPage,
+    onChangePage,
+    onChangeRowsPerPage,
+    page,
+  } = useCohortes({
+    order: ["name"],
+  });
+  useEffect(() => {
+    fetch();
+  }, [rowsPerPage, page, fetch]);
+
   const data = useMemo(() => {
-    if (Array.isArray(preData?.cohortes)) {
-      return preData.cohortes.map((item) => {
+    if (Array.isArray(result)) {
+      console.log(result);
+      return result.map((item) => {
         return {
           ...item,
           instructorDisplay: `${item.instructor.givenName || ""} ${
@@ -64,13 +62,12 @@ function Cohortes({ className }) {
           alumns: item.users.length,
         };
       });
-    } else return preData;
-  }, [preData]);
+    } else return result;
+  }, [result]);
 
   const tableData = useMemo(
     () => ({
       loading,
-      error,
       data: data,
       columns: [
         { key: "name", label: "Nombre del cohorte", align: "left" },
@@ -176,7 +173,6 @@ function Cohortes({ className }) {
     [
       data,
       history,
-      error,
       loading,
       createMutation,
       deleteMutation,
@@ -202,17 +198,17 @@ function Cohortes({ className }) {
       refetch();
     }
   }, [resultDelete, refetch]);
-  console.log(count);
   return (
     <div style={{ height: "calc(100vh - 65px)" }}>
       <Tabla
         loading={loading}
         data={tableData}
-        count={count?.countCohortes || undefined}
+        count={count}
         page={page}
         rowsPerPage={rowsPerPage}
-        onChangePage={onChangePage}
-        onChangeRowsPerPage={onChangeRowsPerPage}
+        rowsPerPageOptions={rowsPerPageOptions}
+        onChangePage={(_, page) => onChangePage(page)}
+        onChangeRowsPerPage={(e) => onChangeRowsPerPage(e.target.value)}
       />
     </div>
   );
