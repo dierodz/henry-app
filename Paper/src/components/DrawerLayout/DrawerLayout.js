@@ -1,48 +1,48 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import {
-  DrawerItem,
-  DrawerContentScrollView,
-} from '@react-navigation/drawer';
+/* eslint-disable react/prop-types */
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
+import { signOut } from "../../dispatchers/auth";
 import {
   useTheme,
-  Avatar,
   Title,
   Caption,
-  Paragraph,
   Drawer,
   Text,
   TouchableRipple,
   Switch,
   ProgressBar,
-  Colors
-  
-} from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+} from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import UserImage from "./UserImage";
 
 export default function DrawerLayout(props) {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const paperTheme = useTheme();
   return (
     <DrawerContentScrollView {...props}>
-      <View
-        style={styles.drawerContent}
-      >
+      <View style={styles.drawerContent}>
         <View style={styles.userInfoSection}>
-          <Avatar.Text  label="EG" />
-          <Title style={styles.title}>Ernesto Gonzalez</Title>
-          <Caption style={styles.caption}>Web FT-04</Caption>
-
+          <UserImage {...user} />
+          <Title style={styles.title}>
+            {user.givenName + " " + user.familyName}
+          </Title>
+          <Caption style={styles.caption}>
+            {user.cohortes.length === 0 ? "" : user.cohortes[0].name}
+          </Caption>
         </View>
         <ProgressBar progress={0.5} />
 
         <Drawer.Section style={styles.drawerSection}>
-            <DrawerItem
+          <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="school" color={color} size={size} />
             )}
             label="Cohorte"
-            onPress={() => props.navigation.navigate('Cohorte')}
+            onPress={() => props.navigation.navigate("Cohorte")}
           />
           <DrawerItem
             icon={({ color, size }) => (
@@ -53,22 +53,18 @@ export default function DrawerLayout(props) {
               />
             )}
             label="Grupos"
-            onPress={() => props.navigation.navigate('Grupos')}
+            onPress={() => props.navigation.navigate("Grupos")}
           />
           <DrawerItem
             icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name="coffee"
-                color={color}
-                size={size}
-              />
+              <MaterialCommunityIcons name="coffee" color={color} size={size} />
             )}
             label="PM"
-            onPress={() => props.navigation.navigate('Pm')}
+            onPress={() => props.navigation.navigate("Pm")}
           />
         </Drawer.Section>
         <Drawer.Section style={styles.drawerSection}>
-        <DrawerItem
+          <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons
                 name="calendar"
@@ -79,8 +75,6 @@ export default function DrawerLayout(props) {
             label="Calendario"
             onPress={() => {}}
           />
-
-
         </Drawer.Section>
 
         <Drawer.Section style={styles.drawerSection}>
@@ -93,7 +87,7 @@ export default function DrawerLayout(props) {
               />
             )}
             label="Mi Perfil"
-            onPress={() => props.navigation.navigate('Home')}
+            onPress={() => props.navigation.navigate("Home")}
           />
           <DrawerItem
             icon={({ color, size }) => (
@@ -102,10 +96,16 @@ export default function DrawerLayout(props) {
             label="Configuración"
             onPress={() => {}}
           />
-
+          <DrawerItem
+            icon={({ color, size }) => (
+              <MaterialCommunityIcons name="tune" color={color} size={size} />
+            )}
+            label="LogOut"
+            onPress={() => dispatch(signOut())}
+          />
         </Drawer.Section>
         <Drawer.Section title="Estilo">
-          <TouchableRipple onPress={()=>props.handleTheme()}>
+          <TouchableRipple onPress={() => props.handleTheme()}>
             <View style={styles.preference}>
               <Text>Dark Theme</Text>
               <View pointerEvents="none">
@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userInfoSection: {
-      justifyContent:"center",
-      alignItems:"center"
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     marginTop: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   caption: {
     fontSize: 14,
@@ -137,24 +137,24 @@ const styles = StyleSheet.create({
   },
   row: {
     marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   section: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginRight: 15,
   },
   paragraph: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginRight: 3,
   },
   drawerSection: {
     marginTop: 15,
   },
   preference: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 12,
     paddingHorizontal: 16,
   },

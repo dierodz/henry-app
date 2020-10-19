@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd api && npm run start\" \"cd client && npm run start\"",
-    "expo-start": "concurrently \"cd api && npm run start\" \"cd Paper && npm run start\""
+    "start": "concurrently \"cd api && npm run start\" \"cd client && npm run start\""
   },
   "keywords": [],
   "author": "",

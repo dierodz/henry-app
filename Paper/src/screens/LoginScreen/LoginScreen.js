@@ -6,7 +6,6 @@ import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { signInWithEmail } from "../../dispatchers/auth";
 
-
 import {
   Avatar,
   // Colors,
@@ -17,8 +16,7 @@ import {
 } from "react-native-paper";
 
 export default function LoginScreen({ navigation }) {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const initialForm = {
     email: "rootuser@root.com",
@@ -27,7 +25,7 @@ export default function LoginScreen({ navigation }) {
   const [{ email, password }, handleInputChange] = useForm(initialForm);
 
   const handleSubmit = () => {
-    dispatch(signInWithEmail(email, password))
+    dispatch(signInWithEmail(email.toLowerCase(), password));
   };
 
   return (
