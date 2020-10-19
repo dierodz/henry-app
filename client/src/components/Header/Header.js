@@ -44,6 +44,11 @@ export default function Header({ handleShowMenu }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -58,7 +63,7 @@ export default function Header({ handleShowMenu }) {
       <div className="userMenu">
         <img alt="userImg" src={user.photoUrl || "/Imagenes/user.png"}></img>
         <p className="userName">
-          {user.givenName} {user.familyName}
+          {capitalizeFirstLetter(user.givenName)} {capitalizeFirstLetter(user.familyName)}
         </p>
         <button className="perfilBtn" onClick={() => history.push("/profile")}>
           Perfil
