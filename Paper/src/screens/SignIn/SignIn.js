@@ -1,20 +1,24 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
 import { View } from "react-native";
-import {
-  Avatar,
-  TextInput,
-  Button,
-  Caption,
-} from "react-native-paper";
+import { Avatar, TextInput, Button, Caption } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
-import { AuthContext } from "../../../App";
+import { useDispatch } from "react-redux";
+import { useForm } from "../../hooks/useForm";
+import { signInWithEmail } from "../../dispatchers/auth";
 
 export default function SignIn({ navigation }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const dispatch = useDispatch();
 
-  const { signIn } = React.useContext(AuthContext);
+  const initialForm = {
+    email: "",
+    password: "",
+  };
+  const [{ email, password }, handleInputChange] = useForm(initialForm);
+
+  const handleSubmit = () => {
+    dispatch(signInWithEmail(email.trim().toLowerCase(), password));
+  };
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
@@ -34,19 +38,19 @@ export default function SignIn({ navigation }) {
           mode="outlined"
           label="Email"
           value={email}
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => handleInputChange("email", email)}
           style={{ marginBottom: 20 }}
         />
         <TextInput
           mode="outlined"
           label="Password"
           value={password}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(password) => handleInputChange("password", password)}
           style={{ marginBottom: 30 }}
         />
         <Button
           mode="contained"
-          onPress={() => signIn({ user: email, password: password })}
+          onPress={handleSubmit}
           style={{ marginBottom: 20 }}
         >
           Sign-In
