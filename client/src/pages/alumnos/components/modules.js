@@ -72,7 +72,7 @@ function BreakpointUp(props) {
           <Paper className={classes.paper}>MODULO 2222</Paper>
         </Hidden>
         <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 3</Paper>
+          <Paper className={classes.paper}>MODULO 33333</Paper>
         </Hidden>
         <Hidden xlUp>
           <Paper className={classes.paper}>MODULO 4</Paper>
