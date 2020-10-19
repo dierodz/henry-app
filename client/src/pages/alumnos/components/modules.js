@@ -1,30 +1,3 @@
-// import React, { useEffect, useState } from 'react'
-// import { useMutation, useQuery } from "@apollo/client";
-// import {
-//     CREATE_MODULE,
-// } from "../mutations/module";
-
-// import { MODULES } from "../querys/module";
-
-// function Modules() {
-
-//     return (
-//         <Grid container spacing={1}>
-//   <Grid container item xs={12} spacing={3}>
-//     <FormRow />
-//   </Grid>
-//   <Grid container item xs={12} spacing={3}>
-//     <FormRow />
-//   </Grid>
-//   <Grid container item xs={12} spacing={3}>
-//     <FormRow />
-//   </Grid>
-// </Grid>
-//     )
-// }
-
-// export default Modules;
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -69,10 +42,10 @@ function BreakpointUp(props) {
         <Paper className={classes.paper}> <a href={"www.google.com"}>MODULO 1</a></Paper>   
         </Hidden>
         <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 2222</Paper>
+          <Paper className={classes.paper}>MODULO 2</Paper>
         </Hidden>
         <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 33333</Paper>
+          <Paper className={classes.paper}>MODULO 3</Paper>
         </Hidden>
         <Hidden xlUp>
           <Paper className={classes.paper}>MODULO 4</Paper>
