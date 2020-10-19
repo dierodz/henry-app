@@ -27,11 +27,7 @@ function Profile() {
   const { uid } = useSelector((store) => store.auth);
   const { data: preData, loading, refetch } = useQuery(USER_FULL, {
     variables: {
-<<<<<<< HEAD
-      id: parseInt(uid),
-=======
       id: parseInt(id) || parseInt(uid),
->>>>>>> 33c87c5e21772d667df08ccc8b23bfdf941f8272
     },
   });
   const [update, updateResponse] = useMutation(UPDATE_USER);
