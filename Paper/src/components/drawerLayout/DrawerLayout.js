@@ -42,7 +42,7 @@ export default function DrawerLayout(props) {
               <MaterialCommunityIcons name="school" color={color} size={size} />
             )}
             label="Cohorte"
-            onPress={() => props.navigation.navigate("Cohorte")}
+            onPress={() => props.navigation.navigate("CohorteRoutes")}
           />
           <DrawerItem
             icon={({ color, size }) => (
@@ -53,14 +53,14 @@ export default function DrawerLayout(props) {
               />
             )}
             label="Grupos"
-            onPress={() => props.navigation.navigate("Grupos")}
+            onPress={() => props.navigation.navigate("GruposRoutes")}
           />
           <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="coffee" color={color} size={size} />
             )}
             label="PM"
-            onPress={() => props.navigation.navigate("Pm")}
+            onPress={() => props.navigation.navigate("PmRoutes")}
           />
         </Drawer.Section>
         <Drawer.Section style={styles.drawerSection}>

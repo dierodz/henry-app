@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import {  View, ScrollView  } from 'react-native';
 import { Avatar,  Colors, TextInput, Button, Caption, IconButton} from 'react-native-paper';

@@ -1,8 +1,5 @@
 import React from "react";
 import { Provider } from "react-redux";
-import store from "./src/store/store";
-// import AsyncStorage from "@react-native-community/async-storage";
-
 import {
   NavigationContainer,
   DefaultTheme as NavigationDefaultTheme,
@@ -13,7 +10,9 @@ import {
   DefaultTheme as PaperDefaultTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
-import AppRouter from "./src/routers/AppRouter";
+
+import AppRouter from "./src/routes/AppRouter";
+import store from "./src/store/store";
 
 const CombinedDarkTheme = {
   ...PaperDarkTheme,
