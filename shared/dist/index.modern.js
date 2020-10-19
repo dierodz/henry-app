@@ -1,4 +1,4 @@
-import { useLazyQuery, gql } from '@apollo/client';
+import { useLazyQuery, gql, useMutation } from '@apollo/client';
 import { useState, useCallback, useMemo } from 'react';
 
 function usePagination(config) {
@@ -12,10 +12,10 @@ function usePagination(config) {
   const [page, setPage] = useState(0);
   const onChangePage = useCallback(page => {
     setPage(page);
-  });
+  }, [setPage]);
   const onChangeRowsPerPage = useCallback(rows => {
     setRowsPerPage(rows);
-  });
+  }, [setRowsPerPage]);
   return {
     rowsPerPageOptions,
     rowsPerPage,
@@ -36,13 +36,11 @@ function useQueryWithPagination(QUERY_DEFINITION, variables, config) {
     data,
     refetch
   }] = useLazyQuery(QUERY_DEFINITION);
+  const pagination = usePagination(config);
   const {
     rowsPerPage,
-    rowsPerPageOptions,
-    page,
-    onChangePage,
-    onChangeRowsPerPage
-  } = usePagination(config);
+    page
+  } = pagination;
   const result = useMemo(() => (data === null || data === void 0 ? void 0 : data.result) || undefined, [data]);
   const count = useMemo(() => (data === null || data === void 0 ? void 0 : data.count) || undefined, [data]);
   const fetch = useCallback(() => execute({
@@ -59,17 +57,65 @@ function useQueryWithPagination(QUERY_DEFINITION, variables, config) {
     count,
     loading,
     refetch,
-    rowsPerPage,
-    rowsPerPageOptions,
-    page,
-    onChangePage,
-    onChangeRowsPerPage
+    ...pagination
   };
 }
 
 let _ = t => t,
-    _t;
-const GROUPS = gql(_t || (_t = _`
+    _t,
+    _t2;
+const COHORTES = gql(_t || (_t = _`
+  query COHORTES($where: JSON, $limit: Int, $offset: Int, $order: JSON) {
+    result: cohortes(
+      where: $where
+      limit: $limit
+      offset: $offset
+      order: $order
+    ) {
+      id
+      name
+      startDate
+      instructor {
+        id
+        givenName
+        familyName
+      }
+      users {
+        id
+      }
+      groups {
+        id
+      }
+    }
+    count: countCohortes(where: $where)
+  }
+`));
+const CREATE_COHORTE = gql(_t2 || (_t2 = _`
+  mutation createCohorte($name: String, $startDate: String, $instructor: Int) {
+    createCohorte(
+      input: { name: $name, startDate: $startDate, instructor: $instructor }
+    ) {
+      id
+    }
+  }
+`));
+
+function useCohortes(variables, config) {
+  const withPagination = useQueryWithPagination(COHORTES, variables, config);
+  const [_create, createObserver] = useMutation(CREATE_COHORTE);
+  const create = useCallback((...args) => {
+    _create(...args);
+  }, []);
+  const loading = useMemo(() => withPagination.loading || createObserver.loading, [withPagination.loading, createObserver.loading]);
+  return { ...withPagination,
+    create,
+    loading
+  };
+}
+
+let _$1 = t => t,
+    _t$1;
+const GROUPS = gql(_t$1 || (_t$1 = _$1`
   query GROUPS($where: JSON, $limit: Int, $offset: Int, $order: JSON) {
     result: groups(
       where: $where
@@ -90,9 +136,9 @@ function useGroups(variables, config) {
   return hook;
 }
 
-let _$1 = t => t,
-    _t$1;
-const USERS = gql(_t$1 || (_t$1 = _$1`
+let _$2 = t => t,
+    _t$2;
+const USERS = gql(_t$2 || (_t$2 = _$2`
   query USERS($id: Int, $where: JSON, $limit: Int, $offset: Int, $order: JSON) {
     result: users(
       id: $id
@@ -126,6 +172,7 @@ function useUsers(variables, config) {
 }
 
 var index = {
+  useCohortes,
   useGroups,
   usePagination,
   useUsers

@@ -1,21 +1,23 @@
-import { useLazyQuery } from '@apollo/client'
+import {
+  DocumentNode,
+  OperationVariables,
+  TypedDocumentNode,
+  useLazyQuery
+} from '@apollo/client'
 import { useCallback, useMemo } from 'react'
 import usePagination from '../usePagination'
+import Config from '../../types/config'
+import UseQueryWithPagination from '../../types/useQueryWithPagination'
 
-export default function useQueryWithPagination(
-  QUERY_DEFINITION,
-  variables,
-  config
-) {
+export default function useQueryWithPagination<T = any>(
+  QUERY_DEFINITION: DocumentNode | TypedDocumentNode<any, Record<string, any>>,
+  variables: OperationVariables,
+  config: Config
+): UseQueryWithPagination<T> {
   const { where, order } = useMemo(() => ({ ...variables }), [variables])
   const [execute, { loading, data, refetch }] = useLazyQuery(QUERY_DEFINITION)
-  const {
-    rowsPerPage,
-    rowsPerPageOptions,
-    page,
-    onChangePage,
-    onChangeRowsPerPage
-  } = usePagination(config)
+  const pagination = usePagination(config)
+  const { rowsPerPage, page } = pagination
   const result = useMemo(() => data?.result || undefined, [data])
   const count = useMemo(() => data?.count || undefined, [data])
   const fetch = useCallback(
@@ -36,10 +38,6 @@ export default function useQueryWithPagination(
     count,
     loading,
     refetch,
-    rowsPerPage,
-    rowsPerPageOptions,
-    page,
-    onChangePage,
-    onChangeRowsPerPage
+    ...pagination
   }
 }

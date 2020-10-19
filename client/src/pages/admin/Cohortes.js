@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import { COHORTES, COUNT_COHORTES } from "apollo/querys/cohortes";
 import {
   CREATE_COHORTE,
   DELETE_COHORTE,
@@ -19,7 +18,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { hooks } from "shared";
-const { useGroups } = hooks;
+const { useCohortes } = hooks;
 
 function Cohortes({ className }) {
   const [createMutation, resultCreate] = useMutation(CREATE_COHORTE);
@@ -42,7 +41,7 @@ function Cohortes({ className }) {
     onChangePage,
     onChangeRowsPerPage,
     page,
-  } = useGroups({
+  } = useCohortes({
     order: ["name"],
   });
   useEffect(() => {
