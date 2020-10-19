@@ -5,6 +5,5 @@ module.exports = (sequelize, DataTypes) =>
       },
       durationTime: {
          type: DataTypes.INTEGER,
-         allowNull: false,
       },
    });

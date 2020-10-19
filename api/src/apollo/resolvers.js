@@ -21,7 +21,9 @@ const {
    deleteCheckPoint,
    createCheckPoint,
 } = require("./resolvers/checkPointResolver");
-const { contents } = require("./resolvers/contentResolver");
+const { contents,   createContenido,
+   updateTopics,
+   deleteTopics, } = require("./resolvers/contentResolver");
 const {
    modules,
    createModule,
@@ -98,6 +100,10 @@ const resolvers = {
       createReview,
       updateReview,
       deleteReview,
+      //Mutaciones de contenidos
+      createContenido,
+      updateTopics,
+      deleteTopics,
    },
 
    Cohorte: {
