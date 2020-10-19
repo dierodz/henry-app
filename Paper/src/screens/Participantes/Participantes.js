@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {  View } from 'react-native';
-import { Avatar, Subheading, Divider, Paragraph, Button} from 'react-native-paper';
+import { Paragraph } from 'react-native-paper';
 
-export default function OtraCosa(props){
+export default function Participantes(props){
     return (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Paragraph>OtraCosa</Paragraph>
+    <Paragraph>Participantes Grupo</Paragraph>
 </View>
 );
 }

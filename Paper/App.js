@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { View, ActivityIndicator } from 'react-native';
-
 
 import {
   NavigationContainer,
@@ -18,20 +15,8 @@ import {
   Provider as PaperProvider
 } from 'react-native-paper';
 
-import DrawerLayout from './src/components/DrawerLayout/DrawerLayout'
-import HomeScreen from './src/screens/HomeScreen/HomeScreen'
-import SignUp from './src/screens/SignUp/SignUp'
-import Settings from './src/screens/Settings/Settings'
-import Cohorte from './src/screens/Cohorte/Cohorte'
-import Pm from './src/screens/Pm/Pm'
-import Grupos from './src/screens/Grupos/Grupos'
-
-
-const Drawer = createDrawerNavigator();
-
-const LogInStack = createStackNavigator()
-
-
+import LogRoutes from "./src/routes/LogRoutes/LogRoutes";
+import DrawerRoutes from "./src/routes/DrawerRoutes/DrawerRoutes"
 
 const CombinedDarkTheme = {
   ...PaperDarkTheme,
@@ -136,25 +121,16 @@ export default function App() {
       </View>
     );
   }
-
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
       <NavigationContainer theme={theme} >
         { loginState.userToken !== null?
-          <Drawer.Navigator  drawerContent={props=><DrawerLayout {...props} handleTheme={handleTheme} />} initialRouteName="Cohorte">
-          <Drawer.Screen name="Settings" component={Settings} />
-          <Drawer.Screen name="Cohorte" component={Cohorte} />
-          <Drawer.Screen name="Pm" component={Pm} />
-          <Drawer.Screen name="Grupos" component={Grupos} />
-          </Drawer.Navigator>
+          <DrawerRoutes handleTheme={handleTheme}/>
           :
-          <LogInStack.Navigator headerMode='none'>
-              <LogInStack.Screen name="Home" component={HomeScreen}/>
-              <LogInStack.Screen name="SignUp" component={SignUp}/>
-          </LogInStack.Navigator>
+          <LogRoutes/>
         }
-    </NavigationContainer>
+      </NavigationContainer>
     </AuthContext.Provider>
     </PaperProvider>
   );

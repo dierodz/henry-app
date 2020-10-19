@@ -5,12 +5,11 @@ import { AntDesign } from '@expo/vector-icons';
 import {AuthContext} from '../../../App'
 
 
-export default function HomeScreen({ navigation }) {
+export default function SignIn({ navigation }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const { signIn } = React.useContext(AuthContext);
-
 
     return (
       <View style={{ flex: 1,alignItems:"center" }}>
