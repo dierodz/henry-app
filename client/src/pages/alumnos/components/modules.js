@@ -69,7 +69,7 @@ function BreakpointUp(props) {
         <Paper className={classes.paper}> <a href={"www.google.com"}>MODULO 1</a></Paper>   
         </Hidden>
         <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 2</Paper>
+          <Paper className={classes.paper}>MODULO 2222</Paper>
         </Hidden>
         <Hidden xlUp>
           <Paper className={classes.paper}>MODULO 3</Paper>
