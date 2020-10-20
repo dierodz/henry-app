@@ -19,10 +19,8 @@ import RegisterScreen from "pages/auth/RegisterScreen";
 import Profile from "pages/Profile/Profile";
 import GroupStudent from "pages/alumnos/components/GroupStudent";
 import Modules from "../pages/alumnos/components/modules"
-import Module1 from "../pages/alumnos/components/module1"
-import Module2 from "../pages/alumnos/components/module2"
-import Module3 from "../pages/alumnos/components/module3"
-import Module4 from "../pages/alumnos/components/module4"
+import contentModule from "../pages/alumnos/components/module2"
+
 
 const GeneralRoutes = () => {
   const { authenticated, user } = useSelector((state) => state.auth);
@@ -75,11 +73,9 @@ const GeneralRoutes = () => {
           <Route path="/auth/signup" component={RegisterScreen} />
           <Route exact path="/student/cohorte/:id" component={CohortesDetailAlumno} />
           <Route exact path="/student/groups" component={GroupStudent} />
-          <Route exact path="/student/modules" component={Modules} />
-          <Route exact path="/student/modules/modulo1" component={Module1} />
-          <Route exact path="/student/modules/modulo2" component={Module2} />
-          <Route exact path="/student/modules/modulo3" component={Module3} />
-          <Route exact path="/student/modules/modulo4" component={Module4} />
+          <Route exact path="/student/modules" component={contentModule} />
+          {/* <Route exact path="/student/modules/contentModule" component={contentModule} /> */}
+
         </Switch>
       </div>
     </>

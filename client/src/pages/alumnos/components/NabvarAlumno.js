@@ -22,7 +22,7 @@ function NavBarAlumno({ show, children }) {
    >
       <List>
          <NavBarItem title="Dashboard" icon={DashboardRounded} to="/" exact />
-         <NavBarItem title="Cohortes" icon={ClassRounded} to={`/student/cohorte/${user.cohortes[0].id}`} />
+         <NavBarItem title="Cohortes" icon={ClassRounded} to={user.cohortes[0] && `/student/cohorte/${user.cohortes[0].id}`} />
          <NavBarItem title="Modulos" icon={AssignmentIndRounded} to="/student/modules" />
          <NavBarItem title="Grupos" icon={RecordVoiceOverRounded} to="/student/groups" />
       </List>

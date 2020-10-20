@@ -38,6 +38,7 @@ function BreakpointUp(props) {
   const { width } = props;
 
   return (
+    //Deberia renderizar dependiendo en que modulo se encuentra el alumno: If module === 1 => Contenido modulo 1.
     <div className={classes.root}>
       <div className={classes.container}>
         <Hidden xlUp>
