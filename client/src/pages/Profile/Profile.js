@@ -1,11 +1,9 @@
 import { useMutation, useQuery } from "@apollo/client";
 import {
   Avatar,
-  Box,
   Container,
   Grid,
   makeStyles,
-  Typography,
 } from "@material-ui/core";
 import { UPDATE_USER } from "apollo/Mutations/users";
 import { USER_FULL } from "apollo/querys/users";
@@ -56,7 +54,7 @@ function Profile() {
   async function handleUpdate(values) {
     await update({
       variables: {
-        id: data.id || uid,
+        id: uid,
         user: { ...values },
       },
     });
