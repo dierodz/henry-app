@@ -77,13 +77,15 @@ function Alumns({
     () => ({
       loading,
       error,
-      data: data ? data.map((user)=> {
-        return {
-          ...user,
-          familyName: capitalizeFirstLetter(user.familyName),
-          givenName: capitalizeFirstLetter(user.givenName)
-        }
-      }) : data,
+      data: cohorte
+        ? cohorte.users.map((user) => {
+            return {
+              ...user,
+              familyName: capitalizeFirstLetter(user.familyName),
+              givenName: capitalizeFirstLetter(user.givenName),
+            };
+          })
+        : data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },

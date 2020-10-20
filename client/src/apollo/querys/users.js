@@ -53,6 +53,11 @@ export const USER_FULL = gql`
         id
         name
       }
+      groups {
+        id
+        name
+        type
+      }
     }
   }
 `;

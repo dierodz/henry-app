@@ -14,12 +14,16 @@ function Alumns({
   data: componentData,
   loading: componentLoading,
 }) {
-  const [
-    execute,
-    { loading: queryLoading, error, data: preData, refetch: preRefetch },
-  ] = useLazyQuery(USER_FULL);
+  // const [
+  //   execute,
+  //   { loading: queryLoading, error, data: preData, refetch: preRefetch },
+  // ] = useLazyQuery(USER_FULL);
 
-  const [executeCount, { data: count }] = useLazyQuery(COUNT_USERS);
+  console.log(cohorte);
+
+  const [executeCount, { loading, error, data: count }] = useLazyQuery(
+    COUNT_USERS
+  );
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
@@ -57,40 +61,44 @@ function Alumns({
 
   useEffect(() => {
     if (cohorte) {
-      execute({
-        variables,
-      });
+      //   execute({
+      //     variables,
+      //   });
       executeCount({ variables });
     }
-  }, [cohorte, execute, executeCount, variables]);
+  }, [cohorte, executeCount, variables]);
 
   const data = useMemo(
-    () => preData?.users.map((user)=> {
-      var usuario = {
-        __typename: user.__typename,
-        givenName: capitalizeFirstLetter(user.givenName), 
-      familyName: capitalizeFirstLetter(user.familyName),  
-      email: user.email,
-      id: user.id,
-      nickName: user.nickName,
-      photoUrl: user.photoUrl,
-      roles: user.roles,
-      cohortes: user.cohortes
-      };
-      return usuario;
-      }) || componentData?.cohortes[0].users,
-    [preData, componentData]
+    () =>
+      (cohorte &&
+        cohorte.users.map((user) => {
+          var usuario = {
+            __typename: user.__typename,
+            givenName: user.givenName && capitalizeFirstLetter(user.givenName),
+            familyName:
+              user.familyName && capitalizeFirstLetter(user.familyName),
+            email: user.email,
+            id: user.id,
+            nickName: user.nickName,
+            photoUrl: user.photoUrl,
+            roles: user.roles,
+            cohortes: user.cohortes,
+          };
+          return usuario;
+        })) ||
+      componentData?.cohortes[0].users,
+    [componentData]
   );
-  const loading = useMemo(() => queryLoading || componentLoading, [
-    queryLoading,
-    componentLoading,
-  ]);
+  // const loading = useMemo(() => queryLoading || componentLoading, [
+  //   queryLoading,
+  //   componentLoading,
+  // ]);
 
   const tableData = useMemo(
     () => ({
       loading,
       error,
-      data,
+      data: data && data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },

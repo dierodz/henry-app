@@ -57,9 +57,9 @@ function Cohortes({ className }) {
         return {
           ...item,
           name: item.name.toUpperCase(),
-          instructorDisplay: `${capitalizeFirstLetter(item.instructor.givenName) || ""} ${
-            capitalizeFirstLetter(item.instructor.familyName) || ""
-          }`,
+          instructorDisplay: `${
+            capitalizeFirstLetter(item.instructor.givenName) || ""
+          } ${capitalizeFirstLetter(item.instructor.familyName) || ""}`,
           instructor: item.instructor.id,
           groups: item.groups.length,
           alumns: item.users.length,
