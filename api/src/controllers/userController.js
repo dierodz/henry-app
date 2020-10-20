@@ -240,7 +240,7 @@ const _internalGetUserByEmail = async (email) => {
 const getUserbyRol = async (role) => {
    const result = await Role.findOne({
       where: { name: role },
-      include: [{ model: User, include: [Role] }],
+      include: [{ model: User, include }],
    });
    return result.users;
 };

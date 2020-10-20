@@ -10,6 +10,12 @@ export const getUserRol = gql`
       roles {
         name
       }
+      group {
+        name
+      }
+      cohortes {
+        name
+      }
     }
   }
 `;
