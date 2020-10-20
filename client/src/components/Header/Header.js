@@ -63,7 +63,7 @@ export default function Header({ handleShowMenu }) {
       <div className="userMenu">
         <img alt="userImg" src={user.photoUrl || "/Imagenes/user.png"}></img>
         <p className="userName">
-          {capitalizeFirstLetter(user.givenName)} {capitalizeFirstLetter(user.familyName)}
+          {user.givenName && capitalizeFirstLetter(user.givenName)} {user.familyName && capitalizeFirstLetter(user.familyName)}
         </p>
         <button className="perfilBtn" onClick={() => history.push("/profile")}>
           Perfil
