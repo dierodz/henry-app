@@ -35,6 +35,11 @@ passport.use(
             return done(null, false, {
                message: "Username or password is incorrect",
             });
+         if (!user.givenName || user.givenName === "") {
+            return done(null, false, {
+               message: "You are not registered",
+            });
+         }
 
          const sendUser = await getUserById(user.id);
 
@@ -59,6 +64,10 @@ passport.use(
 
             if (!user) {
                return done(null, false);
+            } else if (!user.givenName || user.givenName === "") {
+               return done(null, false, {
+                  message: "You are not registered",
+               });
             } else {
                await updateUser(user.id, {
                   givenName: profile.name.givenName,
@@ -91,6 +100,10 @@ passport.use(
 
             if (!user) {
                return done(null, false);
+            } else if (!user.givenName || user.givenName === "") {
+               return done(null, false, {
+                  message: "You are not registered",
+               });
             } else {
                const { givenName, familyName } = splitName(profile._json.name);
                await updateUser(user.id, {
