@@ -38,7 +38,7 @@ export const signInWithEmail = (username, password) => {
             dispatch(login(user.id, user, token));
          }
       } catch ({ response }) {
-         dispatch(logout());
+         dispatch(signOut());
          dispatch(authSetError(response.data.message));
       }
    };
@@ -58,7 +58,7 @@ export const signInWithToken = (token) => {
             dispatch(login(data.id, data, token));
          }
       } catch ({ response }) {
-         dispatch(logout());
+         dispatch(signOut());
          dispatch(authSetError(response.data.message));
       }
    };
