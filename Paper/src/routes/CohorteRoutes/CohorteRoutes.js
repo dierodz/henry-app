@@ -1,9 +1,11 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import Cohorte from '../../screens/Cohorte/Cohorte'
 import Participantes from '../../screens/Participantes/Participantes'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const CohorteTabTop = createStackNavigator()
+const CohorteTabTop = createMaterialTopTabNavigator()
+
+
 
 export default function CohorteRoutes() {
     return (

@@ -1,52 +1,71 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { View } from "react-native";
-import {
-  Avatar,
-  TextInput,
-  Button,
-  Caption,
-} from "react-native-paper";
+import { View , Image} from "react-native";
+import { Avatar, TextInput, Button, Caption, IconButton } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
-import { AuthContext } from "../../../App";
+import { useDispatch } from "react-redux";
+import { useForm } from "../../hooks/useForm";
+import { signInWithEmail } from "../../dispatchers/auth";
+import {IMAGENAME} from "../../../assets"
 
 export default function SignIn({ navigation }) {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const dispatch = useDispatch();
 
-  const { signIn } = React.useContext(AuthContext);
+  const initialForm = {
+    email: "",
+    password: "",
+  };
+  const [{ email, password }, handleInputChange] = useForm(initialForm);
+
+  const[isPrivate,setPrivate] = React.useState(true)
+
+  const handleSubmit = () => {
+    dispatch(signInWithEmail(email.trim().toLowerCase(), password));
+  };
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
+      
       <View
         style={{
           flex: 1,
           width: "100%",
           paddingHorizontal: 20,
-          justifyContent: "center",
+          justifyContent:"center"
         }}
       >
-        <Avatar.Text
+       <Avatar.Text
           style={{ alignSelf: "center", marginVertical: 30 }}
           label="H"
-        />
+        /> 
         <TextInput
           mode="outlined"
           label="Email"
           value={email}
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(email) => handleInputChange("email", email)}
           style={{ marginBottom: 20 }}
         />
         <TextInput
           mode="outlined"
           label="Password"
           value={password}
-          onChangeText={(password) => setPassword(password)}
+          onChangeText={(password) =>{
+            !isPrivate&&setPrivate(true)
+            handleInputChange("password", password)
+          } }
           style={{ marginBottom: 30 }}
+          secureTextEntry={isPrivate}
+          right={<TextInput.Icon name={() =><IconButton
+            style={{alignSelf:"center"} } 
+            width="100%"
+            icon="eye"
+            size={20}
+            onPress={() => setPrivate(false)}
+            />}/>}
         />
         <Button
           mode="contained"
-          onPress={() => signIn({ user: email, password: password })}
+          onPress={handleSubmit}
           style={{ marginBottom: 20 }}
         >
           Sign-In

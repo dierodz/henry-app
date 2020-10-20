@@ -11,6 +11,7 @@ import {
   TextInput,
   Button,
   Caption,
+  Text
 } from "react-native-paper";
 
 export default function LoginScreen({ navigation }) {
@@ -75,7 +76,11 @@ export default function LoginScreen({ navigation }) {
           mode="outlined"
           onPress={() => navigation.navigate("SignUp")}
         >
-          ¡Registrate!
+          
+          <Text style={{color:"red"}}>
+          ¡Reg
+
+          </Text>
         </Button>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <AntDesign
