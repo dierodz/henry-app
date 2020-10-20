@@ -1,13 +1,11 @@
 import React, { useMemo, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import {
-  EDIT_COHORTE,
   ADD_USER_TO_COHORTE,
   DELETE_USER_TO_COHORTE,
 } from "apollo/Mutations/cohortes";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useParams,  } from "react-router-dom";
 import Groups from "./Cohortes/groups";
 import Alumns from "./Cohortes/Alumns";
 import {
