@@ -38,7 +38,7 @@ export default function ContenidoModulo() {
             <TableCell align="center">Modulo 1</TableCell>
             <TableCell align="right"></TableCell>
             <TableCell align="right"></TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell align="right"> c</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
