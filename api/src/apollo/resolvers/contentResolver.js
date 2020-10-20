@@ -13,8 +13,8 @@ const contents = async (_, { id, topicName }) => {
       return [result];
    } else return await getAllTopics();
 };
-const createContenido = async (_, { topicName,durationTime }) => {
-   return await createContent({topicName,durationTime});
+const createContenido = async (_, { topicName,durationTime,moduleId }) => {
+   return await createContent({topicName,durationTime,moduleId});
 };
 
 const updateTopics = async (_, { id, topic }) => {

@@ -53,6 +53,7 @@ const typeDefs = gql`
       id: Int
       name: String
       description: String
+      contents: [Content]
    }
 
    type Role {
@@ -194,7 +195,7 @@ const typeDefs = gql`
       deleteCheckPoint(id: Int): DeleteResolve!
 
       # Mutaciones para Contenidos
-      createContenido(topicName: String!, durationTime: Int): Content!
+      createContenido(topicName: String!, durationTime: Int, moduleId:Int!): Content!
       updateTopics(id: Int, topic: String!): Content!
       deleteTopics(id: Int): DeleteResolve!
 

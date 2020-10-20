@@ -1,14 +1,17 @@
-const { Content } = require("../db");
+const { Content, Module } = require("../db");
 
 // Creo topic de la carrera ej: topic: JavaScript 1 | duration: 1 clase  
 const createContent = async({
     topicName,
     durationTime,
+    moduleId,
 }) => {
     let topic = await Content.create({
         topicName,
         durationTime,
     })
+    const module = await Module.findOne({ where: {id: moduleId }})
+    await module.addContent(topic)
     return topic;
 }
 
@@ -70,6 +73,7 @@ const getOneTopic = async ({id, topicName}) => {
 
    return topic
 }
+
 
 module.exports = {
     createContent,
