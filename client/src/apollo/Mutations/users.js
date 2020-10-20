@@ -15,3 +15,38 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const ADD_USER_TO_GROUP = gql`
+mutation addUsersToGroups($id: Int, $name: String, $group: GroupInput) {
+  addUsersToGroups(id: $id, name: $name, input: $group) {
+    id
+    name
+    type
+    parent
+    instructor {
+      id
+      nickName
+      familyName
+      givenName
+    }
+    pms {
+      id
+      nickName
+      familyName
+      givenName
+    }
+    staff {
+      id
+      nickName
+      familyName
+      givenName
+    }
+    students {
+      id
+      nickName
+      familyName
+      givenName
+    }
+  }
+}
+`;
