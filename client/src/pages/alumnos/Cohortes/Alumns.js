@@ -65,20 +65,7 @@ function Alumns({
   }, [cohorte, execute, executeCount, variables]);
 
   const data = useMemo(
-    () => preData?.users.map((user)=> {
-      var usuario = {
-        __typename: user.__typename,
-        givenName: capitalizeFirstLetter(user.givenName), 
-      familyName: capitalizeFirstLetter(user.familyName),  
-      email: user.email,
-      id: user.id,
-      nickName: user.nickName,
-      photoUrl: user.photoUrl,
-      roles: user.roles,
-      cohortes: user.cohortes
-      };
-      return usuario;
-      }) || componentData?.cohortes[0].users,
+    () => preData?.users || componentData?.cohortes[0].users,
     [preData, componentData]
   );
   const loading = useMemo(() => queryLoading || componentLoading, [
@@ -90,7 +77,13 @@ function Alumns({
     () => ({
       loading,
       error,
-      data,
+      data: data ? data.map((user)=> {
+        return {
+          ...user,
+          familyName: capitalizeFirstLetter(user.familyName),
+          givenName: capitalizeFirstLetter(user.givenName)
+        }
+      }) : data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },

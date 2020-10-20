@@ -6,6 +6,7 @@ export const getUserRol = gql`
       id
       givenName
       familyName
+      email
       roles {
         name
       }

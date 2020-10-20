@@ -88,7 +88,7 @@ function Groups({
             if (result?.data?.createGroup?.id) {
               await addGroupToCohorte({
                 variables: {
-                  cohorteId: cohorte.id,
+                  cohorteId: data.cohortes[0].id,
                   groupId: [result.data.createGroup.id],
                 },
               });
@@ -115,7 +115,6 @@ function Groups({
 
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
-      {data && console.log(data)}
       <Tabla
         loading={loading}
         data={tableData}

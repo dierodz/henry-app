@@ -32,9 +32,26 @@ function Profile() {
       id: parseInt(id) || parseInt(uid)
     },
   });
-  
+      id: parseInt(id) || parseInt(uid),
+    },
+  });
   const [update, updateResponse] = useMutation(UPDATE_USER);
-  const data = preData?.users[0] ? { ...preData?.users[0] } : undefined;
+  const data = preData?.users[0] ? { 
+    ...preData?.users[0],
+    __typename: preData?.users[0].__typename,
+    cohortes: preData?.users[0].cohortes,
+    email: preData?.users[0].email,
+    familyName: preData?.users[0].familyName && capitalizeFirstLetter(preData?.users[0].familyName),
+    givenName: preData?.users[0].givenName && capitalizeFirstLetter(preData?.users[0].givenName),
+    id: preData?.users[0].id,
+    nickName: preData?.users[0].nickName,
+    photoUrl: preData?.users[0].photoUrl,
+    roles: preData?.users[0].roles
+   } : undefined;
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
   async function handleUpdate(values) {
     await update({
