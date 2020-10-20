@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 import { Avatar } from "react-native-paper";
 
 const UserImage = ({ photoUrl, givenName, familyName }) => {
-
   return (
     <>
       {photoUrl ? (
-        <Avatar.Image size={24} source={photoUrl} />
+        <Avatar.Image source={{uri:photoUrl}} />
       ) : (
         <Avatar.Text
           label={givenName[0].toUpperCase() + familyName[0].toUpperCase()}

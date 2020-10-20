@@ -87,15 +87,15 @@ export default function DrawerLayout(props) {
               />
             )}
             label="Mi Perfil"
-            onPress={() => props.navigation.navigate("Home")}
+            onPress={() => props.navigation.navigate("PerfilRoutes")}
           />
-          <DrawerItem
+          {/* <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="tune" color={color} size={size} />
             )}
             label="Configuración"
             onPress={() => {}}
-          />
+          /> */}
         </Drawer.Section>
         <Drawer.Section title="Estilo">
           <TouchableRipple onPress={() => props.handleTheme()}>

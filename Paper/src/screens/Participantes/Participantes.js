@@ -4,7 +4,7 @@ import { Paragraph } from 'react-native-paper';
 
 export default function Participantes(props){
     return (<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Paragraph>Participantes Grupo</Paragraph>
-</View>
-);
+                <Paragraph>Participantes</Paragraph>
+            </View>
+            );
 }

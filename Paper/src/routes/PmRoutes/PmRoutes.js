@@ -1,9 +1,10 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import Participantes from '../../screens/Participantes/Participantes'
 import Pm from '../../screens/Pm/Pm'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const PmTabTop = createStackNavigator()
+const PmTabTop = createMaterialTopTabNavigator()
+
 
 export default function PmRoutes(props) {
     return (

@@ -8,6 +8,10 @@ import { Text } from "react-native";
 import DrawerRoutes from "./DrawerRoutes/DrawerRoutes";
 import LogRoutes from "./LogRoutes/LogRoutes";
 
+import LoadingScreen from "../components/Loading/Loading"
+
+
+
 const AppRouter = ({ handleTheme }) => {
   const dispatch = useDispatch();
 
@@ -27,7 +31,8 @@ const AppRouter = ({ handleTheme }) => {
   }, []);
 
   if (loading) {
-    return <Text> Loading </Text>;
+    return   <LoadingScreen />
+    ;
   }
 
   return (

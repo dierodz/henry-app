@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { View } from "react-native";
-import { Avatar, TextInput, Button, Caption } from "react-native-paper";
+import { View , Image} from "react-native";
+import { Avatar, TextInput, Button, Caption, IconButton } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { useForm } from "../../hooks/useForm";
 import { signInWithEmail } from "../../dispatchers/auth";
+import {IMAGENAME} from "../../../assets"
 
 export default function SignIn({ navigation }) {
   const dispatch = useDispatch();
@@ -16,24 +17,27 @@ export default function SignIn({ navigation }) {
   };
   const [{ email, password }, handleInputChange] = useForm(initialForm);
 
+  const[isPrivate,setPrivate] = React.useState(true)
+
   const handleSubmit = () => {
     dispatch(signInWithEmail(email.trim().toLowerCase(), password));
   };
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
+      
       <View
         style={{
           flex: 1,
           width: "100%",
           paddingHorizontal: 20,
-          justifyContent: "center",
+          justifyContent:"center"
         }}
       >
-        <Avatar.Text
+       <Avatar.Text
           style={{ alignSelf: "center", marginVertical: 30 }}
           label="H"
-        />
+        /> 
         <TextInput
           mode="outlined"
           label="Email"
@@ -45,8 +49,19 @@ export default function SignIn({ navigation }) {
           mode="outlined"
           label="Password"
           value={password}
-          onChangeText={(password) => handleInputChange("password", password)}
+          onChangeText={(password) =>{
+            !isPrivate&&setPrivate(true)
+            handleInputChange("password", password)
+          } }
           style={{ marginBottom: 30 }}
+          secureTextEntry={isPrivate}
+          right={<TextInput.Icon name={() =><IconButton
+            style={{alignSelf:"center"} } 
+            width="100%"
+            icon="eye"
+            size={20}
+            onPress={() => setPrivate(false)}
+            />}/>}
         />
         <Button
           mode="contained"
