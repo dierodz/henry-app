@@ -80,16 +80,32 @@ function GroupStudent({
     () => ({
       loading,
       error,
-      data: data && data.users[0].groups,
+      data:
+        data &&
+        data.users[0].groups.map((group) => {
+          return {
+            ...group,
+            qty: group.students.length,
+          };
+        }),
       columns: [
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
+        { key: "qty", label: "Cantidad de alumnos", align: "left" },
+        {
+          key: "alumns",
+          label: "",
+          align: "left",
+          component: (cohorte) => <AlumnsComponent cohorte={cohorte} />,
+        },
       ],
       addButtonLabel: "Crear grupo",
       actions: {
-        // view: {
-        //   component: (cohorte) => <AlumnsComponent cohorte={cohorte} />,
-        // },
+        view: {
+          onSubmit: (cohorte) => {
+            return AlumnsComponent(cohorte);
+          },
+        },
         // create: {
         //   initialValues: {
         //     name: "",
@@ -118,31 +134,31 @@ function GroupStudent({
     [data, error, loading, createGroup, addGroupToCohorte]
   );
 
-  // function AlumnsComponent(cohorte) {
-  //   const [show, setShow] = useState(false);
-  //   console.log(cohorte);
-  //   return (
-  //     <>
-  //       <Button onClick={() => setShow(true)}>{cohorte.cohorte.alumns}</Button>
-  //       <Dialog
-  //         open={show}
-  //         onClose={() => setShow(false)}
-  //         fullWidth
-  //         maxWidth="md"
-  //       >
-  //         <DialogTitle>Alumnos</DialogTitle>
-  //         <DialogContent>
-  //           <Alumns cohorte={cohorte.cohorte} />
-  //         </DialogContent>
-  //         <DialogActions>
-  //           <Button onClick={() => setShow(false)} color="primary">
-  //             Cerrar
-  //           </Button>
-  //         </DialogActions>
-  //       </Dialog>
-  //     </>
-  //   );
-  // }
+  function AlumnsComponent(cohorte) {
+    const [show, setShow] = useState(false);
+    console.log(cohorte);
+    return (
+      <>
+        <Button onClick={() => setShow(true)}>{cohorte.cohorte.alumns}</Button>
+        <Dialog
+          open={show}
+          onClose={() => setShow(false)}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogTitle>Alumnos</DialogTitle>
+          <DialogContent>
+            <Alumns cohorte={cohorte.cohorte} />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShow(false)} color="primary">
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  }
 
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>

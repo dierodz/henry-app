@@ -63,6 +63,7 @@ function Cohortes({ className }) {
           instructor: item.instructor.id,
           groups: item.groups.length,
           alumns: item.users.length,
+          users: item.users,
         };
       });
     } else return preData;

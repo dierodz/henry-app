@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { USER_FULL, COUNT_USERS } from "apollo/querys/users";
+import { ADD_USER_TO_COHORTE } from "apollo/Mutations/cohortes";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
 import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
 import { useCopyToClipboard } from "react-use";
@@ -19,7 +20,7 @@ function Alumns({
   //   { loading: queryLoading, error, data: preData, refetch: preRefetch },
   // ] = useLazyQuery(USER_FULL);
 
-  console.log(cohorte);
+  const [inviteMutation, resultInvite] = useMutation(ADD_USER_TO_COHORTE);
 
   const [executeCount, { loading, error, data: count }] = useLazyQuery(
     COUNT_USERS
@@ -121,10 +122,28 @@ function Alumns({
           ),
         },
       ],
-      addButtonLabel: "Invitar estudiante",
+      addButtonLabel: "Agregar estudiante",
       actions: {
         view: {
           onSubmit: (id) => push(`/profile/${id}`),
+        },
+        create: {
+          initialValues: {
+            userId: null,
+          },
+          inputs: [{ key: "userId", label: "Id" }],
+          onSubmit: async (values) => {
+            const data = {
+              variables: {
+                ...values,
+                userId: Number(values.userId),
+                cohorteId: cohorte.id,
+              },
+            };
+            await inviteMutation(data);
+          },
+          submitButtonLabel: "Agregar",
+          title: "Agregar estudiante",
         },
       },
     }),
