@@ -5,8 +5,8 @@ import {
   AssignmentIndRounded,
   ClassRounded,
   DashboardRounded,
-  EmojiPeopleRounded,
-  RecordVoiceOverRounded,
+  // EmojiPeopleRounded,
+  // RecordVoiceOverRounded,
 } from "@material-ui/icons";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 
@@ -15,7 +15,7 @@ import useStyles from "components/NavBar/NavBar.styles";
 import NavBarItem from "components/NavBar/NavBar.Item";
 
 function NavBarAlumno({ show, children }) {
-  const { authenticated, user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const classes = useStyles(show);
   const classShow = useMemo(
     () => (show ? classes.drawerOpen : classes.drawerClose),

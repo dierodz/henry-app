@@ -35,8 +35,6 @@ function Alumns({ className }) {
 
   }
 
-  {data && console.log(data.getUserRol)}
-
   const tableData = useMemo(
     () => ({
       loading,

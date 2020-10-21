@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, {/*  useMemo, */ useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import {
@@ -21,19 +21,19 @@ import "styles/components/CohortesDetail.scss";
 function CohortesDetail({ className }) {
   let { id } = useParams();
 
-  const [addUsersToCohorteMutation, resultCreate] = useMutation(
+  const [/* addUsersToCohorteMutation, */ resultCreate] = useMutation(
     ADD_USER_TO_COHORTE
   );
-  const [deleteUsersToCohorteMutation, resultDelete] = useMutation(
+  const [/* deleteUsersToCohorteMutation, */ resultDelete] = useMutation(
     DELETE_USER_TO_COHORTE
   );
 
   const variables = { id: parseInt(id) };
 
-  const { loading, error, data, refetch } = useQuery(COHORTE_BY_ID, {
+  const { loading, /* error, */ data, refetch } = useQuery(COHORTE_BY_ID, {
     variables,
   });
-
+/* 
   const tableData = useMemo(
     () => ({
       loading,
@@ -86,7 +86,7 @@ function CohortesDetail({ className }) {
       variables.variables,
     ]
   );
-
+ */
   useEffect(() => {
     if (!resultCreate.loading && resultCreate.called) {
       refetch();

@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { authSetError, login, logout } from "actions/auth";
+import { finishLoading, startLoading } from "actions/ui";
 
 export const signOut = () => {
   return async (dispatch) => {
@@ -22,6 +23,7 @@ export const initialize = (localUser) => {
 
 export const signInWithEmail = (username, password) => {
   return async (dispatch) => {
+    dispatch(startLoading());
     try {
       const { data } = await Axios.post(
         `${process.env.REACT_APP_API}/auth/email`,
@@ -36,16 +38,19 @@ export const signInWithEmail = (username, password) => {
 
         localStorage.setItem("token", JSON.stringify(token));
         dispatch(login(user.id, user, token));
+        dispatch(finishLoading());
       }
     } catch ({ response }) {
       dispatch(signOut());
       dispatch(authSetError(response.data.message));
+      dispatch(finishLoading());
     }
   };
 };
 
 export const signInWithToken = (token) => {
   return async (dispatch) => {
+    dispatch(startLoading());
     try {
       const { data } = await Axios.get(`${process.env.REACT_APP_API}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -54,9 +59,11 @@ export const signInWithToken = (token) => {
         localStorage.setItem("token", JSON.stringify(token));
         dispatch(login(data.id, data, token));
       }
+      dispatch(finishLoading());
     } catch ({ response }) {
       dispatch(signOut());
       dispatch(authSetError(response.data.message));
+      dispatch(finishLoading());
     }
   };
 };
