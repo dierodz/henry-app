@@ -115,7 +115,6 @@ function Groups({
 
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
-      {data && console.log(data)}
       <Tabla
         loading={loading}
         data={tableData}

@@ -37,7 +37,7 @@ function NavBarAlumno({ show, children }) {
           title="Cohortes"
           icon={ClassRounded}
           to={
-            user.cohortes.lenght > 0 &&
+            user.cohortes.length > 0 &&
             `/student/cohorte/${user.cohortes[0].id}`
           }
         />
