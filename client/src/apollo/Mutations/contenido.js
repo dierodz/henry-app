@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const CREATE_CONTENIDO = gql`
-  mutation createContenido($topicName: String!, $durationTime: Int , $readme: String, moduleId: Int) {
+  mutation createContenido($topicName: String!, $durationTime: Int , $readme: String, $moduleId: Int) {
     mutation {
       createContent(
         input: {

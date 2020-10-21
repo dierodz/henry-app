@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import { useMutation, useQuery } from "@apollo/client";
 import { CONTENT_ID } from "apollo/querys/contents";
-import { CREATE_CONTENIDO } from "apollo/Mutations/contenido";
 import { useParams } from "react-router-dom";
 
 export default function App() {
@@ -24,9 +23,9 @@ export default function App() {
   };
 
   const { loading, error, data } = useQuery(CONTENT_ID, { variables });
-  const [createContent, { loading: createLoading }] = useMutation(
-    CREATE_CONTENIDO
-  );
+  // const [createContent, { loading: createLoading }] = useMutation(
+  //   CREATE_CONTENIDO
+  // );
 
   useEffect(() => {
     if (data && data) {
