@@ -55,8 +55,6 @@ export const USER_FULL = gql`
       }
       groups {
         id
-        name
-        type
       }
     }
   }

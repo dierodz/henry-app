@@ -6,6 +6,10 @@ export const GROUPS = gql`
       id
       name
       type
+      students {
+        id
+        
+      }
     }
   }
 `;
