@@ -21,6 +21,11 @@ import GroupStudent from "pages/alumnos/components/GroupStudent";
 import Modules from "../pages/alumnos/components/modules"
 import contentModule from "../pages/alumnos/components/module2"
 
+//Modules Admin:
+import ModulesAdmin from "pages/admin/modules";
+import AppMarkdown from "pages/admin/modules/introToCss";
+
+
 
 const GeneralRoutes = () => {
   const { authenticated, user } = useSelector((state) => state.auth);
@@ -67,6 +72,8 @@ const GeneralRoutes = () => {
           <Route exact path="/admin/instructors" component={Instructors} />
           <Route exact path="/admin/pm" component={PM} />
           <Route exact path="/admin/alumns" component={Alumns} />
+          <Route exact path="/admin/modules" component={ModulesAdmin} />
+          <Route exact path="/admin/modules/00-IntroToCS" component={AppMarkdown} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/profile/:id" component={Profile} />
           <Route path="/auth/signin" component={LoginScreen} />
