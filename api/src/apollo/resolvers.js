@@ -103,15 +103,7 @@ const resolvers = {
       updateReview,
       deleteReview,
       //Mutaciones de contenidos
-<<<<<<< HEAD
-      createContenido,
-      updateTopics,
-      deleteTopics,
-      //Mutaciones para lessons,
-      ...lessonsMutations,
-=======
       ...contentMutations
->>>>>>> a-lessons-loquesea
    },
 
    Cohorte: {
