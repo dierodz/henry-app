@@ -6,4 +6,7 @@ module.exports = (sequelize, DataTypes) =>
       durationTime: {
          type: DataTypes.INTEGER,
       },
+      readme:{
+         type: DataTypes.TEXT
+      },
    });

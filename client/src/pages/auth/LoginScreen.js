@@ -65,8 +65,8 @@ export default function LoginScreen() {
    }, [dispatch, token, history]);
    const formik = useFormik({
       initialValues: {
-         email: "",
-         password: "",
+         email: "juancitolopez1@gmail.com",
+         password: "holamundo",
       },
       validate: (values) => {
          setVisibilityPass(false);
@@ -87,6 +87,7 @@ export default function LoginScreen() {
       },
 
       onSubmit: async ({ email, password }) => {
+         console.log(email,password);
          dispatch(signInWithEmail(email, password));
       },
    });

@@ -13,22 +13,23 @@ const contents = async (_, { id, topicName }) => {
       return [result];
    } else return await getAllTopics();
 };
-const createContenido = async (_, { topicName,durationTime }) => {
-   return await createContent({topicName,durationTime});
-};
 
-const updateTopics = async (_, { id, topic }) => {
-   return await updateTopic(id, { topic });
-};
-
-const deleteTopics = async (_, { id }) => {
-   return await deleteTopic({ id });
-};
+const contentMutations = {
+   createContent: async (_, { input }) => {
+      return await createContent({...input});
+   },
+   
+   updateContent : async (_, { id, input }) => {
+      return await updateTopic(id, { ...input });
+   },
+   
+   deleteContent : async (_, { id }) => {
+      return await deleteTopic({ id });
+   },
+}
 
 
 module.exports = { 
    contents,
-   createContenido,
-   updateTopics,
-   deleteTopics,
+   contentMutations
 };
