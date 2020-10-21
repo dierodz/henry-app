@@ -1,14 +1,20 @@
-const { Content } = require("../db");
+const { Content, Module } = require("../db");
 
 // Creo topic de la carrera ej: topic: JavaScript 1 | duration: 1 clase  
 const createContent = async({
     topicName,
     durationTime,
+    moduleId,
+    readme
 }) => {
     let topic = await Content.create({
         topicName,
         durationTime,
+        readme
     })
+    console.log(readme)
+    const module = await Module.findOne({ where: {id: moduleId }})
+    await module.addContent(topic)
     return topic;
 }
 
@@ -18,10 +24,12 @@ const updateTopic = async (id, topic) => {
     const {
         topicName,
         durationTime,
+        readme
     }  = topic;
     return await toChange.update({
         topicName,
         durationTime,
+        readme
     });
 };
 
@@ -70,6 +78,7 @@ const getOneTopic = async ({id, topicName}) => {
 
    return topic
 }
+
 
 module.exports = {
     createContent,
