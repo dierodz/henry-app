@@ -1,7 +1,7 @@
 import types from "types/types";
 
 const initialState = {
-  loading: true,
+  loading: false,
   msgError: null,
 };
 

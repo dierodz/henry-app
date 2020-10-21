@@ -42,7 +42,7 @@ export const signInWithEmail = (username, password) => {
       }
     } catch ({ response }) {
       dispatch(signOut());
-      dispatch(authSetError(response.data.message));
+      // dispatch(authSetError(response.data.message));
       dispatch(finishLoading());
     }
   };
@@ -62,7 +62,7 @@ export const signInWithToken = (token) => {
       dispatch(finishLoading());
     } catch ({ response }) {
       dispatch(signOut());
-      dispatch(authSetError(response.data.message));
+      // dispatch(authSetError(response.data.message));
       dispatch(finishLoading());
     }
   };
