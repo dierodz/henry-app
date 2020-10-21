@@ -1,79 +1,123 @@
 import React, { useMemo, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 
-import {MODULES} from "../alumnos/querys/module"
+// import { MODULES } from "apollo/querys/modules";
+import { MODULES } from "../alumnos/querys/module";
 
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useHistory, useParams, useRouteMatch } from "react-router-dom";
 import {
   Card,
   CardContent,
   CardHeader,
   Container,
   Grid,
-} from  "@material-ui/core";                
+} from "@material-ui/core";
 import Loading from "components/Loading";
 import "styles/components/CohortesDetail.scss";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { Tabla } from "components/Tabla";
 
 function ModulesDetail({ className }) {
-  const {data} = useQuery(MODULES);
-  
-  console.log(data)
+  const { loading, error, data: preData } = useQuery(MODULES);
+  const history = useHistory();
+
+  const data = useMemo(() => {
+    if (Array.isArray(preData?.modules)) {
+      return preData.modules.map((module) => {
+        return {
+          ...module,
+        };
+      });
+    } else return preData;
+  }, [preData]);
+
+  const tableData = useMemo(
+    () => ({
+      loading,
+      error,
+      data,
+      columns: [{ key: "name", label: "Nombre del contenido", align: "left" }],
+      addButtonLabel: "Agregar contenido",
+      actions: {
+        create: {
+          initialValues: {
+            name: undefined,
+            readme: undefined,
+          },
+          inputs: [
+            { key: "name", label: "Nombre" },
+            { key: "readme", label: "Readme" },
+          ],
+          onSubmit: async (values) => {
+            // await CreateModule({
+            //   variables: { ...values },
+            // });
+            console.log(values);
+          },
+          submitButtonLabel: "Crear",
+          title: "Crear modulo",
+        },
+        // update: {
+        //   inputs: [
+        //     { key: "name", label: "Nombre" },
+        //     {
+        //       key: "instructor",
+        //       label: "Instructor",
+        //       type: "select",
+        //       options: (() => {
+        //         return instructors.data?.getUserRol
+        //           ? instructors.data.getUserRol.map(
+        //               ({ givenName, familyName, id }) => ({
+        //                 value: id,
+        //                 label: `${givenName} ${familyName}`,
+        //               })
+        //             )
+        //           : [];
+        //       })(),
+        //     },
+        //     { key: "startDate", label: "Fecha de inicio", type: "date" },
+        //   ],
+        //   onSubmit: async (values) => {
+        //     await updateMutation({
+        //       variables: {
+        //         ...values,
+        //         instructor: parseInt(values.instructor),
+        //       },
+        //     });
+        //   },
+        //   submitButtonLabel: "Enviar cambios",
+        //   title: "Editar cohorte",
+        // },
+        // delete: {
+        //   onSubmit: async (id) => {
+        //     await deleteMutation({
+        //       variables: {
+        //         id: parseInt(id),
+        //       },
+        //     });
+        //   },
+        // },
+        view: {
+          onSubmit: (id) => {
+            history.push("/admin/modules/" + id);
+          },
+        },
+      },
+    }),
+    [data, error, history, loading]
+  );
 
   return (
-    <Container style={{ paddingTop: "1rem" }}>
-      {(
-        //   COMPONENTE PRINCIPAL INFO
-        <Grid container spacing={2}>
-          {/* TARJETA ALUMNOS */}
-          <Grid item xs={12}>
-            <Card variant="outlined" style={{ position: "relative" }}>
-              <CardHeader title="Modulo 1" align="center"/>
-              <CardContent>
-                <div align="center" style={{color: 'GrayText', fontSize:'20px', marginTop:'20px'}}>
-                    {
-                      ['00-IntroToCS','01-JavaScriptAvanzado-I','02-JavaScriptAvanzado-II','03-EstructuraDeDatos-I','04-EstructuraDeDatos-II','05-EstructuraDeDatos-III','06-Algoritmos-I','07-Algoritmos-II'].map((e)=>(
-                        <p style={{marginTop:'10px'}}> <Link to={`/admin/modules/${e}`}> {e}</Link> </p>
-                      ))
-                    }
-                </div>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Card variant="outlined" style={{ position: "relative" }}>
-              <CardHeader title="Modulo 2" align="center"/>
-              <CardContent>
-                {/* <Alumns cohorte={data.cohortes[0]} loading={loading} /> */}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Card variant="outlined" style={{ position: "relative" }}>
-              <CardHeader title="Modulo 3" align="center"/>
-              <CardContent>
-                {/* <Alumns cohorte={data.cohortes[0]} loading={loading} /> */}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          
-          <Grid item xs={12}>
-            <Card variant="outlined" style={{ position: "relative" }}>
-              <CardHeader title="Modulo 4" align="center"/>
-              <CardContent>
-                {/* <Alumns cohorte={data.cohortes[0]} loading={loading} /> */}
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-
-        
-      )}
-    </Container>
+    <Tabla
+      loading={loading}
+      data={tableData}
+      count={undefined}
+      page={1}
+      rowsPerPage={4}
+      onChangePage={2}
+      onChangeRowsPerPage={2}
+    />
   );
 }
 

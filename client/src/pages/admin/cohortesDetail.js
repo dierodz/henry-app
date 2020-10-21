@@ -1,11 +1,11 @@
-import React, {/*  useMemo, */ useEffect } from "react";
+import React, { /*  useMemo, */ useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
 import {
   ADD_USER_TO_COHORTE,
   DELETE_USER_TO_COHORTE,
 } from "apollo/Mutations/cohortes";
-import { useParams,  } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Groups from "./Cohortes/groups";
 import Alumns from "./Cohortes/Alumns";
 import {
@@ -33,60 +33,7 @@ function CohortesDetail({ className }) {
   const { loading, /* error, */ data, refetch } = useQuery(COHORTE_BY_ID, {
     variables,
   });
-/* 
-  const tableData = useMemo(
-    () => ({
-      loading,
-      error,
-      data: data ? data.cohortes[0].user : data,
 
-      columns: [
-        { key: "id", label: "id", align: "left" },
-        { key: "givenName", label: "Nombre", align: "left" },
-        { key: "familyName", label: "Apellido", align: "left" },
-      ],
-      addButtonLabel: "Agregar alumno",
-      actions: {
-        create: {
-          initialValues: {
-            cohorteId: variables.variables,
-            userId: undefined,
-          },
-          inputs: [{ key: "userId", label: "id", type: "number" }],
-          onSubmit: async (values) => {
-            await addUsersToCohorteMutation({
-              variables: {
-                cohorteId: parseInt(values.cohorteId),
-                userId: parseInt(values.userId),
-              },
-            });
-          },
-          submitButtonLabel: "Agregar",
-          title: "Agregar alumno",
-        },
-
-        delete: {
-          onSubmit: async (userId) => {
-            await deleteUsersToCohorteMutation({
-              variables: {
-                cohorteId: parseInt(variables.variables),
-                userId: parseInt(userId),
-              },
-            });
-          },
-        },
-      },
-    }),
-    [
-      data,
-      error,
-      loading,
-      addUsersToCohorteMutation,
-      deleteUsersToCohorteMutation,
-      variables.variables,
-    ]
-  );
- */
   useEffect(() => {
     if (!resultCreate.loading && resultCreate.called) {
       refetch();

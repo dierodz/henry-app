@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const MODULES = gql`
-  query {
+  query modules {
     modules {
       id
       name
