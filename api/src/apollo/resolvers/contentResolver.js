@@ -3,33 +3,32 @@ const {
    updateTopic,
    deleteTopic,
    getAllTopics,
-   getOneTopic
-
+   getOneTopic,
 } = require("../../controllers/contentController");
 
 const contents = async (_, { id, topicName }) => {
+   console.log(id);
    if (id || topicName) {
-      const result = await getOneTopic(id);
+      const result = await getOneTopic({ id });
       return [result];
    } else return await getAllTopics();
 };
 
 const contentMutations = {
    createContent: async (_, { input }) => {
-      return await createContent({...input});
+      return await createContent({ ...input });
    },
-   
-   updateContent : async (_, { id, input }) => {
+
+   updateContent: async (_, { id, input }) => {
       return await updateTopic(id, { ...input });
    },
-   
-   deleteContent : async (_, { id }) => {
+
+   deleteContent: async (_, { id }) => {
       return await deleteTopic({ id });
    },
-}
+};
 
-
-module.exports = { 
+module.exports = {
    contents,
-   contentMutations
+   contentMutations,
 };

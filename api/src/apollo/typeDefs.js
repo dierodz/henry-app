@@ -23,8 +23,8 @@ const typeDefs = gql`
       durationTime: Int
       readme: String
    }
-   
-   input contentInput{
+
+   input contentInput {
       topicName: String!
       durationTime: Int
       readme: String!
@@ -101,14 +101,11 @@ const typeDefs = gql`
       reviews: [MateReview]
    }
 
-
    type MateReview {
       id: Int
       score: Int
       commentary: String
    }
-
-
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
@@ -120,7 +117,7 @@ const typeDefs = gql`
          offset: Int
          order: JSON
       ): [Cohorte]
-      contents(topicName: String): [Content]
+      contents(topicName: String, id: Int): [Content]
       countGroups(where: JSON): Int
       groups(
          id: Int
@@ -241,7 +238,7 @@ const typeDefs = gql`
       deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
 
       #Mutaciones para Lessons
-      createLesson(link: String,name: String, readme: String): [Lesson!]
+      createLesson(link: String, name: String, readme: String): [Lesson!]
    }
 `;
 
