@@ -76,7 +76,7 @@ const typeDefs = gql`
       photoUrl: String
       roles: [Role]
       cohortes: [Cohorte]
-      groups: [Group]
+      # groups: [Group]
    }
 
    type Lesson {
