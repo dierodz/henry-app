@@ -21,6 +21,14 @@ const typeDefs = gql`
       id: Int
       topicName: String
       durationTime: Int
+      readme: String
+   }
+   
+   input contentInput{
+      topicName: String!
+      durationTime: Int
+      readme: String!
+      moduleId: Int!
    }
 
    enum GroupTypes {
@@ -53,6 +61,7 @@ const typeDefs = gql`
       id: Int
       name: String
       description: String
+      contents: [Content]
    }
 
    type Role {
@@ -76,6 +85,7 @@ const typeDefs = gql`
       photoUrl: String
       roles: [Role]
       cohortes: [Cohorte]
+      groups: [Group]
    }
 
    type Lesson {
@@ -90,6 +100,7 @@ const typeDefs = gql`
       name: String
       reviews: [MateReview]
    }
+
 
    type MateReview {
       id: Int
@@ -197,9 +208,9 @@ const typeDefs = gql`
       deleteCheckPoint(id: Int): DeleteResolve!
 
       # Mutaciones para Contenidos
-      createContenido(topicName: String!, durationTime: Int): Content!
-      updateTopics(id: Int, topic: String!): Content!
-      deleteTopics(id: Int): DeleteResolve!
+      createContent(input: contentInput): Content!
+      updateContent(id: Int, input: contentInput): Content!
+      deleteContent(id: Int): DeleteResolve!
 
       # Mutaciones para Roles
       createRole(name: String): Role!
