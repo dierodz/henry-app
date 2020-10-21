@@ -4,11 +4,9 @@ import { Tabla } from "components/Tabla";
 import React, { useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
-const Module = () => {
+const Contents = () => {
   const { loading, error, data: preData } = useQuery(CONTENTS);
   const history = useHistory();
-
-  console.log(preData);
 
   const data = useMemo(() => {
     if (Array.isArray(preData?.contents)) {
@@ -73,4 +71,4 @@ const Module = () => {
   );
 };
 
-export default Module;
+export default Contents;

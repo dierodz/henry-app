@@ -21,9 +21,10 @@ import GroupStudent from "pages/alumnos/components/GroupStudent";
 import contentModule from "../pages/alumnos/components/module2";
 
 //Modules Admin:
-import ModulesAdmin from "pages/admin/modules";
+// import ModulesAdmin from "pages/admin/modules";
 import AppMarkdown from "pages/admin/modules/introToCss";
-import Module from "pages/alumnos/components/Module";
+import ModuleScreen from "pages/alumns/ModuleScreen";
+import ContentsScreen from "pages/alumns/ContentsScreen";
 
 const GeneralRoutes = () => {
   const { authenticated, user } = useSelector((state) => state.auth);
@@ -64,23 +65,32 @@ const GeneralRoutes = () => {
 
       <div className={classes.content}>
         <Switch>
+          
+          <Route path="/auth/signin" component={LoginScreen} />
+          <Route path="/auth/signup" component={RegisterScreen} />
+
           <Route exact path="/" component={Dashboard} />
+
           <Route exact path="/admin/cohortes" component={Cohortes} />
           <Route exact path="/admin/cohorte/:id" component={CohortesDetail} />
+
           <Route exact path="/admin/instructors" component={Instructors} />
+
           <Route exact path="/admin/pm" component={PM} />
           <Route exact path="/admin/alumns" component={Alumns} />
-          <Route exact path="/admin/modules" component={ModulesAdmin} />
-          <Route exact path="/admin/modules/:id" component={Module} />
+
+          <Route exact path="/admin/modules" component={ModuleScreen} />
+          <Route exact path="/admin/modules/:id" component={ContentsScreen} />
+
           <Route
             exact
             path="/admin/modules/content/:id"
             component={AppMarkdown}
           />
+
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/profile/:id" component={Profile} />
-          <Route path="/auth/signin" component={LoginScreen} />
-          <Route path="/auth/signup" component={RegisterScreen} />
+
           <Route
             exact
             path="/student/cohorte/:id"

@@ -1,8 +1,8 @@
-const { Module,Content } = require("../db");
+const { Module, Content } = require("../db");
 
 // Controlador para obtener todos los modulos
 const getModules = async () => {
-   const modules = await Module.findAll({include: [Content]});
+   const modules = await Module.findAll({ include: [Content] });
    if (modules.length < 1) {
       throw {
          name: "ApiFindError",
@@ -20,6 +20,7 @@ const getModules = async () => {
 // Controlador para crear un modulo
 const createModule = async ({ name, description }) => {
    const module = await Module.create({ name, description });
+   console.log(module);
    return module;
 };
 
@@ -36,7 +37,7 @@ const getModulesById = async ({ id, name }) => {
    if (id) where.id = id;
    if (name) where.name = name;
 
-   const module = await Module.findOne({ where , include: [Content] });
+   const module = await Module.findOne({ where, include: [Content] });
 
    if (!module) {
       throw {

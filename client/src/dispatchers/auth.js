@@ -42,7 +42,10 @@ export const signInWithEmail = (username, password) => {
       }
     } catch ({ response }) {
       dispatch(signOut());
-      // dispatch(authSetError(response.data.message));
+      console.log(response);
+      if (response.data) {
+        dispatch(authSetError(response.data.message));
+      }
       dispatch(finishLoading());
     }
   };
@@ -58,13 +61,15 @@ export const signInWithToken = (token) => {
       if (data) {
         localStorage.setItem("token", JSON.stringify(token));
         dispatch(login(data.id, data, token));
+        dispatch(finishLoading());
       }
-      dispatch(finishLoading());
     } catch ({ response }) {
       dispatch(signOut());
-      // dispatch(authSetError(response.data.message));
-      dispatch(finishLoading());
+      if (response.data) {
+        dispatch(authSetError(response.data.message));
+      }
     }
+    dispatch(finishLoading());
   };
 };
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signInWithToken, initialize } from "dispatchers/auth";
 import GeneralRoutes from "./GeneralRoutes";
 import Loading from "components/Loading/index";
+import { finishLoading } from "actions/ui";
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,8 @@ const AppRouter = () => {
     if (localToken) {
       initialize();
       dispatch(signInWithToken(localToken));
+    } else {
+      dispatch(finishLoading());
     }
   }, [localToken, dispatch]);
 

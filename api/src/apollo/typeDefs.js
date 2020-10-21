@@ -15,6 +15,7 @@ const typeDefs = gql`
       instructor: User
       users: [User]
       groups: [Group]
+      modules: [Module]
    }
 
    type Content {
@@ -195,7 +196,7 @@ const typeDefs = gql`
       removeGroupsFromCohorte(cohorteId: Int!, groupId: [Int]!): Cohorte!
 
       # Mutaciones para los modulos
-      createModule(name: String!): Module!
+      createModule(name: String!, description: String): Module!
       updateModule(id: Int, name: String!, description: String!): Module!
       deleteModule(id: Int): DeleteResolve!
 

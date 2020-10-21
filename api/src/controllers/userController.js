@@ -202,7 +202,7 @@ const updateUser = async (id, user) => {
    } else if (role) {
       const dbRole = await Role.findOne({ where: { name: role } });
 
-      await sendUser.setRoles(dbRole);
+      await sendUser.addRoles(dbRole);
    }
 
    return await getUserById(sendUser.id);

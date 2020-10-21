@@ -30,7 +30,7 @@ function CohortesDetail({ className }) {
 
   const variables = { id: parseInt(id) };
 
-  const { loading, /* error, */ data, refetch } = useQuery(COHORTE_BY_ID, {
+  const { loading, data, refetch } = useQuery(COHORTE_BY_ID, {
     variables,
   });
 

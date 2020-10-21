@@ -89,13 +89,10 @@ function Alumns({
           };
           return usuario;
         })) ||
-      componentData?.cohortes[0].users,
+      componentData?.cohortes[0].users ||
+      "",
     [cohorte, componentData.cohortes]
   );
-  // const loading = useMemo(() => queryLoading || componentLoading, [
-  //   queryLoading,
-  //   componentLoading,
-  // ]);
 
   const tableData = useMemo(
     () => ({
