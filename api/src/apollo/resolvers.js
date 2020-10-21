@@ -5,6 +5,7 @@ const {
    deletePost,
    getCohortePosts, 
    getUserPosts,
+   getGroupPosts,
 } = require("./resolvers/postResolver");
 const {
    mateReview,
@@ -74,6 +75,7 @@ const resolvers = {
       getPost,
       getCohortePosts,
       getUserPosts,
+      getGroupPosts,
       ...groupQuerys,
       ...userQuerys,
    },

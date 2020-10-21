@@ -6,11 +6,12 @@ const {
    deletePost: removePost,
    getAllPosts: returnAllPosts,
    getUserPosts: returnUserPosts,
+   getGroupPosts: returnGroupPosts,
 } = require("../../controllers/postController");
 
 // Crea un post en la base de datos
-const createPost = async (_, { tittle, content, userId, cohorteId}) => {   
-   const post = await create({ tittle, content, userId, cohorteId });   
+const createPost = async (_, { tittle, content, userId, cohorteId, groupId}) => {   
+   const post = await create({ tittle, content, userId, cohorteId, groupId });   
    return post;
 };
 
@@ -44,4 +45,9 @@ const getUserPosts = async (_, {userId}) => {
    return posts;
 }
 
-module.exports = { createPost, getPost , editPost, deletePost, getCohortePosts, getUserPosts };  
+const getGroupPosts = async (_, {groupId})=>{
+   const posts = await returnGroupPosts(groupId)
+   return posts;
+}
+
+module.exports = { createPost, getPost , editPost, deletePost, getCohortePosts, getUserPosts, getGroupPosts };  

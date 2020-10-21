@@ -4,3 +4,8 @@ image:
 tasks:
   - init: npm install
     command: npm run start
+
+vscode:
+  extensions:
+    - PKief.material-icon-theme@4.3.0:URe4ANXBLYHzB6CeGyTN8A==
+    - equinusocio.vsc-material-theme-icons@1.2.0:JY/GxjbjHN78dpQfT47roQ==

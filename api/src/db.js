@@ -107,6 +107,11 @@ Post.belongsTo(User)
 // Relación entre cohortes y posts
 Cohorte.hasMany(Post)
 Post.belongsTo(Cohorte)
+
+// Relación grupos y posts
+Group.hasMany(Post)
+Post.belongsTo(Group)
+
 // =================== FIN Relaciones entre las enteidades ==================
 
 // ==========================================================================

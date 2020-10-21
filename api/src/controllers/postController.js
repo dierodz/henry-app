@@ -1,11 +1,12 @@
 const { Post, User, Cohorte } = require("../db");
 const { getUserById } = require("./userController");
 const{ getEspecificCohorte } = require("./cohorteController");
+const { geOneGroup } = require('./groupController');
 
 
 
 // Este controller crea un post y los setea a usuario y cohorte
-const createPost = async (tittle, content, userId, cohorteId) => {
+const createPost = async (tittle, content, userId, cohorteId, groupId) => {
    let post = await Post.create(tittle, content);
    if (userId) {
       const user = await getUserById(userId)
@@ -14,6 +15,10 @@ const createPost = async (tittle, content, userId, cohorteId) => {
    if (cohorteId) {
       const cohorte = await getEspecificCohorte(cohorteId)
       await cohorte.setPost(post)
+   }
+   if (groupId){
+      const group = await getOneGroup(groupId)
+      await group.setPost(post)
    }
 
 
@@ -98,6 +103,22 @@ const getUserPosts = async (userId) => {
    return posts
 }
 
+const getGroupPosts = async (groupId) => {
+   const posts = await Post.findAll({where: {groupId}});
+   if (!posts) {
+      throw {
+         name: "ApiFindError",
+         type: "Search Error",
+         error: {
+            message: "there are no posts in the database for this cohorte",
+            type: "data not found",
+            code: 404,
+         },
+      };
+   }
+   return posts;
+};
+
 module.exports = {
    createPost,
    getPost,
@@ -106,5 +127,5 @@ module.exports = {
    deletePost,
    getAllPosts,
    getUserPosts,
-
+   getGroupPosts,
   }

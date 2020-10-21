@@ -101,7 +101,8 @@ const typeDefs = gql`
       tittle: String
       content: String
       userId: Int
-      cohorteId: Int      
+      cohorteId: Int  
+      groupId: Int    
    }
 
    type Query {
@@ -136,6 +137,7 @@ const typeDefs = gql`
       getPost(id: Int): [Post]
       getCohortePosts(cohorteId: Int): [Post]
       getUserPosts(userId: Int): [Post]
+      getGroupPosts(groupId: Int): [Post]
    }
 
    # Estos son los datos que acepta un usuario
