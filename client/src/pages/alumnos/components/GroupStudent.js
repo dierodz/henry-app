@@ -16,40 +16,66 @@ import {
 } from "@material-ui/core";
 import Alumns from "pages/admin/Cohortes/Alumns";
 
-function GroupStudent({ className }) {
+function GroupStudent({
+  className,
+  // cohorte,
+  // data: componentData,
+  // loading: componentLoading,
+  // onRefetch,
+}) {
   const { user } = useSelector((state) => state.auth);
   const variables = { id: user && user.id };
+  const { loading, error, data } = useQuery(USER_FULL, { variables });
+  data && console.log(data);
+  // const [
+  //   execute,
+  //   { loading: queryLoading, error, data: preData, refetch: preRefetch },
+  // ] = useLazyQuery(GROUPS);
 
-  const { loading, error, data: preData } = useQuery(GROUPS);
-
-  const data = useMemo(() => {
-    if (preData && preData) {
-      return preData.groups.map((item) => {
-        return {
-          ...item,
-          id: item.id,
-          name: item.name,
-          type: item.type,
-          alumnos: item.students.length,
-          students: item.students,
-        };
-      });
-    }
-  }, [preData, variables]);
-
-  const dataStudent = useMemo(() => {
-    if (data && variables) {
-      return data.filter((item) => item.students.length > 0);
-    }
-  });
-
-  console.log(dataStudent);
+  // const [executeCount, { data: count }] = useLazyQuery(COUNT_GROUPS);
 
   const [createGroup, { loading: createLoading }] = useMutation(CREATE_GROUP);
   const [addGroupToCohorte, { loading: addLoading }] = useMutation(
     ADD_GROUP_TO_COHORTE
   );
 
+  // const [page, setPage] = useState(0);
+  // const [rowsPerPage, setRowsPerPage] = useState(5);
+  // function onChangePage(_, page) {
+  //   setPage(page);
+  // }
+  // function onChangeRowsPerPage(e) {
+  //   setRowsPerPage(e.target.value);
+  // }
+
+  // const variables = useMemo(
+  //   () => ({
+  //     where: cohorte ? { cohorteId: cohorte.id } : undefined,
+  //     limit: rowsPerPage,
+  //     offset: rowsPerPage * page,
+  //   }),
+  //   [rowsPerPage, page, cohorte]
+  // );
+
+  // useEffect(() => {
+  //   if (cohorte) {
+  //     execute({
+  //       variables,
+  //     });
+  //     executeCount({ variables });
+  //   }
+  // }, [cohorte, execute, executeCount, variables]);
+
+  // const loading = useMemo(
+  //   () => queryLoading || componentLoading || createLoading || addLoading,
+  //   [queryLoading, componentLoading, createLoading, addLoading]
+  // );
+  // const data = useMemo(
+  //   () => preData?.groups || componentData?.cohortes[0].groups,
+  //   [preData, componentData]
+  // );
+
+  const { push } = useHistory();
   const tableData = useMemo(
     () => ({
       loading,
@@ -63,7 +89,6 @@ function GroupStudent({ className }) {
           };
         }),
       columns: [
-        { key: "id", label: "ID", align: "left" },
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
         { key: "qty", label: "Cantidad de alumnos", align: "left" },
@@ -134,6 +159,7 @@ function GroupStudent({ className }) {
       </>
     );
   }
+
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
       <Tabla loading={loading} data={tableData} />

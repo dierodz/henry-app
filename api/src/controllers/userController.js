@@ -1,7 +1,7 @@
-const { User, Role, Cohorte, parseWhere } = require("../db");
+const { User, Role, Cohorte, Group, parseWhere } = require("../db");
 const { sendEmail } = require("../mailModels/sendEmail");
 
-const include = [Role, Cohorte];
+const include = [Role, Cohorte, Group];
 
 const createUser = async ({
    givenName,
