@@ -54,7 +54,7 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
-const { lessons } = require("./resolvers/lessonsResolver");
+const { lessonsQuery,lessonsMutations } = require("./resolvers/lessonsResolver");
 
 const resolvers = {
    Query: {
@@ -68,6 +68,7 @@ const resolvers = {
       mateReview,
       ...groupQuerys,
       ...userQuerys,
+      ...lessonsQuery
    },
 
    Mutation: {
@@ -102,7 +103,15 @@ const resolvers = {
       updateReview,
       deleteReview,
       //Mutaciones de contenidos
+<<<<<<< HEAD
+      createContenido,
+      updateTopics,
+      deleteTopics,
+      //Mutaciones para lessons,
+      ...lessonsMutations,
+=======
       ...contentMutations
+>>>>>>> a-lessons-loquesea
    },
 
    Cohorte: {

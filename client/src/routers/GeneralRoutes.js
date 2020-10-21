@@ -19,10 +19,13 @@ import RegisterScreen from "pages/auth/RegisterScreen";
 import Profile from "pages/Profile/Profile";
 import GroupStudent from "pages/alumnos/components/GroupStudent";
 import Modules from "../pages/alumnos/components/modules"
-import Module1 from "../pages/alumnos/components/module1"
-import Module2 from "../pages/alumnos/components/module2"
-import Module3 from "../pages/alumnos/components/module3"
-import Module4 from "../pages/alumnos/components/module4"
+import contentModule from "../pages/alumnos/components/module2"
+
+//Modules Admin:
+import ModulesAdmin from "pages/admin/modules";
+import AppMarkdown from "pages/admin/modules/introToCss";
+
+
 
 const GeneralRoutes = () => {
   const { authenticated, user } = useSelector((state) => state.auth);
@@ -69,17 +72,17 @@ const GeneralRoutes = () => {
           <Route exact path="/admin/instructors" component={Instructors} />
           <Route exact path="/admin/pm" component={PM} />
           <Route exact path="/admin/alumns" component={Alumns} />
+          <Route exact path="/admin/modules" component={ModulesAdmin} />
+          <Route exact path="/admin/modules/00-IntroToCS" component={AppMarkdown} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/profile/:id" component={Profile} />
           <Route path="/auth/signin" component={LoginScreen} />
           <Route path="/auth/signup" component={RegisterScreen} />
           <Route exact path="/student/cohorte/:id" component={CohortesDetailAlumno} />
           <Route exact path="/student/groups" component={GroupStudent} />
-          <Route exact path="/student/modules" component={Modules} />
-          <Route exact path="/student/modules/modulo1" component={Module1} />
-          <Route exact path="/student/modules/modulo2" component={Module2} />
-          <Route exact path="/student/modules/modulo3" component={Module3} />
-          <Route exact path="/student/modules/modulo4" component={Module4} />
+          <Route exact path="/student/modules" component={contentModule} />
+          {/* <Route exact path="/student/modules/contentModule" component={contentModule} /> */}
+
         </Switch>
       </div>
     </>

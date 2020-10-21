@@ -92,6 +92,7 @@ const typeDefs = gql`
       id: Int
       link: String
       name: String
+      readme: String
    }
 
    type MatesScore {
@@ -106,6 +107,8 @@ const typeDefs = gql`
       score: Int
       commentary: String
    }
+
+
 
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
@@ -135,7 +138,7 @@ const typeDefs = gql`
       getUserRol(role: String): [User]
       matesScore(id: Int, name: String): [MatesScore]
       mateReview(id: Int, score: Int, commentary: String): [MateReview]
-      lessons(id: Int, name: String, link: String): [Lesson]
+      lessons(id: Int, name: String, link: String, readme: String): [Lesson]
    }
 
    # Estos son los datos que acepta un usuario
@@ -236,6 +239,9 @@ const typeDefs = gql`
       createReview(score: Int, commentary: String): Score!
       updateReview(id: Int, score: Int, commentary: String): Score!
       deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
+
+      #Mutaciones para Lessons
+      createLesson(link: String,name: String, readme: String): [Lesson!]
    }
 `;
 
