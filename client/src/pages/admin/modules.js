@@ -1,12 +1,8 @@
 import React, { useMemo, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { Tabla } from "components/Tabla";
-import { COHORTE_BY_ID } from "apollo/querys/cohortes";
-import {
-  EDIT_COHORTE,
-  ADD_USER_TO_COHORTE,
-  DELETE_USER_TO_COHORTE,
-} from "apollo/Mutations/cohortes";
+
+import {MODULES} from "../alumnos/querys/module"
+
 import { useParams, useRouteMatch } from "react-router-dom";
 import {
   Card,
@@ -20,29 +16,14 @@ import "styles/components/CohortesDetail.scss";
 
 import { Link } from 'react-router-dom';
 
-function CohortesDetail({ className }) {
-  let { id } = useParams();
-
-  const [addUsersToCohorteMutation, resultCreate] = useMutation(
-    ADD_USER_TO_COHORTE
-  );
-  const [deleteUsersToCohorteMutation, resultDelete] = useMutation(
-    DELETE_USER_TO_COHORTE
-  );
-
-  const variables = { id: parseInt(id) };
-
-  const { loading, error, data, refetch } = useQuery(COHORTE_BY_ID, {
-    variables,
-  });
-
-
+function ModulesDetail({ className }) {
+  const {data} = useQuery(MODULES);
   
+  console.log(data)
+
   return (
     <Container style={{ paddingTop: "1rem" }}>
-      {loading ? (
-        <Loading />
-      ) : (
+      {(
         //   COMPONENTE PRINCIPAL INFO
         <Grid container spacing={2}>
           {/* TARJETA ALUMNOS */}
@@ -96,4 +77,4 @@ function CohortesDetail({ className }) {
   );
 }
 
-export default CohortesDetail;
+export default ModulesDetail;
