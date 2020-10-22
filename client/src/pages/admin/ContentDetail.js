@@ -4,10 +4,11 @@ import MEDitor from "@uiw/react-md-editor";
 import { useMutation, useQuery } from "@apollo/client";
 import { CONTENT_ID } from "apollo/querys/contents";
 import { useParams } from "react-router-dom";
-
+import { useHistory } from "react-router-dom";
 import { CREATE_CONTENT } from "apollo/Mutations/content";
 import { MODULES } from "apollo/querys/modules";
-import { InputLabel, MenuItem, Select } from "@material-ui/core";
+import { InputLabel, MenuItem } from "@material-ui/core";
+import Select from "react-select"
 
 const ContentDetail = () => {
   const [createMutation, resultCreate] = useMutation(CREATE_CONTENT);
@@ -19,7 +20,7 @@ const ContentDetail = () => {
   });
 
   const modules = useQuery(MODULES);
-
+  const history = useHistory();
   const { topicName, durationTime, moduleId } = values;
 
   const handleInputChange = ({ target }) => {
@@ -35,7 +36,7 @@ const ContentDetail = () => {
     id: id && parseInt(id),
   };
 
-  const { data } = useQuery(CONTENT_ID, { variables });
+  const {loading, data, refetch } = useQuery(CONTENT_ID, { variables });
 
   useEffect(() => {
     if (data && data) {
@@ -54,7 +55,23 @@ const ContentDetail = () => {
         readme,
       },
     });
+   return (
+     history.push("/admin/modules/"))
+
   };
+
+  const handleModuleInputChange = function (e) {
+    setValues({
+      ...values,
+      moduleId: parseInt(e.value),
+    });
+  };
+
+  useEffect(() => {
+    if (!resultCreate.loading && resultCreate.called) {
+      refetch();
+    }
+  }, [resultCreate, refetch]);
 
   return (
     <div className="container" onSubmit={handleCreate}>
@@ -79,6 +96,14 @@ const ContentDetail = () => {
         />
         <InputLabel id="Modulo">Modulos</InputLabel>
         <Select
+              placeholder="Select Module"
+              onChange={handleModuleInputChange}
+              options={modules.data?.modules.map((opt) => ({
+                label: opt.id,
+                value: opt.id,
+              }))}
+        />
+        {/* <Select
           labelId="label"
           id="select"
           value={values.moduleId}
@@ -89,7 +114,7 @@ const ContentDetail = () => {
               {module.name}
             </MenuItem>
           ))}
-        </Select>
+        </Select> */}
 
         <button type="submit">Crear</button>
       </form>
