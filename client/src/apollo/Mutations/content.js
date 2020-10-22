@@ -2,10 +2,10 @@ import { gql } from "@apollo/client";
 
 export const CREATE_CONTENT = gql`
   mutation createContent(
-    $topicName: String
+    $topicName: String!
     $durationTime: Int
-    $readme: String
-    $moduleId: Int
+    $readme: String!
+    $moduleId: Int!
   ) {
     createContent(
       input: {
