@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client";
 import { CONTENT_ID } from "apollo/querys/contents";
 import { useParams } from "react-router-dom";
 
-export default function App() {
+const ContentDetail = () => {
   const [value, setValue] = React.useState("Hola");
 
   const { id } = useParams();
@@ -18,7 +18,6 @@ export default function App() {
 
   useEffect(() => {
     if (data && data) {
-      console.log(data.contents[0].readme);
       setValue(data.contents[0].readme);
     }
   }, [data]);
@@ -38,4 +37,6 @@ export default function App() {
       {/* REPRODUCTOR CLASE GLABADA */}
     </div>
   );
-}
+};
+
+export default ContentDetail;

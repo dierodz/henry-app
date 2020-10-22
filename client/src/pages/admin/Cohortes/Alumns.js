@@ -91,7 +91,7 @@ function Alumns({
         })) ||
       componentData?.cohortes[0].users ||
       "",
-    [cohorte, componentData.cohortes]
+    [cohorte, componentData]
   );
 
   const tableData = useMemo(

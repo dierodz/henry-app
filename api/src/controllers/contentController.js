@@ -2,7 +2,6 @@ const { Content, Module } = require("../db");
 
 // Creo topic de la carrera ej: topic: JavaScript 1 | duration: 1 clase
 const createContent = async ({ topicName, durationTime, moduleId, readme }) => {
-   console.log(durationTime)
    let topic = await Content.create({
       topicName,
       durationTime,

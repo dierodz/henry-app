@@ -97,7 +97,7 @@ function Cohortes() {
       actions: {
         create: {
           initialValues: {
-            name: undefined,
+            name: "",
             instructor: undefined,
             startDate: new Date(),
           },

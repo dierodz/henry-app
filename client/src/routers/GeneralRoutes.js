@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import LoginScreen from "pages/auth/LoginScreen";
 import Header from "components/Header/Header";
 import NavBar from "components/NavBar/NavBar";
-import NavBarAlumno from "pages/alumnos/components/NabvarAlumno";
 import Dashboard from "pages/Dashboard";
 import Cohortes from "pages/admin/Cohortes";
 import CohortesDetail from "pages/admin/cohortesDetail";
@@ -18,16 +17,13 @@ import PM from "pages/admin/PM";
 import RegisterScreen from "pages/auth/RegisterScreen";
 import Profile from "pages/Profile/Profile";
 import GroupStudent from "pages/alumnos/components/GroupStudent";
-import contentModule from "../pages/alumnos/components/module2";
 
-//Modules Admin:
-// import ModulesAdmin from "pages/admin/modules";
-import AppMarkdown from "pages/admin/modules/introToCss";
-import ModuleScreen from "pages/alumns/ModuleScreen";
-import ContentsScreen from "pages/alumns/ContentsScreen";
+import ModuleScreen from "pages/admin/ModuleScreen";
+import ContentsScreen from "pages/admin/ContentsScreen";
+import ContentDetail from "pages/admin/ContentDetail";
 
 const GeneralRoutes = () => {
-  const { authenticated, user } = useSelector((state) => state.auth);
+  const { authenticated } = useSelector((state) => state.auth);
   const { push } = useHistory();
   const [show, setShow] = useState(false);
   const isSignInPath = useRouteMatch("/auth/signin");
@@ -47,25 +43,11 @@ const GeneralRoutes = () => {
 
   return (
     <>
-      {user && user.roles.find((role) => role.name === "student") ? (
-        <>
-          <Header handleShowMenu={() => setShow(!show)} />
-          <NavBarAlumno show={show} />
-        </>
-      ) : (
-        <>
-          {user && (
-            <>
-              <Header handleShowMenu={() => setShow(!show)} />
-              <NavBar show={show} />
-            </>
-          )}
-        </>
-      )}
+      <Header handleShowMenu={() => setShow(!show)} />
+      <NavBar show={show} />
 
       <div className={classes.content}>
         <Switch>
-          
           <Route path="/auth/signin" component={LoginScreen} />
           <Route path="/auth/signup" component={RegisterScreen} />
 
@@ -85,7 +67,7 @@ const GeneralRoutes = () => {
           <Route
             exact
             path="/admin/modules/content/:id"
-            component={AppMarkdown}
+            component={ContentDetail}
           />
 
           <Route exact path="/profile" component={Profile} />
@@ -97,8 +79,7 @@ const GeneralRoutes = () => {
             component={CohortesDetailAlumno}
           />
           <Route exact path="/student/groups" component={GroupStudent} />
-          <Route exact path="/student/modules" component={contentModule} />
-          {/* <Route exact path="/student/modules/contentModule" component={contentModule} /> */}
+          {/* <Route exact path="/student/modules" component={contentModule} /> */}
         </Switch>
       </div>
     </>
