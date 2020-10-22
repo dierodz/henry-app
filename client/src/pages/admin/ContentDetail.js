@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { CREATE_CONTENT } from "apollo/Mutations/content";
 import { MODULES } from "apollo/querys/modules";
-import { InputLabel, MenuItem } from "@material-ui/core";
-import Select from "react-select"
+import { InputLabel } from "@material-ui/core";
+import Select from "react-select";
 
 const ContentDetail = () => {
   const [createMutation, resultCreate] = useMutation(CREATE_CONTENT);
-  const [readme, setReadme] = React.useState("Hola");
+  const [readme, setReadme] = React.useState("### Escribe el Readme");
   const [values, setValues] = useState({
     topicName: "",
     durationTime: 0,
@@ -21,7 +21,7 @@ const ContentDetail = () => {
 
   const modules = useQuery(MODULES);
   const history = useHistory();
-  const { topicName, durationTime, moduleId } = values;
+  const { topicName, durationTime } = values;
 
   const handleInputChange = ({ target }) => {
     setValues({
@@ -36,17 +36,19 @@ const ContentDetail = () => {
     id: id && parseInt(id),
   };
 
-  const {loading, data, refetch } = useQuery(CONTENT_ID, { variables });
+  const { data, refetch } = useQuery(CONTENT_ID, { variables });
 
   useEffect(() => {
-    if (data && data) {
-      setReadme(data.contents[0].readme);
+    if (!isNaN(id)) {
+      if (data && data) {
+        setReadme(data.contents[0].readme);
+      }
     }
-  }, [data]);
+  }, [data, id]);
 
   const handleCreate = (e) => {
     e.preventDefault();
-    console.log(values);
+
     createMutation({
       variables: {
         ...values,
@@ -55,9 +57,7 @@ const ContentDetail = () => {
         readme,
       },
     });
-   return (
-     history.push("/admin/modules/"))
-
+    return history.push("/admin/modules/");
   };
 
   const handleModuleInputChange = function (e) {
@@ -96,25 +96,13 @@ const ContentDetail = () => {
         />
         <InputLabel id="Modulo">Modulos</InputLabel>
         <Select
-              placeholder="Select Module"
-              onChange={handleModuleInputChange}
-              options={modules.data?.modules.map((opt) => ({
-                label: opt.id,
-                value: opt.id,
-              }))}
+          placeholder="Select Module"
+          onChange={handleModuleInputChange}
+          options={modules.data?.modules.map((opt) => ({
+            label: opt.name,
+            value: opt.id,
+          }))}
         />
-        {/* <Select
-          labelId="label"
-          id="select"
-          value={values.moduleId}
-          onChange={handleInputChange}
-        >
-          {modules.data?.modules.map((module) => (
-            <MenuItem key={module.id} value={module.id}>
-              {module.name}
-            </MenuItem>
-          ))}
-        </Select> */}
 
         <button type="submit">Crear</button>
       </form>
