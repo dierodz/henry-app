@@ -6,7 +6,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { useForm } from "../../hooks/useForm";
 import { signInWithEmail } from "../../dispatchers/auth";
-import {IMAGENAME} from "../../../assets"
+
+import * as GoogleSignIn from 'expo-google-sign-in';
 
 export default function SignIn({ navigation }) {
   const dispatch = useDispatch();
@@ -22,10 +23,9 @@ export default function SignIn({ navigation }) {
   const handleSubmit = () => {
     dispatch(signInWithEmail(email.trim().toLowerCase(), password));
   };
-
+  
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
-      
       <View
         style={{
           flex: 1,
@@ -87,18 +87,23 @@ export default function SignIn({ navigation }) {
           ¡Registrate!
         </Button>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <AntDesign
-            style={{ marginHorizontal: 15 }}
+        <IconButton
+          icon={({color})=>(<AntDesign
+            name="google"
+            color={color}
+            size={24}
+          />)}
+          onPress={()=>alert('google')}
+        />
+
+        <IconButton
+          icon={({color})=>(<AntDesign
             name="github"
             size={24}
-            color="black"
-          />
-          <AntDesign
-            style={{ marginHorizontal: 15 }}
-            name="google"
-            size={24}
-            color="black"
-          />
+            color={color}
+          />)}
+          onPress={() => alert('github')}
+        />
         </View>
       </View>
     </View>

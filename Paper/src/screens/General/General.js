@@ -1,19 +1,16 @@
 import * as React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Text,IconButton,  Card, Title, Avatar, TextInput} from "react-native-paper";
 import { useSelector } from "react-redux";
 import Hyperlink from 'react-native-hyperlink'
 
-const styles = StyleSheet.create({
-  title: {
-    textTransform: "capitalize",
-  }})
 
-
-export default function Cohorte({ navigation }) {
+export default function General({ navigation }) {
   const { user } = useSelector((state) => state.auth);
+  const [text, setText] = React.useState('');
 
   return (
+    <>
     <View
       style={{
         flex: 1,
@@ -23,18 +20,36 @@ export default function Cohorte({ navigation }) {
     >
       <Card style={{ width: "100%" }}>
         <Card.Title
-          style={styles.title}
           title={user.givenName + " " + user.familyName}
           subtitle={user.nickName}
           left={(props) => <Avatar.Image {...props} source={{uri:user.photoUrl}} />}
         />
         <Card.Content>
-          <Title>Libreria de React-native</Title>
+          <Title>Fiesta de fin de año</Title>
           <Hyperlink linkDefault={ true } linkStyle={ { color: '#2980b9', fontSize: 16 } }>
-           <Text>Les paso la libreria de react native: https://reactnative.dev/</Text>
+           <Text>Gente que les parece organizar una fiesta para fin de año?</Text>
           </Hyperlink>
         </Card.Content>
       </Card>
     </View>
+    <View style={{ width:"100%", bottom:0,flexDirection:"row" } } >
+      <TextInput
+          style={{ width:"100%", bottom:0, flex:1, } } 
+        label="Posteá!"
+        placeholder="Posteá!"
+        value={text}
+        onChangeText={text => setText(text)}
+        right={<TextInput.Icon name={() =><IconButton
+          style={{alignSelf:"center"} } 
+          width="100%"
+          icon="send"
+          size={20}
+          onPress={() => {alert(text)
+            setText('')
+          }}
+          />}/>}
+      />
+    </View>
+    </>
   );
 }

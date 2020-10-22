@@ -34,7 +34,7 @@ export default function DrawerLayout(props) {
             {user.cohortes.length === 0 ? "" : user.cohortes[0].name}
           </Caption>
         </View>
-        <ProgressBar progress={0.5} />
+        <ProgressBar progress={0.3} />
 
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
@@ -73,7 +73,7 @@ export default function DrawerLayout(props) {
               />
             )}
             label="Calendario"
-            onPress={() => {}}
+            onPress={() => props.navigation.navigate("CalendarioRoutes")}
           />
         </Drawer.Section>
 
@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 20,
-    fontWeight: "bold",
-  },
+    fontWeight: "bold"
+    },
   caption: {
     fontSize: 14,
     lineHeight: 14,

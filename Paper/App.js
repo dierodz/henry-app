@@ -43,15 +43,15 @@ export default function App() {
   };
 
   return (
-    <PaperProvider theme={theme}>
-     <StatusBar 
-     backgroundColor={isDarkTheme?"black":"white"} 
-     barStyle={isDarkTheme?"light-content":"dark-content"} />
-      <Provider store={store}>
-        <NavigationContainer theme={theme}>
-          <AppRouter handleTheme={handleTheme} />
-        </NavigationContainer>
-      </Provider>
-    </PaperProvider>
+      <PaperProvider theme={theme}>
+        <StatusBar 
+        backgroundColor={isDarkTheme?"black":"white"} 
+        barStyle={isDarkTheme?"light-content":"dark-content"} />
+        <Provider store={store}>
+          <NavigationContainer theme={theme}>
+            <AppRouter handleTheme={handleTheme} />
+          </NavigationContainer>
+        </Provider>
+      </PaperProvider>    
   );
 }

@@ -32,22 +32,22 @@ export default function Pm({ navigation }){
         </Card>
       </View>
       <View style={{ width:"100%", bottom:0,flexDirection:"row" } } >
-      <TextInput
-          style={{ width:"100%", bottom:0, flex:1, } } 
-        label="Posteá!"
-        placeholder="Posteá!"
-        value={text}
-        onChangeText={text => setText(text)}
-        right={<TextInput.Icon name={() =><IconButton
-          style={{alignSelf:"center"} } 
-          width="100%"
-          icon="send"
-          size={20}
-          onPress={() => {alert(text)
-            setText('')
-          }}
-          />}/>}
-      />
+        <TextInput
+            style={{ width:"100%", bottom:0, flex:1, } } 
+          label="Posteá!"
+          placeholder="Posteá!"
+          value={text}
+          onChangeText={text => setText(text)}
+          right={<TextInput.Icon name={() =><IconButton
+            style={{alignSelf:"center"} } 
+            width="100%"
+            icon="send"
+            size={20}
+            onPress={() => {alert(text)
+              setText('')
+            }}
+            />}/>}
+        />
       </View>
       </>
     );

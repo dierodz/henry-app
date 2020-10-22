@@ -15,7 +15,7 @@ export default function Pm({ navigation }){
           alignItems: "center",
         }}
       >
-        <Avatar.Image style={{marginBottom:30}} source={{uri:user.photoUrl}} />
+        <Avatar.Image size={100} style={{marginBottom:30}} source={{uri:user.photoUrl}} />
         <Card style={{width:"80%"}}>
             <Card.Title 
             title={user.givenName + " " + user.familyName} 
@@ -24,7 +24,7 @@ export default function Pm({ navigation }){
             <Card.Content>
             </Card.Content>
             <Card.Actions>
-            <Button>Modificar</Button>
+              <Button onPress={()=>alert("modificar")}>Modificar</Button>
             </Card.Actions>
         </Card>
       </View>
