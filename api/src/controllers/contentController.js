@@ -7,7 +7,6 @@ const createContent = async ({ topicName, durationTime, moduleId, readme }) => {
       durationTime,
       readme,
    });
-   console.log(readme);
    const module = await Module.findOne({ where: { id: moduleId } });
    await module.addContent(topic);
    return topic;

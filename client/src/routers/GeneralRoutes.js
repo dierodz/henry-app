@@ -18,7 +18,6 @@ import PM from "pages/admin/PM";
 import RegisterScreen from "pages/auth/RegisterScreen";
 import Profile from "pages/Profile/Profile";
 import GroupStudent from "pages/alumnos/components/GroupStudent";
-import Modules from "../pages/alumnos/components/modules";
 import contentModule from "../pages/alumnos/components/module2";
 
 //Modules Admin:

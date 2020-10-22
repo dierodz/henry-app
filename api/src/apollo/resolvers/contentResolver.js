@@ -7,7 +7,6 @@ const {
 } = require("../../controllers/contentController");
 
 const contents = async (_, { id, topicName }) => {
-   console.log(id);
    if (id || topicName) {
       const result = await getOneTopic({ id });
       return [result];

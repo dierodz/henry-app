@@ -72,18 +72,19 @@ function CohortesDetail({ className }) {
                 >
                   <div className="cohorteDetailItem">
                     <p>Nombre del cohorte: </p>
-                    <span>{data.cohortes[0].name.toUpperCase()}</span>
+                    <span>{data && data.cohortes[0].name.toUpperCase()}</span>
                   </div>
                   <div className="cohorteDetailItem">
                     <p>Nombre del instructor: </p>
                     <span>
-                      {capitalizeFirstLetter(
-                        data.cohortes[0].instructor.givenName
-                      ) +
-                        " " +
+                      {data &&
                         capitalizeFirstLetter(
-                          data.cohortes[0].instructor.familyName
-                        )}
+                          data.cohortes[0].instructor.givenName
+                        ) +
+                          " " +
+                          capitalizeFirstLetter(
+                            data.cohortes[0].instructor.familyName
+                          )}
                     </span>
                   </div>
                   <div className="cohorteDetailItem">
@@ -97,7 +98,7 @@ function CohortesDetail({ className }) {
                   </div>
                   <div className="cohorteDetailItem">
                     <p>Cantidad de alumnos: </p>
-                    <span>{data.cohortes[0].users.length}</span>
+                    <span>{data && data.cohortes[0].users.length}</span>
                   </div>
                 </div>
               </CardContent>
@@ -108,7 +109,7 @@ function CohortesDetail({ className }) {
               <CardHeader title="Grupos" />
               <CardContent>
                 <Groups
-                  cohorte={data.cohortes[0]}
+                  cohorte={data && data.cohortes[0]}
                   loading={loading}
                   onRefetch={refetch}
                 />
@@ -119,7 +120,7 @@ function CohortesDetail({ className }) {
             <Card variant="outlined" style={{ position: "relative" }}>
               <CardHeader title="Alumnos" />
               <CardContent>
-                <Alumns cohorte={data.cohortes[0]} loading={loading} />
+                <Alumns cohorte={data && data.cohortes[0]} loading={loading} />
               </CardContent>
             </Card>
           </Grid>

@@ -48,6 +48,7 @@ function CohortesDetailAlumno({ className }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+ 
   return (
     <Container style={{ paddingTop: "1rem" }}>
       {loading ? (

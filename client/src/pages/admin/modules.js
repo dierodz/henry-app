@@ -1,21 +1,13 @@
-import React, { useMemo, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import React, { useMemo } from "react";
+import { useQuery } from "@apollo/client";
 
 // import { MODULES } from "apollo/querys/modules";
 import { MODULES } from "../alumnos/querys/module";
 
-import { useHistory, useParams, useRouteMatch } from "react-router-dom";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  Grid,
-} from "@material-ui/core";
-import Loading from "components/Loading";
+import { useHistory } from "react-router-dom";
+
 import "styles/components/CohortesDetail.scss";
 
-import { Link } from "react-router-dom";
 import { Tabla } from "components/Tabla";
 
 function ModulesDetail({ className }) {

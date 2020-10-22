@@ -1,15 +1,7 @@
 import React, { useEffect } from "react";
-import ReactDOM from "react-dom";
 import MEDitor from "@uiw/react-md-editor";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  Grid,
-} from "@material-ui/core";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { CONTENT_ID } from "apollo/querys/contents";
 import { useParams } from "react-router-dom";
 
@@ -22,10 +14,7 @@ export default function App() {
     id: id && parseInt(id),
   };
 
-  const { loading, error, data } = useQuery(CONTENT_ID, { variables });
-  // const [createContent, { loading: createLoading }] = useMutation(
-  //   CREATE_CONTENIDO
-  // );
+  const { data } = useQuery(CONTENT_ID, { variables });
 
   useEffect(() => {
     if (data && data) {

@@ -10,7 +10,7 @@ export const getUserRol = gql`
       roles {
         name
       }
-      group {
+      groups {
         name
       }
       cohortes {
@@ -52,6 +52,14 @@ export const USER_FULL = gql`
       cohortes {
         id
         name
+      }
+      groups {
+        id
+        name
+        type
+        students {
+          id
+        }
       }
     }
   }

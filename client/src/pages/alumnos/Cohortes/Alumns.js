@@ -16,7 +16,7 @@ function Alumns({
 }) {
   const [
     execute,
-    { loading: queryLoading, error, data: preData, /* refetch: preRefetch */ },
+    { loading: queryLoading, error, data: preData /* refetch: preRefetch */ },
   ] = useLazyQuery(USER_FULL);
 
   const [executeCount, { data: count }] = useLazyQuery(COUNT_USERS);
@@ -77,13 +77,15 @@ function Alumns({
     () => ({
       loading,
       error,
-      data: data ? data.map((user)=> {
-        return {
-          ...user,
-          familyName: capitalizeFirstLetter(user.familyName),
-          givenName: capitalizeFirstLetter(user.givenName)
-        }
-      }) : data,
+      data: cohorte
+        ? cohorte.users.map((user) => {
+            return {
+              ...user,
+              familyName: capitalizeFirstLetter(user.familyName),
+              givenName: capitalizeFirstLetter(user.givenName),
+            };
+          })
+        : data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
@@ -113,7 +115,7 @@ function Alumns({
         },
       },
     }),
-    [data, error, loading, copyToClipboard, push]
+    [loading, error, cohorte, data, copyToClipboard, push]
   );
 
   return (
