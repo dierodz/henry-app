@@ -18,6 +18,7 @@ import PM from "pages/admin/PM";
 import RegisterScreen from "pages/auth/RegisterScreen";
 import Profile from "pages/Profile/Profile";
 import GroupStudent from "pages/alumnos/components/GroupStudent";
+import GroupStudentPP from "pages/alumnos/components/GroupStudentPP";
 import Modules from "../pages/alumnos/components/modules"
 import Module1 from "../pages/alumnos/components/module1"
 import Module2 from "../pages/alumnos/components/module2"
@@ -75,6 +76,7 @@ const GeneralRoutes = () => {
           <Route path="/auth/signup" component={RegisterScreen} />
           <Route exact path="/student/cohorte/:id" component={CohortesDetailAlumno} />
           <Route exact path="/student/groups" component={GroupStudent} />
+          <Route exact path="/student/groups/:id" component={GroupStudentPP} />
           <Route exact path="/student/modules" component={Modules} />
           <Route exact path="/student/modules/modulo1" component={Module1} />
           <Route exact path="/student/modules/modulo2" component={Module2} />

@@ -59,6 +59,11 @@ export const USER_FULL = gql`
         type
         students {
           id
+          givenName
+          familyName
+          nickName
+          email
+
         }
       }
     }
