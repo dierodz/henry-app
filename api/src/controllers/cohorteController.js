@@ -1,6 +1,8 @@
-const { Cohorte, User, Role, Group } = require("../db");
+const { Cohorte, User, Role, Group, Module } = require("../db");
 const { _getMultipleUsers: getMultipleUsers } = require("./userController");
 const { _getMultipleGroups: getMultipleGroups } = require("./groupController");
+
+const include = [{ model: User, inclue: [Role] }, Group, Module];
 
 const createCohorte = async (cohorte) => {
    try {
@@ -38,7 +40,7 @@ const getAllCohortes = async ({ where, limit, offset, order }) => {
       limit,
       offset,
       order,
-      include: [{ model: User, inclue: [Role] }, Group],
+      include,
    });
 
    return cohortes;
@@ -47,7 +49,7 @@ const getAllCohortes = async ({ where, limit, offset, order }) => {
 const getEspecificCohorte = async (id) => {
    const cohorte = await Cohorte.findOne({
       where: { id },
-      include: [{ model: User, inclue: [Role] }, Group],
+      include,
    });
 
    if (!cohorte) {

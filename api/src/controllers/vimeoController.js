@@ -1,11 +1,12 @@
-const { Lesson } = require("../db");
+const { Lesson, } = require("../db");
+const {createContent,getOneTopic} = require("./contentController")
 
 //Vimeo Api
 let Vimeo = require('vimeo').Vimeo;
 let client = new Vimeo("cd76cadcc03e452c4fe561aa8401dcbba33d5f1c", "UMKTV+hzJ/UjgD6JuFZoIM+HuF9YYRPnNwRl7qVKW0zdI8oSun1pS7fwF+zxbvekxns+DZnnWZ1fb2gJIu1QmfI0OTv20hcFoT1iwp6hcRKlM82vSL5H8ruJulpWdphE", "9af52953fb7efad0cd1ce43791d300ce");
 
 
-const AddAllClasesToDb = () => {
+const AddAllClasesToDb = async() => {
     client.request('https://api.vimeo.com/users/112886970/projects/2174805/videos?per_page=100',function (err, json){
         if(err){
            return err
@@ -14,8 +15,12 @@ const AddAllClasesToDb = () => {
 
         for(var i=0; i<obj.length; i++){
             Lesson.create({link: `https://vimeo.com${obj[i].link}`, name: obj[i].name})
-        }
+            
+            // let content = await getOneTopic({topicName: name: obj[i].name})
+        }       
     })
+
+    return await getAllClases()
 }
 
 const getAllClases = async () => {
@@ -23,19 +28,42 @@ const getAllClases = async () => {
     return clases;
  };
 
-// const asignarClase = async ({ name, description }) => {
-//     const clases = fetch('https://api.vimeo.com/users/112886970/projects/2174805/videos')
-//         .then(response => response.json())
-//         .then(data => console.log(data));
 
-//     console.log(clases)
-//     const module = await Lesson.create({ name, description });
-//     return module;
-//  };
+const getLessonById = async (id) =>{
+    const clases = await Lesson.findOne({where: {id} });
+    return clases;
+}
+
+const createLesson = async ({name, link, readme}) =>{
+    return await Lesson.create({name, link, readme})
+}
+
+const updateLesson = async ({name, link, readme, id}) =>{
+
+    const lesson = Lesson.findOne({where: {id}})
+
+    return await lesson.update({name,link,readme})
+}
+
+const deleteLesson = async (id) =>{
+
+    const lesson = Lesson.findOne({where: {id}})
+
+    await lesson.destroy()
+
+    return {message: "Se removio correctamente."}
+}
+// const createReadme = async () =>{
+
+// }
 
  module.exports = {
     // asignarClase,
     AddAllClasesToDb,
-    getAllClases
+    getAllClases,
+    getLessonById,
+    deleteLesson,
+    updateLesson,
+    createLesson
  };
  

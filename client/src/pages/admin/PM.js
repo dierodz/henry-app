@@ -31,7 +31,7 @@ function PM({ className }) {
       actions: {
         create: {
           initialValues: {
-            email: undefined,
+            email: "",
           },
           inputs: [{ key: "email", label: "Email" }],
           onSubmit: async (values) => {

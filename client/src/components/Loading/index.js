@@ -54,7 +54,7 @@ function Loading() {
               textAlign: "center",
             }}
           >
-            aguardando datos...
+            Aguardando Datos...
           </Typography>
         </div>
       </Container>

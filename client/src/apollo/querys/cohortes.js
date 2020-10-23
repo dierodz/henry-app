@@ -13,6 +13,9 @@ export const COHORTES = gql`
       }
       users {
         id
+        givenName
+        familyName
+        email
       }
       groups {
         id
