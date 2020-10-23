@@ -1,8 +1,8 @@
-import React, { useMemo, useEffect } from "react";
-import { useMutation, useQuery } from "@apollo/client";
-import { Tabla } from "components/Tabla";
+import React from "react";
+import {/*  useMutation, */ useQuery } from "@apollo/client";
+// import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { useParams/* , useRouteMatch */ } from "react-router-dom";
 import Groups from "pages/alumnos/Cohortes/groups";
 import Alumns from "pages/alumnos/Cohortes/Alumns";
 import {
@@ -20,7 +20,7 @@ function CohortesDetailAlumno({ className }) {
 
   const variables = { id: parseInt(id) };
 
-  const { loading, error, data, refetch } = useQuery(COHORTE_BY_ID, {
+  const { loading, /* error, */ data, refetch } = useQuery(COHORTE_BY_ID, {
     variables,
   });
 

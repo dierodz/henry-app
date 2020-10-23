@@ -1,4 +1,13 @@
 const {
+   createPost, 
+   getPost, 
+   editPost, 
+   deletePost,
+   getCohortePosts, 
+   getUserPosts,
+   getGroupPosts,
+} = require("./resolvers/postResolver");
+const {
    mateReview,
    createReview,
    updateReview,
@@ -21,15 +30,8 @@ const {
    deleteCheckPoint,
    createCheckPoint,
 } = require("./resolvers/checkPointResolver");
-const { contents,   createContenido,
-   updateTopics,
-   deleteTopics, } = require("./resolvers/contentResolver");
-const {
-   modules,
-   createModule,
-   updateModule,
-   deleteModule,
-} = require("./resolvers/moduleResolver");
+const { contents, contentMutations } = require("./resolvers/contentResolver");
+const { moduleMutations, moduleQuerys } = require("./resolvers/moduleResolver");
 const {
    roles,
    deleteRole,
@@ -53,20 +55,28 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
-const { lessons } = require("./resolvers/lessonsResolver");
+const {
+   lessonsQuery,
+   lessonsMutations,
+} = require("./resolvers/lessonsResolver");
 
 const resolvers = {
    Query: {
       checkPoints,
       ...cohortesQuery,
       contents,
-      modules,
+      ...moduleQuerys,
       roles,
       scores,
       matesScore,
       mateReview,
+      getPost,
+      getCohortePosts,
+      getUserPosts,
+      getGroupPosts,
       ...groupQuerys,
       ...userQuerys,
+      ...lessonsQuery,
    },
 
    Mutation: {
@@ -79,9 +89,7 @@ const resolvers = {
       updateCheckPoint,
       deleteCheckPoint,
       // Mutations fot Modules
-      createModule,
-      updateModule,
-      deleteModule,
+      ...moduleMutations,
       // Mutations for Roles,
       createRole,
       updateRole,
@@ -100,10 +108,14 @@ const resolvers = {
       createReview,
       updateReview,
       deleteReview,
+      //mutation para posts
+      createPost,
+      editPost,
+      deletePost,
+
       //Mutaciones de contenidos
-      createContenido,
-      updateTopics,
-      deleteTopics,
+      ...contentMutations,
+      ...lessonsMutations
    },
 
    Cohorte: {

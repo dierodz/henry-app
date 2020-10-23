@@ -74,7 +74,7 @@ function Groups({
       addButtonLabel: "Crear grupo",
       actions: {
         view: {
-          onSubmit: (id) => push(`/group/${id}`),
+          onSubmit: (id) => push(`/group/${id}/posts`),
         },
         create: {
           initialValues: {

@@ -19,7 +19,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
-function Cohortes({ className }) {
+function Cohortes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   function onChangePage(_, page) {
@@ -97,7 +97,7 @@ function Cohortes({ className }) {
       actions: {
         create: {
           initialValues: {
-            name: undefined,
+            name: "",
             instructor: undefined,
             startDate: new Date(),
           },

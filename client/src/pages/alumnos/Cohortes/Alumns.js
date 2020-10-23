@@ -16,7 +16,7 @@ function Alumns({
 }) {
   const [
     execute,
-    { loading: queryLoading, error, data: preData, refetch: preRefetch },
+    { loading: queryLoading, error, data: preData /* refetch: preRefetch */ },
   ] = useLazyQuery(USER_FULL);
 
   const [executeCount, { data: count }] = useLazyQuery(COUNT_USERS);
@@ -115,7 +115,7 @@ function Alumns({
         },
       },
     }),
-    [data, error, loading, copyToClipboard, push]
+    [loading, error, cohorte, data, copyToClipboard, push]
   );
 
   return (

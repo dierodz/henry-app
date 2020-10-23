@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) =>
       score: {
          type: DataTypes.INTEGER,
          allowNull: true,
-        },
-       commentary: {
-       	  type: DataTypes.STRING,       	  
-       }
+      },
+      commentary: {
+         type: DataTypes.STRING,
+      },
    });

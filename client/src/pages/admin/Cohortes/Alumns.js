@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
-import { USER_FULL, COUNT_USERS } from "apollo/querys/users";
+import { COUNT_USERS } from "apollo/querys/users";
 import { ADD_USER_TO_COHORTE } from "apollo/Mutations/cohortes";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
 import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
@@ -20,7 +20,9 @@ function Alumns({
   //   { loading: queryLoading, error, data: preData, refetch: preRefetch },
   // ] = useLazyQuery(USER_FULL);
 
-  const [inviteMutation, resultInvite] = useMutation(ADD_USER_TO_COHORTE);
+  const [inviteMutation /* , resultInvite */] = useMutation(
+    ADD_USER_TO_COHORTE
+  );
 
   const [executeCount, { loading, error, data: count }] = useLazyQuery(
     COUNT_USERS
@@ -87,13 +89,10 @@ function Alumns({
           };
           return usuario;
         })) ||
-      componentData?.cohortes[0].users,
-    [componentData]
+      componentData?.cohortes[0].users ||
+      "",
+    [cohorte, componentData]
   );
-  // const loading = useMemo(() => queryLoading || componentLoading, [
-  //   queryLoading,
-  //   componentLoading,
-  // ]);
 
   const tableData = useMemo(
     () => ({
@@ -129,10 +128,10 @@ function Alumns({
         },
         create: {
           initialValues: {
-            userId: null,
+            userId: 0,
           },
           inputs: [{ key: "userId", label: "Id" }],
-          onSubmit: async (values) => {
+          onSubmit: async (values) => {            
             const data = {
               variables: {
                 ...values,
@@ -147,7 +146,7 @@ function Alumns({
         },
       },
     }),
-    [data, error, loading, copyToClipboard, push]
+    [loading, error, data, copyToClipboard, push, cohorte.id, inviteMutation]
   );
 
   return (

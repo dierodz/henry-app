@@ -202,7 +202,7 @@ const updateUser = async (id, user) => {
    } else if (role) {
       const dbRole = await Role.findOne({ where: { name: role } });
 
-      await sendUser.setRoles(dbRole);
+      await sendUser.addRoles(dbRole);
    }
 
    return await getUserById(sendUser.id);
@@ -216,9 +216,7 @@ const deleteUserById = async (id) => {
 };
 
 const setRoleToUser = async (email, roles) => {
-   console.log(email);
    const user = await getUserByEmail(email);
-   // console.log(user)
    const role = await Role.findOne({ where: { name: roles } });
 
    await user.addRoles(role);
