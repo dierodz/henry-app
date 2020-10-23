@@ -21,7 +21,9 @@ import ModuleScreen from "pages/admin/ModuleScreen";
 import ContentsScreen from "pages/admin/ContentsScreen";
 import ContentDetail from "pages/admin/ContentDetail";
 import GroupStudentPP from "pages/alumnos/components/GroupStudentPP";
+import Group from "pages/admin/Group"
 import { Post } from "pages/Posts/Post";
+
 
 const GeneralRoutes = () => {
   const { authenticated, user } = useSelector((state) => state.auth);
@@ -61,6 +63,7 @@ const GeneralRoutes = () => {
           <Route exact path="/admin/modules/:id" component={ContentsScreen} />
           <Route exact path="/admin/pm" component={PM} />
           <Route exact path="/admin/alumns" component={Alumns} />
+          <Route exact path="/admin/group/:id" component={Group} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/profile/:id" component={Profile} />
           <Route path="/auth/signin" component={LoginScreen} />
