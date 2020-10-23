@@ -1,10 +1,8 @@
-/* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import { signInWithToken, initialize, signOut } from "../dispatchers/auth";
-import { Text } from "react-native";
 import DrawerRoutes from "./DrawerRoutes/DrawerRoutes";
 import LogRoutes from "./LogRoutes/LogRoutes";
 

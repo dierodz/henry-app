@@ -6,7 +6,6 @@ import { REACT_APP_API } from "@env";
 import { finishLoading, startLoading } from "../actions/ui";
 
 export const signOut = () => {
-  console.log(REACT_APP_API)
   return async (dispatch) => {
     dispatch(startLoading());
     dispatch(logout());
@@ -38,7 +37,6 @@ export const signInWithEmail = (username, password) => {
 
       if (data) {
         const { user, token } = data;
-
         await AsyncStorage.setItem("token", token);
         dispatch(login(user.id, user, token));
         dispatch(finishLoading());

@@ -16,13 +16,19 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import UserImage from "../userImage/UserImage";
+import { List } from 'react-native-paper';
+
+  
+import { useTheme as useThemea}   from '@react-navigation/native';
 
 export default function DrawerLayout(props) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
+  const navTheme = useThemea()
   const paperTheme = useTheme();
+
   return (
+
     <DrawerContentScrollView {...props}>
       <View style={styles.drawerContent}>
         <View style={styles.userInfoSection}>
@@ -38,8 +44,7 @@ export default function DrawerLayout(props) {
 
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="school" color={color} size={size} />
+            icon={({ color, size }) => (<MaterialCommunityIcons name="school" color={color} size={size} />
             )}
             label="Cohorte"
             onPress={() => props.navigation.navigate("CohorteRoutes")}
@@ -62,7 +67,19 @@ export default function DrawerLayout(props) {
             label="PM"
             onPress={() => props.navigation.navigate("PmRoutes")}
           />
+          <List.Accordion
+          style={{marginHorizontal:10}}
+          titleStyle={{marginLeft:24,fontSize:14 , fontWeight: '500'}}
+              title="Grupos"
+              left={props =><MaterialCommunityIcons name="account-group-outline" color={props.color} size={24}/>}>
+                {[{id:1, title:"Pm", route:"PmRoutes"},{id:2, title:"Cohorte", route:"CohorteRoutes"}].map((e)=>(
+                 <List.Item key={e.title} title={e.title}
+                 onPress={()=>props.navigation.navigate(e.route)}
+                 />
+                ))}
+          </List.Accordion>            
         </Drawer.Section>
+
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
             icon={({ color, size }) => (

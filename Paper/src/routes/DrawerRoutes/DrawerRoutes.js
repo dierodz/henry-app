@@ -6,9 +6,6 @@ import PmRoutes from "../PmRoutes/PmRoutes";
 import GruposRoutes from "../GruposRoutes/GruposRoutes";
 import PerfilRoutes from "../PerfilRoutes/PerfilRoutes";
 import CalendarioRoutes from "../CalendarioRoutes/CalendarioRoutes";
-
-
-import Settings from "../../screens/Settings/Settings";
 import DrawerLayout from "../../components/drawerLayout/DrawerLayout";
 
 const Drawer = createDrawerNavigator();
@@ -25,9 +22,11 @@ export default function DrawerRoutes(props) {
       <Drawer.Screen name="CohorteRoutes" component={CohorteRoutes} />
       <Drawer.Screen name="GruposRoutes" component={GruposRoutes} />
       <Drawer.Screen name="PmRoutes" component={PmRoutes} />
-      <Drawer.Screen name="Settings" component={Settings} />
       <Drawer.Screen name="CalendarioRoutes" component={CalendarioRoutes} />
       <Drawer.Screen name="PerfilRoutes" component={PerfilRoutes} />
+      {[{id:1, title:"Grupo1"},{id:2, title:"Grupo2"}].map((e)=>(
+          <Drawer.Screen name={e.title} component={PerfilRoutes} />
+                ))}
     </Drawer.Navigator>
   );
 }

@@ -1,14 +1,34 @@
 import * as React from "react";
-import { View } from "react-native";
-import { Text,IconButton,  Card, Title, Avatar, TextInput} from "react-native-paper";
+import { View,FlatList } from "react-native";
+import { IconButton, TextInput} from "react-native-paper";
 import { useSelector } from "react-redux";
-import Hyperlink from 'react-native-hyperlink'
+import PostCard from "../../components/PostCard/PostCard"
 
-
-export default function General({ navigation }) {
+export default function General(props) {
   const { user } = useSelector((state) => state.auth);
   const [text, setText] = React.useState('');
 
+  const data=props.route.params.screen=="cohorte"? [{id:user.id,
+    name:user.givenName + " " + user.familyName,
+  nickName: user.nickName,
+  photoUrl: user.photoUrl,
+  title: "Fiesta de fin de año",
+  content: "Gente que les parece organizar una fiesta para fin de año?"
+}
+] : [{id:user.id,
+  name:user.givenName + " " + user.familyName,
+nickName: user.nickName,
+photoUrl: user.photoUrl,
+title: "Libreria de React-native",
+content: "Tengo dudas con el tema de hoy"
+},{id:user.id,
+  name:user.givenName + " " + user.familyName,
+nickName: user.nickName,
+photoUrl: user.photoUrl,
+title: "Redux",
+content: "Quien me explica?"
+}
+]
   return (
     <>
     <View
@@ -18,19 +38,12 @@ export default function General({ navigation }) {
         alignItems: "center",
       }}
     >
-      <Card style={{ width: "100%" }}>
-        <Card.Title
-          title={user.givenName + " " + user.familyName}
-          subtitle={user.nickName}
-          left={(props) => <Avatar.Image {...props} source={{uri:user.photoUrl}} />}
-        />
-        <Card.Content>
-          <Title>Fiesta de fin de año</Title>
-          <Hyperlink linkDefault={ true } linkStyle={ { color: '#2980b9', fontSize: 16 } }>
-           <Text>Gente que les parece organizar una fiesta para fin de año?</Text>
-          </Hyperlink>
-        </Card.Content>
-      </Card>
+      <FlatList
+      style={{width:"100%"}}
+              data={data} 
+              renderItem={PostCard}
+              keyExtractor={({item,index}) => index}
+            />  
     </View>
     <View style={{ width:"100%", bottom:0,flexDirection:"row" } } >
       <TextInput

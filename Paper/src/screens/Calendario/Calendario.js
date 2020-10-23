@@ -33,7 +33,6 @@ export default function Calendario(props) {
     const [cal, setCal] = React.useState(true)
     React.useEffect(()=>{
       setCal(!cal)
-      console.log(cal)
     },[colors.primary])
 
     const renderItem = ({ item }) => (
@@ -50,7 +49,6 @@ export default function Calendario(props) {
           <Calendar 
           hideExtraDays 
           showWeekNumbers
-          theme={{calendarBackground:"red"}}
           markedDates={{
               '2020-10-21' : {selected: true, marked: true, selectedColor: 'blue'},
               '2020-10-17': {marked: true},
