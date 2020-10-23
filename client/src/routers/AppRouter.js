@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 import { signInWithToken, initialize } from "dispatchers/auth";
 import GeneralRoutes from "./GeneralRoutes";
+import Loading from "components/Loading";
 
 const AppRouter = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const AppRouter = () => {
   }, [localToken, dispatch]);
 
   if (checking) {
-    return <h1>Cargando...</h1>;
+    return <Loading></Loading>
   }
 
   return (
