@@ -15,12 +15,21 @@ const typeDefs = gql`
       instructor: User
       users: [User]
       groups: [Group]
+      modules: [Module]
    }
 
    type Content {
       id: Int
       topicName: String
       durationTime: Int
+      readme: String
+   }
+
+   input contentInput {
+      topicName: String!
+      durationTime: Int
+      readme: String!
+      moduleId: Int!
    }
 
    enum GroupTypes {
@@ -53,6 +62,7 @@ const typeDefs = gql`
       id: Int
       name: String
       description: String
+      contents: [Content]
    }
 
    type Role {
@@ -76,12 +86,35 @@ const typeDefs = gql`
       photoUrl: String
       roles: [Role]
       cohortes: [Cohorte]
+      groups: [Group]
    }
 
    type Lesson {
       id: Int
       link: String
       name: String
+      readme: String
+   }
+
+   type MatesScore {
+      id: Int
+      name: String
+      reviews: [MateReview]
+   }
+
+   type MateReview {
+      id: Int
+      score: Int
+      commentary: String
+   }
+
+   type Post {
+      id: Int
+      tittle: String
+      content: String
+      userId: Int
+      cohorteId: Int
+      groupId: Int
    }
 
    type Query {
@@ -94,7 +127,7 @@ const typeDefs = gql`
          offset: Int
          order: JSON
       ): [Cohorte]
-      contents(topicName: String): [Content]
+      contents(topicName: String, id: Int): [Content]
       countGroups(where: JSON): Int
       groups(
          id: Int
@@ -110,7 +143,13 @@ const typeDefs = gql`
       users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
       countUsers(where: JSON): Int
       getUserRol(role: String): [User]
-      lessons(id: Int, name: String, link: String): [Lesson]
+      matesScore(id: Int, name: String): [MatesScore]
+      mateReview(id: Int, score: Int, commentary: String): [MateReview]
+      getPost(id: Int): [Post]
+      getCohortePosts(cohorteId: Int): [Post]
+      getUserPosts(userId: Int): [Post]
+      getGroupPosts(groupId: Int): [Post]
+      lessons(id: Int, name: String, link: String, readme: String): [Lesson]
    }
 
    # Estos son los datos que acepta un usuario
@@ -170,7 +209,7 @@ const typeDefs = gql`
       removeGroupsFromCohorte(cohorteId: Int!, groupId: [Int]!): Cohorte!
 
       # Mutaciones para los modulos
-      createModule(name: String!): Module!
+      createModule(name: String!, description: String): Module!
       updateModule(id: Int, name: String!, description: String!): Module!
       deleteModule(id: Int): DeleteResolve!
 
@@ -180,9 +219,9 @@ const typeDefs = gql`
       deleteCheckPoint(id: Int): DeleteResolve!
 
       # Mutaciones para Contenidos
-      createContenido(topicName: String!, durationTime: Int): Content!
-      updateTopics(id: Int, topic: String!): Content!
-      deleteTopics(id: Int): DeleteResolve!
+      createContent(input: contentInput): Content!
+      updateContent(id: Int, input: contentInput): Content!
+      deleteContent(id: Int): DeleteResolve!
 
       # Mutaciones para Roles
       createRole(name: String): Role!
@@ -201,6 +240,30 @@ const typeDefs = gql`
       removeUsersOfGroups(id: Int!, name: String, userId: [Int]!): Group!
       addUsersToGroups(id: Int, name: String, input: GroupInput): Group!
       setParentToGroup(parendId: Int, sonId: Int): Group!
+
+      # Mutaciones para MatesScore
+      createMatesScore(name: String): Score!
+      updateMatesScore(id: Int, name: String): Score!
+      deleteMatesScore(id: Int, name: String): DeleteResolve!
+
+      # Mutaciones para MatesReview
+      createReview(score: Int, commentary: String): Score!
+      updateReview(id: Int, score: Int, commentary: String): Score!
+      deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
+
+      # Mutaciones para los posts
+      createPost(
+         tittle: String
+         content: String
+         userId: Int
+         cohorteId: Int
+         groupId: Int
+      ): Post!
+      editPost(id: Int, tittle: String, content: String): Post!
+      deletePost(id: Int): DeleteResolve!
+
+      #Mutaciones para Lessons
+      createLesson(link: String, name: String, readme: String): [Lesson!]
    }
 `;
 

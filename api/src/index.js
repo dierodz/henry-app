@@ -21,16 +21,16 @@ require("dotenv").config();
 const colors = require("colors/safe");
 const { server } = require("./app.js");
 const { conn, createRoles } = require("./db.js");
-const { PORT } = process.env;
+const { PORT, DB_HOST } = process.env;
 
 // Syncing all the models at once.
 
-conn.sync({ force: false }).then(() => {
+conn.sync({ force: false /* alter: true */ }).then(() => {
    createRoles().then(() => {
       server.listen(PORT, () => {
          console.log(
             `%s listening at port ${colors.brightYellow(
-               `http://localhost:${PORT}/graphql`
+               `http://${DB_HOST}:${PORT}/graphql`
             )}`
          );
       });

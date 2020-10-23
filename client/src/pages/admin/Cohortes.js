@@ -20,7 +20,33 @@ import {
 import { hooks } from "shared";
 const { useCohortes } = hooks;
 
-function Cohortes({ className }) {
+function Cohortes() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  function onChangePage(_, page) {
+    setPage(page);
+    refetch({
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    });
+  }
+  function onChangeRowsPerPage(e) {
+    setRowsPerPage(e.target.value);
+    refetch({
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    });
+  }
+  const { loading, error, data: preData, refetch } = useQuery(COHORTES, {
+    variables: {
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    },
+  });
+  const { data: count } = useQuery(COUNT_COHORTES);
+  const instructors = useQuery(getUserRol, {
+    variables: { role: "instructor" },
+  });
   const [createMutation, resultCreate] = useMutation(CREATE_COHORTE);
   const [deleteMutation, resultDelete] = useMutation(DELETE_COHORTE);
   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE);
@@ -54,17 +80,22 @@ function Cohortes({ className }) {
       return result.map((item) => {
         return {
           ...item,
-          instructorDisplay: `${item.instructor.givenName || ""} ${
-            item.instructor.familyName || ""
-          }`,
+          name: item.name.toUpperCase(),
+          instructorDisplay: `${
+            capitalizeFirstLetter(item.instructor.givenName) || ""
+          } ${capitalizeFirstLetter(item.instructor.familyName) || ""}`,
           instructor: item.instructor.id,
           groups: item.groups.length,
           alumns: item.users.length,
+          users: item.users,
         };
       });
     } else return result;
   }, [result]);
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   const tableData = useMemo(
     () => ({
       loading,
@@ -89,7 +120,7 @@ function Cohortes({ className }) {
       actions: {
         create: {
           initialValues: {
-            name: undefined,
+            name: "",
             instructor: undefined,
             startDate: new Date(),
           },

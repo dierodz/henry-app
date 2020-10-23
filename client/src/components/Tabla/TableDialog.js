@@ -8,7 +8,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import { useFormik } from "formik";
 import { DatePicker } from "@material-ui/pickers";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import { Autocomplete } from '@material-ui/lab';
 
 function TableDialog({ context, opened, onClose }) {

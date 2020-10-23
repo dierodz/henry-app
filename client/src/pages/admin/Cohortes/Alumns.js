@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
+import { COUNT_USERS } from "apollo/querys/users";
+import { ADD_USER_TO_COHORTE } from "apollo/Mutations/cohortes";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
 import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
 import { useCopyToClipboard } from "react-use";
@@ -7,28 +10,24 @@ import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 import { hooks } from "shared";
 
-const { useUsers } = hooks;
+function Alumns({
+  className,
+  cohorte,
+  data: componentData,
+  loading: componentLoading,
+}) {
+  // const [
+  //   execute,
+  //   { loading: queryLoading, error, data: preData, refetch: preRefetch },
+  // ] = useLazyQuery(USER_FULL);
 
-function Alumns({ className, cohorte, loading: componentLoading }) {
-  const {
-    fetch,
-    //refetch,
-    result,
-    count,
-    loading: fetchLoading,
-    rowsPerPageOptions,
-    rowsPerPage,
-    onChangePage,
-    onChangeRowsPerPage,
-    page,
-  } = useUsers({
-    where: {
-      Cohorte: {
-        id: 2,
-      },
-    },
-    order: ["givenName", "familyName"],
-  });
+  const [inviteMutation /* , resultInvite */] = useMutation(
+    ADD_USER_TO_COHORTE
+  );
+
+  const [executeCount, { loading, error, data: count }] = useLazyQuery(
+    COUNT_USERS
+  );
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
@@ -42,19 +41,65 @@ function Alumns({ className, cohorte, loading: componentLoading }) {
     }
   }, [copyValue]);
 
-  useEffect(() => {
-    fetch();
-  }, [rowsPerPage, page, fetch]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  function onChangePage(_, page) {
+    setPage(page);
+  }
+  function onChangeRowsPerPage(e) {
+    setRowsPerPage(e.target.value);
+  }
 
-  const loading = useMemo(() => fetchLoading || componentLoading, [
-    fetchLoading,
-    componentLoading,
-  ]);
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  const variables = useMemo(
+    () => ({
+      where: cohorte ? { Cohorte: { id: cohorte.id } } : undefined,
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    }),
+    [rowsPerPage, page, cohorte]
+  );
+
+  useEffect(() => {
+    if (cohorte) {
+      //   execute({
+      //     variables,
+      //   });
+      executeCount({ variables });
+    }
+  }, [cohorte, executeCount, variables]);
+
+  const data = useMemo(
+    () =>
+      (cohorte &&
+        cohorte.users.map((user) => {
+          var usuario = {
+            __typename: user.__typename,
+            givenName: user.givenName && capitalizeFirstLetter(user.givenName),
+            familyName:
+              user.familyName && capitalizeFirstLetter(user.familyName),
+            email: user.email,
+            id: user.id,
+            nickName: user.nickName,
+            photoUrl: user.photoUrl,
+            roles: user.roles,
+            cohortes: user.cohortes,
+          };
+          return usuario;
+        })) ||
+      componentData?.cohortes[0].users ||
+      "",
+    [cohorte, componentData]
+  );
 
   const tableData = useMemo(
     () => ({
       loading,
-      data: result,
+      error,
+      data: data && data,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
@@ -77,14 +122,32 @@ function Alumns({ className, cohorte, loading: componentLoading }) {
           ),
         },
       ],
-      addButtonLabel: "Invitar estudiante",
+      addButtonLabel: "Agregar estudiante",
       actions: {
         view: {
           onSubmit: (id) => push(`/profile/${id}`),
         },
+        create: {
+          initialValues: {
+            userId: 0,
+          },
+          inputs: [{ key: "userId", label: "Id" }],
+          onSubmit: async (values) => {
+            const data = {
+              variables: {
+                ...values,
+                userId: Number(values.userId),
+                cohorteId: cohorte.id,
+              },
+            };
+            await inviteMutation(data);
+          },
+          submitButtonLabel: "Agregar",
+          title: "Agregar estudiante",
+        },
       },
     }),
-    [result, loading, copyToClipboard, push]
+    [loading, error, data, copyToClipboard, push, cohorte.id, inviteMutation]
   );
 
   console.log(result);

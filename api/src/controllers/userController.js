@@ -1,7 +1,7 @@
-const { User, Role, Cohorte, parseWhere } = require("../db");
+const { User, Role, Cohorte, Group, parseWhere } = require("../db");
 const { sendEmail } = require("../mailModels/sendEmail");
 
-const include = [Role, Cohorte];
+const include = [Role, Cohorte, Group];
 
 const createUser = async ({
    givenName,
@@ -194,7 +194,7 @@ const updateUser = async (id, user) => {
    } else if (role) {
       const dbRole = await Role.findOne({ where: { name: role } });
 
-      await sendUser.setRoles(dbRole);
+      await sendUser.addRoles(dbRole);
    }
 
    return await getUserById(sendUser.id);
@@ -208,9 +208,7 @@ const deleteUserById = async (id) => {
 };
 
 const setRoleToUser = async (email, roles) => {
-   console.log(email);
    const user = await getUserByEmail(email);
-   // console.log(user)
    const role = await Role.findOne({ where: { name: roles } });
 
    await user.addRoles(role);
@@ -232,7 +230,7 @@ const _internalGetUserByEmail = async (email) => {
 const getUserbyRol = async (role) => {
    const result = await Role.findOne({
       where: { name: role },
-      include: [{ model: User, include: [Role] }],
+      include: [{ model: User, include }],
    });
    return result.users;
 };

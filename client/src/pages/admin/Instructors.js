@@ -8,6 +8,11 @@ function Instructors({ className }) {
    const { loading, error, data, refetch } = useQuery(getUserRol, {
       variables: { role: "instructor" },
    });
+
+   function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
    const [addRoleMutation, resultAddRole] = useMutation(ADD_ROLE);
 
    useEffect(() => {
@@ -19,7 +24,14 @@ function Instructors({ className }) {
    const tableData = useMemo(() => ({
       loading,
       error,
-      data: data ? data.getUserRol : undefined,
+      data: data ? data.getUserRol.map((user)=> {
+   return {__typename: user.__typename,
+   familyName: capitalizeFirstLetter(user.familyName),
+   givenName: capitalizeFirstLetter(user.givenName),
+   id: user.id,
+   roles: user.roles,
+   }
+   }) : undefined,
       columns: [
          { key: 'givenName', label: 'Nombre', align: 'left' },
          { key: 'familyName', label: 'Apellido', align: 'left' },
@@ -29,7 +41,7 @@ function Instructors({ className }) {
       actions: {
          create: {
            initialValues: {
-             email: undefined,
+             email: "",
            },
            inputs: [{ key: "email", label: "Email" }],
            onSubmit: async (values) => {
@@ -49,7 +61,7 @@ function Instructors({ className }) {
          },
        },
    }), [addRoleMutation,data, error, loading]);
-
+  
    return (
       <div className={className}>
          <Tabla data={tableData} />
