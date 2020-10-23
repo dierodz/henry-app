@@ -7,15 +7,20 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { CREATE_CONTENT } from "apollo/Mutations/content";
 import { MODULES } from "apollo/querys/modules";
-import { InputLabel } from "@material-ui/core";
+import { InputLabel, TextField} from "@material-ui/core";
 import Select from "react-select";
+import Button from '@material-ui/core/Button';
+import { Autocomplete } from "@material-ui/lab";
+
+
+
 
 const ContentDetail = () => {
   const [createMutation, resultCreate] = useMutation(CREATE_CONTENT);
   const [readme, setReadme] = React.useState("### Escribe el Readme");
   const [values, setValues] = useState({
     topicName: "",
-    durationTime: 0,
+    durationTime: "",
     moduleId: 0,
   });
 
@@ -77,34 +82,60 @@ const ContentDetail = () => {
     <div className="container" onSubmit={handleCreate}>
       <MEDitor height={800} value={readme} onChange={setReadme} />
       <div style={{ padding: "50px 0 0 0" }} />
-
-      <form action="">
-        <label>TopicName</label>
-        <input
+      <form>
+        
+        <TextField
+          label='Tema de la clase'
+          variant="outlined"
+          id='Clase'
+          placeholder="Tema de la clase"
           type="text"
           name="topicName"
           value={topicName}
           onChange={handleInputChange}
         />
-        <label>Duración</label>
-        <input
+        <TextField
+          label='Duracion'
+          variant="outlined"
+          id="Duracion"
           placeholder="Duracion"
           type="text"
           name="durationTime"
           value={durationTime}
-          onChange={handleInputChange}
+          onChange={handleInputChange}  
         />
-        <InputLabel id="Modulo">Modulos</InputLabel>
-        <Select
+        {/*<Select
           placeholder="Select Module"
           onChange={handleModuleInputChange}
           options={modules.data?.modules.map((opt) => ({
-            label: opt.name,
-            value: opt.id,
+          label: opt.name,
+          value: opt.id,
           }))}
-        />
+        />*/}
+        <Autocomplete
+            name={'Modulo'}
+            options={modules.data?.modules.map((opt) => ({
+              label: opt.name,
+              value: opt.id,
+            }))}
+            getOptionLabel={(option) => option.label}
+            onChange={(_,e) => handleModuleInputChange(e)}
+            value={(() => modules.data?.modules.find(op => op.id === values.moduleId))()}
+            renderInput={(params) => (
+               <TextField
+                  {...params}
+                  label={'Modulo'}
+                  type="text"
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+               />
+            )}
+         />
+        <Button  type='submit' variant="contained" color="primary">
+          Crear
+        </Button>
 
-        <button type="submit">Crear</button>
       </form>
 
       {/* VISTA PREVIA DEL MARKDONW */}
