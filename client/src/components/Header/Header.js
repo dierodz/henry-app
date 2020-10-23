@@ -3,13 +3,10 @@ import { useHistory } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import MailIcon from "@material-ui/icons/Mail";
-import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
@@ -47,6 +44,11 @@ export default function Header({ handleShowMenu }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -61,7 +63,7 @@ export default function Header({ handleShowMenu }) {
       <div className="userMenu">
         <img alt="userImg" src={user.photoUrl || "/Imagenes/user.png"}></img>
         <p className="userName">
-          {user.givenName} {user.familyName}
+          {user.givenName && capitalizeFirstLetter(user.givenName)} {user.familyName && capitalizeFirstLetter(user.familyName)}
         </p>
         <button className="perfilBtn" onClick={() => history.push("/profile")}>
           Perfil

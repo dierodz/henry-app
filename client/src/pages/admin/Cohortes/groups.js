@@ -74,7 +74,7 @@ function Groups({
       addButtonLabel: "Crear grupo",
       actions: {
         view: {
-          onSubmit: (id) => push(`/group/${id}`),
+          onSubmit: (id) => push(`/group/${id}/posts`),
         },
         create: {
           initialValues: {
@@ -88,7 +88,7 @@ function Groups({
             if (result?.data?.createGroup?.id) {
               await addGroupToCohorte({
                 variables: {
-                  cohorteId: data.cohortes[0].id,
+                  cohorteId: cohorte.id,
                   groupId: [result.data.createGroup.id],
                 },
               });

@@ -29,11 +29,29 @@ function Alumns({ className }) {
     }
   }, [copyValue]);
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const tableData = useMemo(
     () => ({
       loading,
       error,
-      data: data ? data.getUserRol : undefined,
+      data:
+        data && data.getUserRol
+          ? data.getUserRol.map((user) => {
+              return {
+                __typename: user.__typename,
+                email: user.email,
+                familyName:
+                  user.familyName && capitalizeFirstLetter(user.familyName),
+                givenName:
+                  user.givenName && capitalizeFirstLetter(user.givenName),
+                id: user.id,
+                roles: user.roles,
+              };
+            })
+          : undefined,
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
