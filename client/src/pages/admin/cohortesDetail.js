@@ -120,7 +120,7 @@ function CohortesDetail({ className }) {
             <Card variant="outlined" style={{ position: "relative" }}>
               <CardHeader title="Alumnos" />
               <CardContent>
-                <Alumns cohorte={data && data.cohortes[0]} loading={loading} />
+                <Alumns cohorte={data && data.cohortes[0]} loading={loading} onRefetch={refetch} />
               </CardContent>
             </Card>
           </Grid>

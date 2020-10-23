@@ -20,9 +20,10 @@ function GroupStudentPP(className) {
 
   let { id } = useParams();
     const variables = {where: {id: parseInt(id)} };
+
   const {loading: queryLoading, error, data } = useQuery(GROUPS, { variables });
 
-
+data && console.log(data.groups[0].students)
    const [addUsersToGroups, { loading: addLoading }] = useMutation(
     ADD_USER_TO_GROUP
   );
