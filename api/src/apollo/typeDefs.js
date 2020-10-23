@@ -108,6 +108,15 @@ const typeDefs = gql`
       commentary: String
    }
 
+   type Post {
+      id: Int
+      tittle: String
+      content: String
+      userId: Int
+      cohorteId: Int
+      groupId: Int
+   }
+
    type Query {
       checkPoints(id: Int, name: String): [CheckPoint]
       countCohortes(where: JSON): Int
@@ -136,6 +145,10 @@ const typeDefs = gql`
       getUserRol(role: String): [User]
       matesScore(id: Int, name: String): [MatesScore]
       mateReview(id: Int, score: Int, commentary: String): [MateReview]
+      getPost(id: Int): [Post]
+      getCohortePosts(cohorteId: Int): [Post]
+      getUserPosts(userId: Int): [Post]
+      getGroupPosts(groupId: Int): [Post]
       lessons(id: Int, name: String, link: String, readme: String): [Lesson]
    }
 
@@ -237,6 +250,17 @@ const typeDefs = gql`
       createReview(score: Int, commentary: String): Score!
       updateReview(id: Int, score: Int, commentary: String): Score!
       deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
+
+      # Mutaciones para los posts
+      createPost(
+         tittle: String
+         content: String
+         userId: Int
+         cohorteId: Int
+         groupId: Int
+      ): Post!
+      editPost(id: Int, tittle: String, content: String): Post!
+      deletePost(id: Int): DeleteResolve!
 
       #Mutaciones para Lessons
       createLesson(link: String, name: String, readme: String): [Lesson!]

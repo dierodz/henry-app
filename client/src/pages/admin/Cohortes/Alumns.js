@@ -154,7 +154,7 @@ function Alumns({
         },
         create: {
           initialValues: {
-            userId: null,
+            userId: 0,
           },
           inputs: [{ key: "userId", label: "Id" }],
           onSubmit: async (values) => {

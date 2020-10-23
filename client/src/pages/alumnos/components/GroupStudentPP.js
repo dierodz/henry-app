@@ -1,42 +1,34 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { useSelector } from "react-redux";
+import React, { useMemo } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { useHistory } from "react-router-dom";
-import { ADD_USER_TO_GROUP, REMOVE_USER_OF_GROUP} from "apollo/Mutations/users";
+import {
+  ADD_USER_TO_GROUP,
+  REMOVE_USER_OF_GROUP,
+} from "apollo/Mutations/users";
 import { GROUPS } from "apollo/querys/groups";
 import { useParams } from "react-router-dom";
 
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@material-ui/core";
-import Alumns from "pages/admin/Cohortes/Alumns";
-
 function GroupStudentPP(className) {
-
   let { id } = useParams();
-    const variables = {where: {id: parseInt(id)} };
-  const {loading: queryLoading, error, data } = useQuery(GROUPS, { variables });
+  const variables = { where: { id: parseInt(id) } };
+  const { loading: queryLoading, error, data } = useQuery(GROUPS, {
+    variables,
+  });
 
-
-   const [addUsersToGroups, { loading: addLoading }] = useMutation(
+  const [addUsersToGroups, { loading: addLoading }] = useMutation(
     ADD_USER_TO_GROUP
   );
 
-      const [removeUserOfGroup, { loading: removeLoading }] = useMutation(
+  const [removeUserOfGroup, { loading: removeLoading }] = useMutation(
     REMOVE_USER_OF_GROUP
   );
 
-
-  const loading = useMemo(
-    () => queryLoading || addLoading || removeLoading,
-    [queryLoading, addLoading, removeLoading]
-  );
-
+  const loading = useMemo(() => queryLoading || addLoading || removeLoading, [
+    queryLoading,
+    addLoading,
+    removeLoading,
+  ]);
 
   const { push } = useHistory();
 
@@ -48,29 +40,28 @@ function GroupStudentPP(className) {
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
-        { key: "email", label: "Mail", align: "left"}
+        { key: "email", label: "Mail", align: "left" },
       ],
       addButtonLabel: "Invitar",
       actions: {
         view: {
-            onSubmit: (id) => push(`/profile/${id}`)
-          
+          onSubmit: (id) => push(`/profile/${id}`),
         },
         delete: {
           initialValues: {
-          studentId: "",
+            studentId: "",
           },
 
           onSubmit: async (values) => {
-              const datos = {
+            const datos = {
               variables: {
                 ...values,
-                 id: id,
-                 userId: values, 
-             },
+                id: id,
+                userId: values,
+              },
             };
-            console.log(datos)
-              await removeUserOfGroup({
+            console.log(datos);
+            await removeUserOfGroup({
               variables: {
                 id: parseInt(datos.variables.id),
                 userId: parseInt(datos.variables.userId),
@@ -81,33 +72,29 @@ function GroupStudentPP(className) {
         create: {
           initialValues: {
             studentId: "",
-            id: id
+            id: id,
           },
           inputs: [{ key: "studentId", label: "studentId" }],
           onSubmit: async (values) => {
             const datos = {
               variables: {
                 ...values,
-                
               },
             };
             await addUsersToGroups({
-                variables: {
-                  id: parseInt(datos.variables.id),
-                  group: {studentId: parseInt(datos.variables.studentId)},
-                },
+              variables: {
+                id: parseInt(datos.variables.id),
+                group: { studentId: parseInt(datos.variables.studentId) },
+              },
             });
           },
           submitButtonLabel: "Invitar",
           title: "Invitar estudiante",
-          },
         },
-
-
+      },
     }),
-    [data, error, loading, push, addUsersToGroups]
+    [loading, error, data, id, push, removeUserOfGroup, addUsersToGroups]
   );
-
 
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
@@ -115,6 +102,5 @@ function GroupStudentPP(className) {
     </div>
   );
 }
-
 
 export default GroupStudentPP;

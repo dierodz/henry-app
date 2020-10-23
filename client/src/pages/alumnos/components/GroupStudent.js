@@ -1,36 +1,30 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import React, { useEffect, useMemo } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import { Tabla } from "components/Tabla";
 import { useHistory } from "react-router-dom";
 import { CREATE_GROUP, DELETE_GROUP } from "apollo/Mutations/groups";
 import { ADD_GROUP_TO_COHORTE } from "apollo/Mutations/cohortes";
 import { USER_FULL } from "apollo/querys/users";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@material-ui/core";
-import Alumns from "pages/admin/Cohortes/Alumns";
 
 function GroupStudent(className) {
-
   const { user } = useSelector((state) => state.auth);
   const variables = { id: user && user.id };
-  const { loading: queryLoading, error, data, refetch } = useQuery(USER_FULL, { variables });
-
+  const { loading: queryLoading, error, data, refetch } = useQuery(USER_FULL, {
+    variables,
+  });
 
   const [createGroup, resultCreate] = useMutation(CREATE_GROUP);
   const [removeGroup, resultDelete] = useMutation(DELETE_GROUP);
-  const [addGroupToCohorte, { loading: addLoading }] = useMutation(ADD_GROUP_TO_COHORTE);
-
-
-  const loading = useMemo(
-    () => queryLoading || addLoading
-    [queryLoading, addLoading]
+  // eslint-disable-next-line no-unused-vars
+  const [addGroupToCohorte, { loading: addLoading }] = useMutation(
+    ADD_GROUP_TO_COHORTE
   );
+
+  const loading = useMemo(() => queryLoading || addLoading, [
+    queryLoading,
+    addLoading,
+  ]);
 
   const { push } = useHistory();
   const tableData = useMemo(
@@ -48,63 +42,55 @@ function GroupStudent(className) {
       columns: [
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
-        { key: "qty", label: "Cantidad de alumnos", align: "left"},
+        { key: "qty", label: "Cantidad de alumnos", align: "left" },
       ],
       addButtonLabel: "Crear grupo",
       actions: {
-       create: {
+        create: {
           initialValues: {
             name: "",
             type: "pp",
           },
           inputs: [{ key: "name", label: "Nombre" }],
 
-              onSubmit: async (values) => {
-               
+          onSubmit: async (values) => {
             const datos = {
               variables: {
                 ...values,
                 name: values.name,
-                studentId:  data && data.users[0].id,
+                studentId: data && data.users[0].id,
               },
             };
-            console.log(datos)
+            console.log(datos);
             await createGroup({
-                variables: {
-                  name: datos.variables.name,
-                  type: datos.variables.type,
-                  studentId: [parseInt(datos.variables.studentId)],
-                },
+              variables: {
+                name: datos.variables.name,
+                type: datos.variables.type,
+                studentId: [parseInt(datos.variables.studentId)],
+              },
             });
           },
-          },
-          delete: {
-          
+        },
+        delete: {
           onSubmit: async (values) => {
-              const datos = {
+            const datos = {
               variables: {
-                 id: values,
-                 
-             },
+                id: values,
+              },
             };
-            console.log(datos)
-              await removeGroup({
+            console.log(datos);
+            await removeGroup({
               variables: {
                 id: parseInt(datos.variables.id),
-             },
+              },
             });
           },
         },
 
-         view: {
-           onSubmit: (id) => push(`/student/groups/${id}`)
-          
+        view: {
+          onSubmit: (id) => push(`/student/groups/${id}`),
         },
       },
-
-       
-
-      
     }),
     [data, error, loading, createGroup, push, removeGroup]
   );
@@ -121,13 +107,11 @@ function GroupStudent(className) {
     }
   }, [resultDelete, refetch]);
 
-
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
       <Tabla loading={loading} data={tableData} />
     </div>
   );
 }
-
 
 export default GroupStudent;
