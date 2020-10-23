@@ -1,7 +1,6 @@
 import React from "react";
-import { Route } from "react-router-dom";
-import { Admin } from "pages/admin";
-import LoginScreen from "pages/auth/LoginScreen";
+import { Redirect, Route } from "react-router-dom";
+import PropTypes from "prop-types";
 
 /*
  ! Este un componente de rutas.
@@ -12,20 +11,32 @@ import LoginScreen from "pages/auth/LoginScreen";
 */
 
 const PrivateRoutes = ({
-   isAuthenticated,
-   component: Component,
-   redirectTo,
-   ...rest
+  isAuthenticated,
+  component: Component,
+  redirectTo,
+  ...rest
 }) => {
-   localStorage.setItem("lastPath", rest.location.pathname);
+  localStorage.setItem("lastPath", rest.path);
+  console.log(isAuthenticated);
 
-   if (isAuthenticated) return (
-      <>
-         <Route path={'/auth/signin'} component={LoginScreen} />
-         <Route path={'/admin'} component={Admin} />
-      </>
-   )
-   return <></>
+  return (
+    <Route
+      {...rest}
+      component={(props) =>
+        isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={redirectTo} />
+        )
+      }
+    />
+  );
+};
+
+PrivateRoutes.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  component: PropTypes.func.isRequired,
+  redirectTo: PropTypes.string.isRequired,
 };
 
 export default PrivateRoutes;

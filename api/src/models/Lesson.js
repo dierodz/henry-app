@@ -10,4 +10,7 @@ module.exports = (sequelize, DataTypes) =>
          allowNull: false,
          unique: true,
       },
+      readme:{
+         type: DataTypes.TEXT,
+      }
    });

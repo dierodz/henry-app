@@ -88,7 +88,7 @@ function Groups({
             if (result?.data?.createGroup?.id) {
               await addGroupToCohorte({
                 variables: {
-                  cohorteId: data.cohortes[0].id,
+                  cohorteId: cohorte.id,
                   groupId: [result.data.createGroup.id],
                 },
               });

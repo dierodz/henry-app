@@ -30,13 +30,8 @@ const {
    deleteCheckPoint,
    createCheckPoint,
 } = require("./resolvers/checkPointResolver");
-const { contents } = require("./resolvers/contentResolver");
-const {
-   modules,
-   createModule,
-   updateModule,
-   deleteModule,
-} = require("./resolvers/moduleResolver");
+const { contents, contentMutations } = require("./resolvers/contentResolver");
+const { moduleMutations, moduleQuerys } = require("./resolvers/moduleResolver");
 const {
    roles,
    deleteRole,
@@ -60,14 +55,17 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
-const { lessons } = require("./resolvers/lessonsResolver");
+const {
+   lessonsQuery,
+   lessonsMutations,
+} = require("./resolvers/lessonsResolver");
 
 const resolvers = {
    Query: {
       checkPoints,
       ...cohortesQuery,
       contents,
-      modules,
+      ...moduleQuerys,
       roles,
       scores,
       matesScore,
@@ -78,6 +76,7 @@ const resolvers = {
       getGroupPosts,
       ...groupQuerys,
       ...userQuerys,
+      ...lessonsQuery,
    },
 
    Mutation: {
@@ -90,9 +89,7 @@ const resolvers = {
       updateCheckPoint,
       deleteCheckPoint,
       // Mutations fot Modules
-      createModule,
-      updateModule,
-      deleteModule,
+      ...moduleMutations,
       // Mutations for Roles,
       createRole,
       updateRole,
@@ -116,6 +113,9 @@ const resolvers = {
       editPost,
       deletePost,
 
+      //Mutaciones de contenidos
+      ...contentMutations,
+      ...lessonsMutations
    },
 
    Cohorte: {
