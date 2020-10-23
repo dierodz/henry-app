@@ -27,7 +27,6 @@ const updateTopic = async (id, topic) => {
 const deleteTopic = async (id) => {
    const tobeDeleted = await Content.findOne({ where: { id } });
    await tobeDeleted.destroy();
-
    return { message: "topic successfully removed" };
 };
 
@@ -51,7 +50,15 @@ const getAllTopics = async () => {
 };
 
 const getOneTopic = async ({ id, topicName }) => {
-   const topic = await Content.findOne({ where: { id } });
+   const where = {};
+
+   if (id) {
+      where.id = id;
+   } else {
+      where.topicName = topicName;
+   }
+
+   const topic = await Content.findOne({ where });
 
    if (!topic) {
       throw {
