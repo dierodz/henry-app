@@ -13,6 +13,8 @@ const ContentsScreen = () => {
     variables,
   });
 
+  
+
   const data = useMemo(() => {
     if (preData) {
       return preData.modules[0].contents;

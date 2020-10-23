@@ -128,10 +128,10 @@ function Alumns({
         },
         create: {
           initialValues: {
-            userId: null,
+            userId: 0,
           },
           inputs: [{ key: "userId", label: "Id" }],
-          onSubmit: async (values) => {
+          onSubmit: async (values) => {            
             const data = {
               variables: {
                 ...values,
