@@ -240,7 +240,7 @@ const typeDefs = gql`
       deleteReview(id: Int, score: Int, commentary: String): DeleteResolve!
 
       # Mutaciones para los posts
-      createPost(tittle: String, content: String, userId: Int, cohorteId: Int): Post!
+      createPost(tittle: String, content: String, userId: Int, cohorteId: Int, groupId: Int): Post!
       editPost(id: Int, tittle: String, content: String): Post!
       deletePost(id: Int): DeleteResolve!
 
