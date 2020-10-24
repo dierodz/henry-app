@@ -77,6 +77,10 @@ const getAllUsers = async ({ where, limit, offset, order }) => {
          localInclude[1] = { model: Cohorte, where: parseWhere(where.Cohorte) };
          delete where.Cohorte;
       }
+      if (where["Group"]) {
+         localInclude[1] = { model: Cohorte, where: parseWhere(where.Group) };
+         delete where.Group;
+      }
    }
    const users = await User.findAll({
       where,
@@ -297,6 +301,13 @@ const countUsers = async ({ where }) => {
             { model: Cohorte, where: parseWhere(where.Cohorte) },
          ];
          delete where.Cohorte;
+      }
+      if (where["Group"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Cohorte, where: parseWhere(where.Group) },
+         ];
+         delete where.Group;
       }
    }
    const result = await User.count({
