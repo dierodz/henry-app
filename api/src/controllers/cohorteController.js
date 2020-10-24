@@ -1,8 +1,12 @@
-const { Cohorte, User, Role, Group, Module } = require("../db");
+const { Cohorte, User, Role, Group, Module, Content } = require("../db");
 const { _getMultipleUsers: getMultipleUsers } = require("./userController");
 const { _getMultipleGroups: getMultipleGroups } = require("./groupController");
 
-const include = [{ model: User, inclue: [Role] }, Group, Module];
+const include = [
+   { model: User, inclue: [Role] },
+   Group,
+   { model: Module, include: [Content] },
+];
 
 const createCohorte = async (cohorte) => {
    try {
