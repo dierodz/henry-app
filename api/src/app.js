@@ -8,21 +8,20 @@ const passport = require("./passport");
 const { ApolloServer } = require("apollo-server-express");
 const { resolvers, typeDefs } = require("./apollo");
 
-const fetch = require("node-fetch");
-const { get } = require("./routes/index.js");
+const http = require("http");
 
 require("./db.js");
 
-const server = express();
+const app = express();
 
-server.name = "API";
+app.name = "API";
 
-server.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
-server.use(bodyParser.json({ limit: "50mb" }));
-server.use(cookieParser());
-server.use(morgan("dev"));
-server.use(cors());
-server.use((req, res, next) => {
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(cookieParser());
+app.use(morgan("dev"));
+app.use(cors());
+app.use((req, res, next) => {
    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
    res.header("Access-Control-Allow-Credentials", "true");
    res.header(
@@ -39,9 +38,9 @@ const apolloServer = new ApolloServer({
    playground: true,
 });
 
-apolloServer.applyMiddleware({ app: server });
+apolloServer.applyMiddleware({ app });
 
-server.all("*", function (req, res, next) {
+app.all("*", function (req, res, next) {
    passport.authenticate("bearer", function (err, user) {
       if (err) return next(err);
       if (user) {
@@ -51,9 +50,9 @@ server.all("*", function (req, res, next) {
    })(req, res, next);
 });
 
-server.use(passport.initialize());
+app.use(passport.initialize());
 
-server.use("/", routes);
+app.use("/", routes);
 
 // //Vimeo Api
 // let Vimeo = require('vimeo').Vimeo;
@@ -65,5 +64,8 @@ server.use("/", routes);
 //    }
 //    console.log(json)
 // })
+
+const server = http.createServer(app);
+apolloServer.installSubscriptionHandlers(server);
 
 module.exports = { server, apolloServer };

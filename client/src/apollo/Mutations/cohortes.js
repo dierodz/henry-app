@@ -41,8 +41,8 @@ export const ADD_USER_TO_COHORTE = gql`
   mutation addUsersToCohorte($cohorteId: Int!, $userId: [Int]!) {
     addUsersToCohorte(cohorteId: $cohorteId, userId: $userId) {
       id
-      givenName
-      familyName
+
+
     }
   }
 `;

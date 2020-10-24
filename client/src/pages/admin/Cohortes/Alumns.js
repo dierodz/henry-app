@@ -2,7 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { COUNT_USERS } from "apollo/querys/users";
-import { ADD_USER_TO_COHORTE } from "apollo/Mutations/cohortes";
+import {
+  ADD_USER_TO_COHORTE,
+  DELETE_USER_TO_COHORTE,
+} from "apollo/Mutations/cohortes";
 import { Button, ButtonGroup, Snackbar } from "@material-ui/core";
 import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
 import { useCopyToClipboard } from "react-use";
@@ -15,19 +18,19 @@ function Alumns({
   cohorte,
   data: componentData,
   loading: componentLoading,
+  onRefetch,
 }) {
-  // const [
-  //   execute,
-  //   { loading: queryLoading, error, data: preData, refetch: preRefetch },
-  // ] = useLazyQuery(USER_FULL);
-
-  const [inviteMutation /* , resultInvite */] = useMutation(
+  const [inviteMutation, { loading: addLoading }] = useMutation(
     ADD_USER_TO_COHORTE
   );
-
-  const [executeCount, { loading, error, data: count }] = useLazyQuery(
-    COUNT_USERS
+  const [deleteMutation, { loading: deleteLoading }] = useMutation(
+    DELETE_USER_TO_COHORTE
   );
+
+  const [
+    executeCount,
+    { loading: queryLoading, error, data: count },
+  ] = useLazyQuery(COUNT_USERS);
 
   const [{ value: copyValue }, copyToClipboard] = useCopyToClipboard();
 
@@ -62,6 +65,12 @@ function Alumns({
     }),
     [rowsPerPage, page, cohorte]
   );
+
+  const loading = useMemo(() => addLoading || queryLoading || deleteLoading, [
+    addLoading,
+    queryLoading,
+    deleteLoading,
+  ]);
 
   useEffect(() => {
     if (cohorte) {
@@ -127,6 +136,26 @@ function Alumns({
         view: {
           onSubmit: (id) => push(`/profile/${id}`),
         },
+        delete: {
+          initialValues: {
+            userId: "",
+          },
+          onSubmit: async (values) => {
+            const datos = {
+              variables: {
+                cohorteId: cohorte.id,
+                userId: values,
+              },
+            };
+            await deleteMutation({
+              variables: {
+                cohorteId: datos.variables.cohorteId,
+                userId: datos.variables.userId,
+              },
+            });
+            onRefetch();
+          },
+        },
         create: {
           initialValues: {
             userId: 0,
@@ -136,18 +165,28 @@ function Alumns({
             const data = {
               variables: {
                 ...values,
-                userId: Number(values.userId),
-                cohorteId: cohorte.id,
+                userId: [parseInt(values.userId)],
+                cohorteId: parseInt(cohorte.id),
               },
             };
             await inviteMutation(data);
+            onRefetch();
           },
           submitButtonLabel: "Agregar",
           title: "Agregar estudiante",
         },
       },
     }),
-    [loading, error, data, copyToClipboard, push, cohorte.id, inviteMutation]
+    [
+      loading,
+      error,
+      data,
+      copyToClipboard,
+      push,
+      cohorte.id,
+      inviteMutation,
+      deleteMutation,
+    ]
   );
 
   console.log(result);

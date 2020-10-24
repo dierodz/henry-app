@@ -12,8 +12,8 @@ const {
 } = require("../../controllers/cohorteController");
 const { parseWhere } = require("../../db");
 
-const countCohortes = async (_, { where }) => {
-   return await dbCount({ where });
+const countCohortes = async (_, { where, limit, offset, order }) => {
+   return await dbCount({ where, limit, offset, order });
 };
 
 const cohortes = async (_, { id, where, limit, offset, order }) => {

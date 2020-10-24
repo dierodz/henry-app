@@ -1,7 +1,7 @@
+const { PubSub, withFilter } = require("apollo-server-express");
 const {
    createPost: create,
    getPost: returnPost,
-   getCohortePosts: cohortePosts,
    editPost: updatePost,
    deletePost: removePost,
    getAllPosts: returnAllPosts,
@@ -9,21 +9,38 @@ const {
    getGroupPosts: returnGroupPosts,
 } = require("../../controllers/postController");
 
+const pubsub = new PubSub();
+const POST = "POST";
+
 // Crea un post en la base de datos
 const createPost = async (
    _,
    { tittle, content, userId, cohorteId, groupId }
 ) => {
    const post = await create({ tittle, content, userId, cohorteId, groupId });
+   pubsub.publish(POST, { subscribePost: post });
    return post;
 };
 
 // Optiene un post por id o optiene todos
-const getPost = async (_, { id }) => {
+const getPost = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await returnPost(id);
       return [result];
-   } else return await returnAllPosts();
+   } else return await returnAllPosts(where, limit, offset, order);
+};
+
+const subscribePost = {
+   subscribe: withFilter(
+      () => pubsub.asyncIterator(POST),
+      (payload, variables) => {
+         if (variables.cohorteId)
+            return payload.subscribePost.cohorteId === variables.cohorteId;
+         else if (variables.groupId)
+            return payload.subscribePost.groupId === variables.groupId;
+         return true;
+      }
+   ),
 };
 
 // Optiene los post según cohorte
@@ -43,7 +60,7 @@ const deletePost = async (_, { id }) => {
 };
 
 // Obtiene los posts por usuario
-const getUserPosts = async (_, { userId }) => {   
+const getUserPosts = async (_, { userId }) => {
    const posts = await returnUserPosts(userId);
    return posts;
 };
@@ -55,6 +72,7 @@ const getGroupPosts = async (_, { groupId }) => {
 };
 
 module.exports = {
+   subscribePost,
    createPost,
    getPost,
    editPost,

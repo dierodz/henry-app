@@ -33,11 +33,46 @@ function Groups({ className, cohorte, onRefetch }) {
     ADD_GROUP_TO_COHORTE
   );
 
-  const loading = useMemo(() => fetchLoading || createLoading || addLoading, [
-    fetchLoading,
-    createLoading,
-    addLoading,
-  ]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  function onChangePage(_, page) {
+    setPage(page);
+  }
+  function onChangeRowsPerPage(e) {
+    setRowsPerPage(e.target.value);
+  }
+
+  const variables = useMemo(
+    () => ({
+      where: cohorte ? { cohorteId: cohorte.id } : undefined,
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    }),
+    [rowsPerPage, page, cohorte]
+  );
+
+  useEffect(() => {
+    if (cohorte) {
+      execute({
+        variables,
+      });
+      executeCount({ variables });
+    }
+  }, [cohorte, execute, executeCount, variables]);
+
+  const loading = useMemo(
+    () => queryLoading || componentLoading || createLoading || addLoading,
+    [queryLoading, componentLoading, createLoading, addLoading]
+  );
+
+  const data = useMemo(
+    () =>
+      preData?.groups.map((grupo) => {
+        const grupototal = { ...grupo, qty: grupo.students.length };
+        return grupototal;
+      }) || componentData?.cohortes[0].groups,
+    [preData, componentData]
+  );
 
   const { push } = useHistory();
   const tableData = useMemo(
@@ -47,11 +82,12 @@ function Groups({ className, cohorte, onRefetch }) {
       columns: [
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
+        { key: "qty", label: "Cant Alumnos", align: "left" },
       ],
       addButtonLabel: "Crear grupo",
       actions: {
         view: {
-          onSubmit: (id) => push(`/group/${id}/posts`),
+          onSubmit: (id) => push(`/admin/group/${id}`),
         },
         create: {
           initialValues: {

@@ -50,7 +50,7 @@ const getAllTopics = async () => {
    return copytopics;
 };
 
-const getOneTopic = async ({ id, topicName }) => {
+const getOneTopic = async ({ id }) => {
    const topic = await Content.findOne({ where: { id } });
 
    if (!topic) {

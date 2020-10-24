@@ -6,11 +6,11 @@ const {
    getOneTopic,
 } = require("../../controllers/contentController");
 
-const contents = async (_, { id, topicName }) => {
+const contents = async (_, { id, topicName, where, limit, offset, order }) => {
    if (id || topicName) {
       const result = await getOneTopic({ id });
       return [result];
-   } else return await getAllTopics();
+   } else return await getAllTopics(where, limit, offset, order);
 };
 
 const contentMutations = {

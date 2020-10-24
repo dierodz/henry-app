@@ -1,13 +1,10 @@
-const { MatesScoreType } = require("../db"); 
+const { MatesScoreType } = require("../db");
 
 const getOneMatesScore = async (id) => {
-   
    const score = await MatesScoreType.findOne({ where: { id } });
-   
 
    if (!score) {
       throw {
-         name: "ApiFindError",
          name: "score Error",
          error: {
             message: `the score with the name ${id} does not exist in the database`,
@@ -21,7 +18,6 @@ const getOneMatesScore = async (id) => {
 };
 
 const getAllMatesScore = async () => {
- 
    const score = await MatesScoreType.findAll();
 
    if (score.length < 1) {
@@ -44,7 +40,7 @@ const createMatesScore = async (name) => {
 };
 
 const editMatesScore = async (id, name) => {
-   const score = await MatesScoreType.findOne({ where: { id }});
+   const score = await MatesScoreType.findOne({ where: { id } });
 
    if (!score) {
       throw {
@@ -58,7 +54,7 @@ const editMatesScore = async (id, name) => {
       };
    }
 
-   return await score.update( name );
+   return await score.update(name);
 };
 
 const deleteMatesScore = async ({ id, name }) => {
