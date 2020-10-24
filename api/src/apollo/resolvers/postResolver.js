@@ -1,7 +1,6 @@
 const {
    createPost: create,
    getPost: returnPost,
-   getCohortePosts: cohortePosts,
    editPost: updatePost,
    deletePost: removePost,
    getAllPosts: returnAllPosts,
@@ -19,11 +18,11 @@ const createPost = async (
 };
 
 // Optiene un post por id o optiene todos
-const getPost = async (_, { id }) => {
+const getPost = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await returnPost(id);
       return [result];
-   } else return await returnAllPosts();
+   } else return await returnAllPosts(where, limit, offset, order);
 };
 
 // Optiene los post según cohorte
@@ -43,7 +42,7 @@ const deletePost = async (_, { id }) => {
 };
 
 // Obtiene los posts por usuario
-const getUserPosts = async (_, { userId }) => {   
+const getUserPosts = async (_, { userId }) => {
    const posts = await returnUserPosts(userId);
    return posts;
 };

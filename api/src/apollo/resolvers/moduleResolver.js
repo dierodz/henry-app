@@ -7,11 +7,11 @@ const {
 } = require("../../controllers/modulesController");
 
 const moduleQuerys = {
-   modules: async (_, { id, name }) => {
+   modules: async (_, { id, name, where, limit, offset, order }) => {
       if (id || name) {
          const result = await getModulesById({ id, name });
          return [result];
-      } else return await getModules();
+      } else return await getModules(where, limit, offset, order);
    },
 };
 
