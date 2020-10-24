@@ -78,7 +78,7 @@ const getAllUsers = async ({ where, limit, offset, order }) => {
          delete where.Cohorte;
       }
       if (where["Group"]) {
-         localInclude[1] = { model: Cohorte, where: parseWhere(where.Group) };
+         localInclude[1] = { model: Group, where: parseWhere(where.Group) };
          delete where.Group;
       }
    }
@@ -305,7 +305,7 @@ const countUsers = async ({ where }) => {
       if (where["Group"]) {
          localInclude = [
             ...localInclude,
-            { model: Cohorte, where: parseWhere(where.Group) },
+            { model: Group, where: parseWhere(where.Group) },
          ];
          delete where.Group;
       }
