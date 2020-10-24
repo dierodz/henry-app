@@ -1,33 +1,26 @@
-const { Post, User, Cohorte } = require("../db");
+const { Post } = require("../db");
 const { getUserById } = require("./userController");
-const{ getEspecificCohorte } = require("./cohorteController");
-const { geOneGroup } = require('./groupController');
-
-
+const { getEspecificCohorte } = require("./cohorteController");
+const { getOneGroup } = require("./groupController");
 
 // Este controller crea un post y los setea a usuario y cohorte
 const createPost = async (tittle, content, userId, cohorteId, groupId) => {
    let post = await Post.create(tittle, content);
    if (userId) {
-      const user = await getUserById(userId)
+      const user = await getUserById(userId);
       await user.setPost(post);
-   } 
+   }
    if (cohorteId) {
-      const cohorte = await getEspecificCohorte(cohorteId)
-      await cohorte.setPost(post)
+      const cohorte = await getEspecificCohorte(cohorteId);
+      await cohorte.setPost(post);
    }
-   if (groupId){
-      const group = await getOneGroup(groupId)
-      await group.setPost(post)
+   if (groupId) {
+      const group = await getOneGroup(groupId);
+      await group.setPost(post);
    }
-
 
    return post;
 };
-
-
-
-
 
 // Este controller busca y retorna un post en especifico
 const getPost = async (id) => {
@@ -46,10 +39,9 @@ const getPost = async (id) => {
    return post;
 };
 
-
 // Este controller busca y retorna los posts de un cohorte en especifico
 const getCohortePosts = async (cohorteId) => {
-   const posts = await Post.findAll({where: {cohorteId}});
+   const posts = await Post.findAll({ where: { cohorteId } });
    if (!posts) {
       throw {
          name: "ApiFindError",
@@ -64,13 +56,11 @@ const getCohortePosts = async (cohorteId) => {
    return posts;
 };
 
-
 // Este controller edita un post
 const editPost = async (id, { tittle, content }) => {
    const post = await getPost({ id });
-   return await group.update({ tittle, content });
+   return await post.update({ tittle, content });
 };
-
 
 // Este controller elimina un post
 const deletePost = async (id) => {
@@ -87,7 +77,7 @@ const getAllPosts = async () => {
 
 // Este controller retorna todos los posts que ha hecho una persona
 const getUserPosts = async (userId) => {
-   const posts = await Post.findAll({where: {userId}})
+   const posts = await Post.findAll({ where: { userId } });
    if (!posts) {
       throw {
          name: "ApiFindError",
@@ -100,11 +90,11 @@ const getUserPosts = async (userId) => {
       };
    }
 
-   return posts
-}
+   return posts;
+};
 
 const getGroupPosts = async (groupId) => {
-   const posts = await Post.findAll({where: {groupId}});
+   const posts = await Post.findAll({ where: { groupId } });
    if (!posts) {
       throw {
          name: "ApiFindError",
@@ -128,4 +118,4 @@ module.exports = {
    getAllPosts,
    getUserPosts,
    getGroupPosts,
-  }
+};
