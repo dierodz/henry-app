@@ -117,6 +117,10 @@ const typeDefs = gql`
       groupId: Int
    }
 
+   type Subscription {
+      subscribePost(cohorteId: Int, groupId: Int): Post
+   }
+
    type Query {
       checkPoints(
          id: Int
