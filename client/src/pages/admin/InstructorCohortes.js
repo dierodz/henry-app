@@ -4,16 +4,19 @@ import { Tabla } from "components/Tabla";
 import { USER_FULL } from "apollo/querys/users";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import Groups from "./Cohortes/groups";
 
 function InstructorCohortes(datos) {
 
   const { id } = useParams();
   const variables = { id: parseInt(id) };
   const { push } = useHistory();
+  const variablesdos = { id: parseInt(datos.datos)}
 
 
-  const {data: preData, loading: queryLoading, error, refetch} = useQuery(USER_FULL, {variables})
+  const {data: preData, loading, error} = useQuery(USER_FULL, {variables} || {variablesdos})
 
+preData && console.log(preData)
 
 const usercohorte = useMemo (() => {
       if (datos.datos && Array.isArray(preData?.users)) {
@@ -36,24 +39,12 @@ const usercohorte = useMemo (() => {
     } return preData;
   }, [preData, usercohorte]);
 
-  
-   useEffect(() => {
-    if (!preData) {
-      refetch();
-    }
-  }, [refetch]);
-
-  const loading = useMemo(
-    () => queryLoading,
-    [queryLoading]
-  );
-
 
   const tableData = useMemo(
     () => ({
       loading,
       error,
-      data: data || usercohorte,
+      data: data,
       columns: [
         { key: "name", label: "Nombre del cohorte", align: "left" },
         { key: "id", label: "ID", align: "left" },
