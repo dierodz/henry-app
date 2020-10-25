@@ -7,10 +7,9 @@ import Loading from "../../components/Loading/Loading"
 import {GET_USERS_GROUP} from "../../apollo/querys/groups"
 
 export default function Participantes({route}) {
-    
+
     let id = route.params.id
     let type= route.params.screen
-    
     const { loading, error, data, refetch,  } = useQuery(GET_USERS_GROUP, {
         variables: {
             "where": {
@@ -20,9 +19,8 @@ export default function Participantes({route}) {
             }
           },
     })
-
+    
     let [modalChange, setModalChange] = React.useState(false)
-
     return loading? 
     <Loading/>
     :
@@ -49,7 +47,7 @@ export default function Participantes({route}) {
                 
             ))
             : 
-                <Card onPress={()=>alert("SIN ELEMENTOS")} style={{ width: "100%",marginBottom:15 }}>
+                <Card style={{ width: "100%",marginBottom:15 }}>
                 <Card.Title
                   title={"SIN ELEMENTOS"}
                 />

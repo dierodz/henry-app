@@ -6,6 +6,11 @@ export const GET_USERS_GROUP= gql`
           givenName
           familyName
           photoUrl
+          groups {
+            type
+            name
+            id
+          }
         }
       }
     `;

@@ -23,6 +23,7 @@ export default function DrawerLayout(props) {
   const dispatch = useDispatch();
   const paperTheme = useTheme();
   const cohortes = props.cohortes
+  const pairProgramming = props.pairProgramming
   
   return <DrawerContentScrollView {...props}>
       <View style={styles.drawerContent}>
@@ -60,9 +61,9 @@ export default function DrawerLayout(props) {
           titleStyle={{marginLeft:24,fontSize:14 , fontWeight: '500'}}
               title="Grupos"
               left={props =><MaterialCommunityIcons name="account-group-outline" color={props.color} size={24}/>}>
-                {[{id:1, title:"Grupo1"},{id:2, title:"Grupo2"}].map((e)=>(
-                 <List.Item key={e.id} title={e.title}
-                 onPress={()=>props.navigation.navigate(e.title)}
+                {pairProgramming.map((e)=>(
+                 <List.Item key={e.id} title={e.name}
+                 onPress={()=>props.navigation.navigate(e.name)}
                  />
                 ))}
           </List.Accordion>            
