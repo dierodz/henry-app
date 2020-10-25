@@ -19,6 +19,7 @@ const AppRouter = ({ handleTheme }) => {
   useEffect(() => {
     setTimeout(async () => {
       const token = await AsyncStorage.getItem("token");
+      console.log(token)
       if (token) {
         dispatch(signInWithToken(token));
         initialize(token);

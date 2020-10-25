@@ -8,20 +8,20 @@ export default function General(props) {
   const { user } = useSelector((state) => state.auth);
   const [text, setText] = React.useState('');
 
-  const data=props.route.params.screen=="cohorte"? [{id:user.id,
+  const data=props.route.params.screen=="cohorte"? [{id:1,
     name:user.givenName + " " + user.familyName,
   nickName: user.nickName,
   photoUrl: user.photoUrl,
   title: "Fiesta de fin de año",
   content: "Gente que les parece organizar una fiesta para fin de año?"
 }
-] : [{id:user.id,
+] : [{id:2,
   name:user.givenName + " " + user.familyName,
 nickName: user.nickName,
 photoUrl: user.photoUrl,
 title: "Libreria de React-native",
 content: "Tengo dudas con el tema de hoy"
-},{id:user.id,
+},{id:3,
   name:user.givenName + " " + user.familyName,
 nickName: user.nickName,
 photoUrl: user.photoUrl,
@@ -42,7 +42,9 @@ content: "Quien me explica?"
       style={{width:"100%"}}
               data={data} 
               renderItem={PostCard}
-              keyExtractor={({item,index}) => index}
+              keyExtractor={(props) => {
+                  return props.id.toString()
+                 }}
             />  
     </View>
     <View style={{ width:"100%", bottom:0,flexDirection:"row" } } >

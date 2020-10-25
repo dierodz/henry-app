@@ -8,13 +8,14 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 const CohorteTabTop = createMaterialTopTabNavigator()
 
-export default function CohorteRoutes() {
+export default function CohorteRoutes({route}) {
+
     return (
       <CohorteTabTop.Navigator>
-        <CohorteTabTop.Screen name="Cohorte"  component={Cohorte} />
-        <CohorteTabTop.Screen name="Clases" component={Clases} />
-        <CohorteTabTop.Screen name="General" initialParams={{screen:"cohorte"}} component={General} />
-        <CohorteTabTop.Screen name="Alumnos" initialParams={{screen:"cohorte"}} component={Participantes} />
+        <CohorteTabTop.Screen initialParams={{id: route.params.id}} name="Cohorte"  component={Cohorte} />
+        <CohorteTabTop.Screen initialParams={{id: route.params.id}} name="Clases" component={Clases} />
+        <CohorteTabTop.Screen initialParams={{id: route.params.id,screen:"Cohorte"}} name="General" component={General} />
+        <CohorteTabTop.Screen initialParams={{id: route.params.id,screen:"Cohorte"}} name="Alumnos" component={Participantes} />
       </CohorteTabTop.Navigator>
     );
   }

@@ -2,7 +2,7 @@ import Axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import { authSetError, login, logout } from "../actions/auth";
 
-import { REACT_APP_API_REMOTE as REACT_APP_API } from "@env";
+import { REACT_APP_API } from "@env";
 import { finishLoading, startLoading } from "../actions/ui";
 
 export const signOut = () => {

@@ -2,9 +2,9 @@ import * as React from "react";
 import { Text, Card, Title, Avatar, } from "react-native-paper";
 import Hyperlink from 'react-native-hyperlink'
 
-export default function PostCard ({index,item}){
+export default function PostCard ({item}){
     return(
-        <Card key={index} style={{ width: "100%", marginBottom:10 }}>
+        <Card key={item.id} style={{ width: "100%", marginBottom:10 }}>
         <Card.Title
           title={item.name}
           subtitle={item.nickName}

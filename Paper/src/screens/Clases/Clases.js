@@ -1,17 +1,38 @@
 import * as React from "react";
 import { View, StyleSheet,ScrollView } from "react-native";
-import { Text,IconButton,  Card, Title, Avatar, TextInput} from "react-native-paper";
-
+import { Card, List} from "react-native-paper";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import Loading from "../../components/Loading/Loading"
 
 const styles = StyleSheet.create({
   title: {
     textTransform: "capitalize",
   }})
 
+export default function Clases({route}) {
+  const getModulos = gql`
+  query Modulos($id: Int) {
+      cohortes(id: $id){
+        modules{
+          id
+          name
+          description
+          contents{
+            id
+            topicName
+            durationTime
+            readme
+          }
+        }
+      }
+  }
+  `;
+  const { loading, error, data, refetch } = useQuery(getModulos, {
+    variables: { id: route.params.id },
+}) 
 
-export default function Clases({ navigation }) {
-
-  return (
+  return loading? <Loading/>:
   <View
       style={{
         flex: 1,
@@ -25,46 +46,31 @@ export default function Clases({ navigation }) {
         alignItems: "center",
       }}
     >
-          <Card onPress={()=>alert("react")} style={{ width: "100%",marginBottom:15 }}>
-          <Card.Title
-            style={styles.title}
-            title={"React-Estado-LifeCycle"}
-            subtitle={"react"}
-          />
-          </Card>
-          <Card onPress={()=>alert("react")} style={{ width: "100%",marginBottom:15 }}>
-          <Card.Title
-            style={styles.title}
-            title={"React-Routing"}
-            subtitle={"react"}
-          />
-          </Card>
-
+      {data.cohortes[0].modules.length !=0 ? data.cohortes[0].modules.map((modulo)=>(
+        <Card key={modulo.id} style={{width:"100%", marginBottom:15}}>
+          <List.Section key={modulo.id} style={{width:"100%"}} >
+              <List.Accordion
+                style={{width:"100%"}}
+                title={modulo.name}
+                left={props => <List.Icon {...props} icon="folder" />}>
+                  {modulo.contents.length!=0?
+                   modulo.contents.map((clase)=>(
+                    <List.Item key={clase.id} onPress={()=> alert(clase.topicName)} title={clase.topicName} />
+                  )):
+                  <List.Item onPress={()=> alert("Sin Clases")} title="Sin Clases" />
+                  }
+               </List.Accordion>
+            </List.Section>
+        </Card>
+         )):
+         <Card onPress={()=>alert("SIN ELEMENTOS")} style={{ width: "100%",marginBottom:15 }}>
+            <Card.Title
+              style={styles.title}
+              title={"SIN ELEMENTOS"}
+            />
+            </Card>
+         }
       </View>
     </ScrollView >
   </View>
-  );
 }
-
-
-
-
-/* { [{id:"01", name:"DOM"},
-{id:"02", name:"CSS"},
-{id:"03", name:"ES6"},
-{id:"04", name:"Ajax"},
-{id:"05", name:"Bundlers"},
-{id:"06", name:"React-Intro"},
-{id:"07", name:"React-Estilos"},
-{id:"08", name:"React-Estado-LifeCycle"},
-{id:"09", name:"React-Routing"},
-{id:"10", name:"React-Forms"},
-{id:"11", name:"Redux"},
-{id:"12", name:"React-Redux"},
-{id:"13", name:"React-Hooks"}].map((e)=>(<Card key={e.id} onPress={()=>alert(e.name)} style={{ width: "100%",marginBottom:15 }}>
- <Card.Title
-   style={styles.title}
-   title={e.name}
-   subtitle={e.id}
- />
-</Card> */

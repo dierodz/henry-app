@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Card, Avatar, Modal, Button, Portal } from "react-native-paper";
 
-export default function Participantes({ modalChange, setModalChange }) {
-
+export default function ModalAlumns({ modalChange, setModalChange }) {
     return (<Portal >
         <Modal
             contentContainerStyle={{ alignItems: "center" }}
@@ -10,9 +9,13 @@ export default function Participantes({ modalChange, setModalChange }) {
             onDismiss={() => setModalChange(false)}
         >
             <Card style={{ width: "80%" }}>
-                <Avatar.Image style={{ alignSelf: "center", margin: 10 }} source={{ uri: modalChange.url }} />
+                {modalChange.url?
+                    <Avatar.Image style={{ alignSelf: "center", margin: 10 }} source={{ uri: modalChange.url }} />
+                    :
+                    <Avatar.Text style={{ alignSelf: "center", margin: 10 }} label={modalChange?modalChange.givenName[0]+modalChange.familyName[0]:"H"} />
+                    }
                 <Card.Title
-                    title={modalChange.name}
+                    title={`${modalChange.givenName} ${modalChange.familyName}`}
                     subtitle={modalChange.nickName}
                 />
                 <Card.Content>
