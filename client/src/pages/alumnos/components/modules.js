@@ -5,15 +5,13 @@ import React, { useMemo } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 const ModuleStudent = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const { id } = useParams();
   const variables = { id: parseInt(id) };
 
   const { loading, error, data: preData } = useQuery(MODULES, {
     variables,
   });
-
-  
 
   const data = useMemo(() => {
     if (preData) {
@@ -30,7 +28,7 @@ const ModuleStudent = () => {
         { key: "topicName", label: "Nombre del contenido", align: "left" },
       ],
     }),
-    [data, error, history, loading]
+    [data, error, loading]
   );
 
   return (

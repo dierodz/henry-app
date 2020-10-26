@@ -5,24 +5,33 @@ import { useMutation, useQuery } from "@apollo/client";
 import { CONTENT_ID } from "apollo/querys/contents";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { CREATE_CONTENT } from "apollo/Mutations/content";
+import {
+  CREATE_CONTENT,
+  UPDATE_CONTENT,
+  DELETE_CONTENT,
+} from "apollo/Mutations/content";
 import { MODULES } from "apollo/querys/modules";
 import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { Autocomplete } from "@material-ui/lab";
+import { CREATE_LESSON } from "apollo/Mutations/lesson";
 
-const ContentDetail = () => {
+const ContentDetail = ({ moduleId }) => {
   const [createMutation, resultCreate] = useMutation(CREATE_CONTENT);
+  const [updateMutation, resultUpdate] = useMutation(UPDATE_CONTENT);
+  const [createLesson, resultCreateLesson] = useMutation(CREATE_LESSON);
+  const [deleteContent, resultDeleteContent] = useMutation(DELETE_CONTENT);
   const [readme, setReadme] = React.useState("### Escribe el Readme");
   const [values, setValues] = useState({
     topicName: "",
     durationTime: "",
     moduleId: 0,
+    link: "",
   });
 
   const modules = useQuery(MODULES);
   const history = useHistory();
-  const { topicName, durationTime } = values;
+  const { topicName, durationTime, link } = values;
 
   const handleInputChange = ({ target }) => {
     setValues({
@@ -42,14 +51,22 @@ const ContentDetail = () => {
   useEffect(() => {
     if (!isNaN(id)) {
       if (data && data) {
+        console.log(data);
         setReadme(data.contents[0].readme);
+        setValues((state) => {
+          return {
+            ...state,
+            link: data.contents[0]?.lessons[0]?.link,
+            topicName: data.contents[0]?.topicName,
+            durationTime: data.contents[0]?.durationTime,
+            moduleId: data.contents[0]?.moduleId,
+          };
+        });
       }
     }
   }, [data, id]);
 
-  const handleCreate = (e) => {
-    e.preventDefault();
-
+  const handleCreate = () => {
     createMutation({
       variables: {
         ...values,
@@ -58,7 +75,40 @@ const ContentDetail = () => {
         readme,
       },
     });
+
     return history.push("/admin/modules/");
+  };
+
+  const handleUpdate = () => {
+    updateMutation({
+      variables: {
+        id: parseInt(id),
+        ...values,
+        durationTime: parseInt(values.durationTime),
+        moduleId: parseInt(values.moduleId),
+        readme,
+      },
+    });
+
+    if (link) {
+      console.log(id, link);
+      createLesson({
+        variables: {
+          link,
+          contentId: parseInt(id),
+        },
+      });
+    }
+  };
+
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+
+    if (!isNaN(id)) {
+      handleUpdate();
+    } else {
+      handleCreate();
+    }
   };
 
   const handleModuleInputChange = function (e) {
@@ -74,8 +124,31 @@ const ContentDetail = () => {
     }
   }, [resultCreate, refetch]);
 
+  useEffect(() => {
+    if (!resultUpdate.loading && resultUpdate.called) {
+      refetch();
+    }
+  }, [refetch, resultUpdate]);
+
+  useEffect(() => {
+    if (!resultCreateLesson.loading && resultCreateLesson.called) {
+      refetch();
+    }
+  }, [refetch, resultCreateLesson]);
+
+  const handleDelete = () => {
+    console.log(id);
+    deleteContent({
+      variables: {
+        id: parseInt(id),
+      },
+    });
+
+    return history.push("/admin/modules/");
+  };
+
   return (
-    <div className="container" onSubmit={handleCreate}>
+    <div className="container" onSubmit={handleOnSubmit}>
       <MEDitor height={800} value={readme} onChange={setReadme} />
       <div style={{ padding: "50px 0 0 0" }} />
       <form>
@@ -97,6 +170,16 @@ const ContentDetail = () => {
           type="text"
           name="durationTime"
           value={durationTime}
+          onChange={handleInputChange}
+        />
+        <TextField
+          label="Link de la clase"
+          variant="outlined"
+          id="Clase"
+          placeholder="Link de la clase"
+          type="text"
+          name="link"
+          value={link}
           onChange={handleInputChange}
         />
 
@@ -121,9 +204,27 @@ const ContentDetail = () => {
             />
           )}
         />
-        <Button type="submit" variant="contained" color="primary">
-          Crear
-        </Button>
+
+        {isNaN(id) ? (
+          <Button type="submit" variant="contained" color="primary">
+            Crear
+          </Button>
+        ) : (
+          <>
+            <Button type="submit" variant="contained" color="primary">
+              Actualizar
+            </Button>
+
+            <Button
+              type="button"
+              onClick={handleDelete}
+              variant="contained"
+              color="warning"
+            >
+              ELIMINAR
+            </Button>
+          </>
+        )}
       </form>
 
       {/* VISTA PREVIA DEL MARKDONW */}

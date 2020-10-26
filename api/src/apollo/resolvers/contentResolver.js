@@ -24,7 +24,7 @@ const contentMutations = {
    },
 
    deleteContent: async (_, { id }) => {
-      return await deleteTopic({ id });
+      return await deleteTopic(id);
    },
 };
 

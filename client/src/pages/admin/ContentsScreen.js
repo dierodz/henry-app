@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { MODULES_BY_ID } from "apollo/querys/modules";
 import { Tabla } from "components/Tabla";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 const ContentsScreen = () => {
@@ -9,17 +9,19 @@ const ContentsScreen = () => {
   const { id } = useParams();
   const variables = { id: parseInt(id) };
 
-  const { loading, error, data: preData } = useQuery(MODULES_BY_ID, {
+  const { loading, error, data: preData, refetch } = useQuery(MODULES_BY_ID, {
     variables,
   });
-
-  
 
   const data = useMemo(() => {
     if (preData) {
       return preData.modules[0].contents;
     }
   }, [preData]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const tableData = useMemo(
     () => ({
