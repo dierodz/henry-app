@@ -10,7 +10,7 @@ const subscribePost = gql`
   subscription {
     subscribePost {
       id
-      title
+      tittle
       content
     }
   }
