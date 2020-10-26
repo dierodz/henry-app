@@ -8,6 +8,9 @@ function PM({ className }) {
   const { loading, error, data, refetch } = useQuery(getUserRol, {
     variables: { role: "pm" },
   });
+
+data && console.log(data)
+
   const [addRoleMutation, resultAddRole] = useMutation(ADD_ROLE);
 
   useEffect(() => {
@@ -16,16 +19,30 @@ function PM({ className }) {
     }
   }, [resultAddRole, refetch]);
 
+     function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const tableData = useMemo(
     () => ({
       loading,
       error,
-      data: data ? data.getUserRol : undefined,
+      data: data ? data.getUserRol.map((user)=> {
+         return {__typename: user.__typename,
+         familyName: capitalizeFirstLetter(user.familyName),
+         givenName: capitalizeFirstLetter(user.givenName),
+         id: user.id,
+         roles: user.roles,
+         cohortes: user.cohortes.length,
+         groups: user.groups.length,
+         }
+         }) : undefined,
+      /*data: data ? data.getUserRol : undefined,*/
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
-        { key: "cohorte", label: "Cohorte", align: "left" },
-        { key: "group", label: "Grupo", align: "left" },
+        { key: "cohortes", label: "Cohortes", align: "left" },
+        { key: "groups", label: "Grupos", align: "left" },
       ],
       addButtonLabel: "Agregar PM",
       actions: {
