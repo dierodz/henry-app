@@ -1,4 +1,5 @@
 import React from "react";
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 import {NavigationContainer} from "@react-navigation/native";
 import AppRouter from "./src/routes/AppRouter";
@@ -15,8 +16,11 @@ import {client} from './src/apollo/client'
 
 
 export default function App() {
+
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme;
+  ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL)
+
   const handleTheme = () => {
     setIsDarkTheme((isDark) => !isDark);
   };
