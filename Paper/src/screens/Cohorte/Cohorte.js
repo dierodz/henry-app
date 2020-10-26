@@ -1,47 +1,67 @@
 import * as React from "react";
-import { View, StyleSheet } from "react-native";
-import { Text, Card, Title, Avatar } from "react-native-paper";
-import { useSelector } from "react-redux";
-import Hyperlink from "react-native-hyperlink";
+import { View, FlatList } from "react-native";
+import PostCard from "../../components/PostCard/PostCard";
+import { useQuery } from "@apollo/client";
+import Loading from "../../components/Loading/Loading";
+import {GET_POST,SUBSCRIBE_POST} from "../../apollo/subscribes/post"
 
-const styles = StyleSheet.create({
-  title: {
-    textTransform: "capitalize",
-  },
-});
 
-export default function Cohorte() {
-  const { user } = useSelector((state) => state.auth);
+export default function Cohorte({route}) {
+  const { cohorteId, groupId } = React.useMemo(() => ({ cohorteId: route.params.id }), [route.params.id ]);
+  const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
+    variables: { where: { cohorteId, groupId } },
+  });
 
-  return (
-    <View
-      style={{
-        flex: 1,
-        padding: 20,
-        alignItems: "center",
-      }}
-    >
-      <Card style={{ width: "100%" }}>
-        <Card.Title
-          style={styles.title}
-          title={user.givenName + " " + user.familyName}
-          subtitle={user.nickName}
-          left={(props) => (
-            <Avatar.Image {...props} source={{ uri: user.photoUrl }} />
-          )}
+  React.useEffect(() => {
+    subscribeToMore({
+      document: SUBSCRIBE_POST,
+      variables: { cohorteId, groupId },
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log(prev, subscriptionData);
+        if (!subscriptionData.data) return prev;
+        return Object.assign({}, prev, {
+          getPost: [...prev.getPost, subscriptionData.data.subscribePost],
+        });
+      },
+    });
+  }, [subscribeToMore]);
+
+  const data = React.useMemo(() => {
+    if (preData) {
+      return preData.getPost.map(({ id, tittle, content, user }) => ({
+        id,
+        name:
+          user.givenName.charAt(0).toUpperCase() +
+          user.givenName.slice(1) +
+          " " +
+          (user.familyName.charAt(0).toUpperCase() + user.familyName.slice(1)),
+        nickName: user.nickName,
+        photoUrl: user.photoUrl,
+        title: tittle,
+        content,
+      }));
+    }
+    return undefined;
+  }, [preData]);
+
+  return loading ? (
+    <Loading />
+  ) : (
+      <View
+        style={{
+          flex: 1,
+          padding: 20,
+          alignItems: "center",
+        }}
+      >
+        <FlatList
+          style={{ width: "100%" }}
+          data={data}
+          renderItem={PostCard}
+          keyExtractor={(props) => {
+            return props.id.toString();
+          }}
         />
-        <Card.Content>
-          <Title>Libreria de React-native</Title>
-          <Hyperlink
-            linkDefault={true}
-            linkStyle={{ color: "#2980b9", fontSize: 16 }}
-          >
-            <Text>
-              Les paso la libreria de react native: https://reactnative.dev/
-            </Text>
-          </Hyperlink>
-        </Card.Content>
-      </Card>
-    </View>
+      </View>
   );
 }

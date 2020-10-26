@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 24500,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
   "webpackServerPort": null,
-  "expoServerNgrokUrl": "https://wk-v95.anonymous.paper.exp.direct",
-  "packagerNgrokUrl": "https://packager.wk-v95.anonymous.paper.exp.direct",
-  "ngrokPid": 43924
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

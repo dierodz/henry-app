@@ -1,51 +1,26 @@
 import * as React from "react";
 import { View, FlatList } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
-import { useSelector } from "react-redux";
 import PostCard from "../../components/PostCard/PostCard";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import Loading from "../../components/Loading/Loading";
+import {GET_POST,SUBSCRIBE_POST} from "../../apollo/subscribes/post"
+import {CREATE_POST} from "../../apollo/mutations/post"
+import {  useSelector } from "react-redux";
 
-const subscribePost = gql`
-  subscription {
-    subscribePost(cohorteId: 2) {
-      id
-      tittle
-      content
-      user {
-        givenName
-        familyName
-        nickName
-        photoUrl
-      }
-    }
-  }
-`;
-const GET_POST = gql`
-  query($where: JSON) {
-    getPost(where: $where) {
-      id
-      tittle
-      content
-      user {
-        givenName
-        familyName
-        nickName
-        photoUrl
-      }
-    }
-  }
-`;
-export default function General(props) {
+
+export default function General({route}) {
+  const { user } = useSelector((state) => state.auth); 
   const [text, setText] = React.useState("");
-  const { cohorteId, groupId } = React.useMemo(() => ({ cohorteId: 3 }), []);
+  const { cohorteId, groupId } = React.useMemo(() => ({groupId:route.params.id }), [route.params.id]);
   const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
     variables: { where: { cohorteId, groupId } },
   });
+  const [createPost, resultCreate] = useMutation(CREATE_POST);
 
   React.useEffect(() => {
     subscribeToMore({
-      document: subscribePost,
+      document: SUBSCRIBE_POST,
       variables: { cohorteId, groupId },
       updateQuery: (prev, { subscriptionData }) => {
         console.log(prev, subscriptionData);
@@ -110,8 +85,14 @@ export default function General(props) {
                   width="100%"
                   icon="send"
                   size={20}
-                  onPress={() => {
-                    alert(text);
+                  onPress={async() => {
+                    await createPost(({
+                      variables:{
+                        content:text,
+                        userId:user.id,
+                        groupId:route.params.id
+                      }
+                    }));
                     setText("");
                   }}
                 />
@@ -123,25 +104,3 @@ export default function General(props) {
     </>
   );
 }
-
-/* const data=props.route.params.screen=="cohorte"? [{id:1,
-  name:user.givenName + " " + user.familyName,
-nickName: user.nickName,
-photoUrl: user.photoUrl,
-title: "Fiesta de fin de año",
-content: "Gente que les parece organizar una fiesta para fin de año?"
-}
-] : [{id:2,
-name:user.givenName + " " + user.familyName,
-nickName: user.nickName,
-photoUrl: user.photoUrl,
-title: "Libreria de React-native",
-content: "Tengo dudas con el tema de hoy"
-},{id:3,
-name:user.givenName + " " + user.familyName,
-nickName: user.nickName,
-photoUrl: user.photoUrl,
-title: "Redux",
-content: "Quien me explica?"
-}
-] */

@@ -4,5 +4,5 @@
   "dev": true,
   "minify": false,
   "urlRandomness": "wk-v95",
-  "https": true
+  "https": false
 }
