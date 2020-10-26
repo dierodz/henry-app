@@ -145,6 +145,11 @@ const resolvers = {
          return await getStudentOfGrups(id);
       },
    },
+   Post: {
+      user: async ({ userId }) => {
+         return await getUserById(userId);
+      },
+   },
 };
 
 module.exports = resolvers;

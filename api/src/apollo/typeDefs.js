@@ -113,6 +113,7 @@ const typeDefs = gql`
       tittle: String
       content: String
       userId: Int
+      user: User
       cohorteId: Int
       groupId: Int
    }
