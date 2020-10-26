@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
+import { COHORTES, COUNT_COHORTES } from "apollo/querys/cohortes";
 import {
   CREATE_COHORTE,
   DELETE_COHORTE,
@@ -17,8 +18,6 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { hooks } from "shared";
-const { useCohortes } = hooks;
 
 function Cohortes() {
   const [page, setPage] = useState(0);
@@ -52,32 +51,9 @@ function Cohortes() {
   const [updateMutation, resultUpdate] = useMutation(EDIT_COHORTE);
   const history = useHistory();
 
-  const instructors = useQuery(getUserRol, {
-    variables: { role: "instructor" },
-  });
-
-  const {
-    fetch,
-    refetch,
-    result,
-    count,
-    loading,
-    rowsPerPageOptions,
-    rowsPerPage,
-    onChangePage,
-    onChangeRowsPerPage,
-    page,
-  } = useCohortes({
-    order: ["name"],
-  });
-  useEffect(() => {
-    fetch();
-  }, [rowsPerPage, page, fetch]);
-
   const data = useMemo(() => {
-    if (Array.isArray(result)) {
-      console.log(result);
-      return result.map((item) => {
+    if (Array.isArray(preData?.cohortes)) {
+      return preData.cohortes.map((item) => {
         return {
           ...item,
           name: item.name.toUpperCase(),
@@ -90,8 +66,8 @@ function Cohortes() {
           users: item.users,
         };
       });
-    } else return result;
-  }, [result]);
+    } else return preData;
+  }, [preData]);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -99,6 +75,7 @@ function Cohortes() {
   const tableData = useMemo(
     () => ({
       loading,
+      error,
       data: data,
       columns: [
         { key: "name", label: "Nombre del cohorte", align: "left" },
@@ -204,6 +181,7 @@ function Cohortes() {
     [
       data,
       history,
+      error,
       loading,
       createMutation,
       deleteMutation,
@@ -234,12 +212,11 @@ function Cohortes() {
       <Tabla
         loading={loading}
         data={tableData}
-        count={count}
+        count={count?.countCohortes || undefined}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={rowsPerPageOptions}
-        onChangePage={(_, page) => onChangePage(page)}
-        onChangeRowsPerPage={(e) => onChangeRowsPerPage(e.target.value)}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
       />
     </div>
   );
