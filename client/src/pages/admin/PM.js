@@ -1,15 +1,22 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { getUserRol } from "apollo/querys/users";
 import { ADD_ROLE } from "apollo/Mutations/role";
+import InstructorCohortes from "pages/admin/InstructorCohortes";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
+import Groups from "./Cohortes/groups";
 
 function PM({ className }) {
   const { loading, error, data, refetch } = useQuery(getUserRol, {
     variables: { role: "pm" },
   });
-
-data && console.log(data)
 
   const [addRoleMutation, resultAddRole] = useMutation(ADD_ROLE);
 
@@ -18,6 +25,7 @@ data && console.log(data)
       refetch();
     }
   }, [resultAddRole, refetch]);
+
 
      function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -41,8 +49,10 @@ data && console.log(data)
       columns: [
         { key: "givenName", label: "Nombre", align: "left" },
         { key: "familyName", label: "Apellido", align: "left" },
-        { key: "cohortes", label: "Cohortes", align: "left" },
-        { key: "groups", label: "Grupos", align: "left" },
+        { key: "cohortes", label: "Cohortes", align: "left", 
+        component: (data) => <CohorteNames data={data} />, },
+        { key: "groups", label: "Grupos", align: "left", 
+        component: (cohorte) => <GroupsComponent cohorte={cohorte} />, },
       ],
       addButtonLabel: "Agregar PM",
       actions: {
@@ -75,6 +85,55 @@ data && console.log(data)
     <div className={className}>
       <Tabla data={tableData} />
     </div>
+  );
+}
+
+function CohorteNames(data) {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setShow(true)}>{data.data.cohortes}</Button>
+      <Dialog
+        open={show}
+        onClose={() => setShow(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Cohortes</DialogTitle>
+        <DialogContent>
+          <InstructorCohortes datos={data.data.id} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShow(false)} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}
+function GroupsComponent(cohorte) {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setShow(true)}>{cohorte.cohorte.groups}</Button>
+      <Dialog
+        open={show}
+        onClose={() => setShow(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Groups</DialogTitle>
+        <DialogContent>
+          <Groups cohorte={cohorte.cohorte.id} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShow(false)} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 
