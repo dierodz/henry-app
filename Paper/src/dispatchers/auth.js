@@ -4,6 +4,45 @@ import { authSetError, login, logout } from "../actions/auth";
 
 import { REACT_APP_API_REMOTE } from "@env";
 import { finishLoading, startLoading } from "../actions/ui";
+import GoogleSignIn from "expo-google-sign-in";
+
+// export const googleInitGoogle = () => {
+//   return async (dispatch) => {
+//     await
+//   }
+// }
+
+export const googleInitAsync = async () => {
+  await GoogleSignIn.initAsync({
+    clientId:
+      "80624130355-2ejfuk9es2ncdal1enjuspmuscufhq51.apps.googleusercontent.com",
+  });
+  _syncUserWithStateAsync();
+};
+
+export const googleSignInAsync = () => {
+  return async (dispatch) => {
+    try {
+      await GoogleSignIn.askForPlayServicesAsync();
+      const { type, user, auth } = await GoogleSignIn.signInAsync();
+      // if (type === "success") {
+      //   _syncUserWithStateAsync();
+      //   console.log(user);
+      // }
+      console.log(type, user, auth);
+    } catch ({ message }) {
+      alert("login: Error:" + message);
+    }
+  };
+};
+
+export const _syncUserWithStateAsync = async () => {
+  const user = await GoogleSignIn.signInSilentlyAsync();
+};
+
+export const signOutAsync = async () => {
+  await GoogleSignIn.signOutAsync();
+};
 
 export const signOut = () => {
   return async (dispatch) => {
