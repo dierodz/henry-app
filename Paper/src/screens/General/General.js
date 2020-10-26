@@ -8,37 +8,50 @@ import Loading from "../../components/Loading/Loading";
 
 const subscribePost = gql`
   subscription {
-    subscribePost {
+    subscribePost(cohorteId: 2) {
       id
       tittle
       content
+      user {
+        givenName
+        familyName
+        nickName
+        photoUrl
+      }
     }
   }
 `;
 const GET_POST = gql`
-  query {
-    getPost {
+  query($where: JSON) {
+    getPost(where: $where) {
       id
       tittle
       content
+      user {
+        givenName
+        familyName
+        nickName
+        photoUrl
+      }
     }
   }
 `;
 export default function General(props) {
-  const { user } = useSelector((state) => state.auth);
   const [text, setText] = React.useState("");
-  const { data: preData, loading, error, subscribeToMore, refetch } = useQuery(
-    GET_POST
-  );
+  const { cohorteId, groupId } = React.useMemo(() => ({ cohorteId: 3 }), []);
+  const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
+    variables: { where: { cohorteId, groupId } },
+  });
 
   React.useEffect(() => {
     subscribeToMore({
       document: subscribePost,
+      variables: { cohorteId, groupId },
       updateQuery: (prev, { subscriptionData }) => {
         console.log(prev, subscriptionData);
         if (!subscriptionData.data) return prev;
         return Object.assign({}, prev, {
-          getPost: [...preData.getPost, subscriptionData.data.subscribePost],
+          getPost: [...prev.getPost, subscriptionData.data.subscribePost],
         });
       },
     });
@@ -46,13 +59,17 @@ export default function General(props) {
 
   const data = React.useMemo(() => {
     if (preData) {
-      return preData.getPost.map((post) => ({
-        id: post.id,
-        name: user.givenName + " " + user.familyName,
+      return preData.getPost.map(({ id, tittle, content, user }) => ({
+        id,
+        name:
+          user.givenName.charAt(0).toUpperCase() +
+          user.givenName.slice(1) +
+          " " +
+          (user.familyName.charAt(0).toUpperCase() + user.familyName.slice(1)),
         nickName: user.nickName,
         photoUrl: user.photoUrl,
-        title: post.tittle,
-        content: post.content,
+        title: tittle,
+        content,
       }));
     }
     return undefined;
