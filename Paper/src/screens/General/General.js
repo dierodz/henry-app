@@ -10,16 +10,16 @@ const subscribePost= gql`
   subscription {
     subscribePost {
       id
-      title
+      tittle
       content
     }
   }
 `
-const getPost = gql`
-query  {
+const GET_POST = gql`
+query {
   getPost {
     id
-    title
+    tittle
     content
   }
 }
@@ -27,11 +27,11 @@ query  {
 export default function General(props) {
   const { user } = useSelector((state) => state.auth);
   const [text, setText] = React.useState('');
-  const {data:{getPost}, loading, error}= useQuery(getPost)
+  const {data:preData, loading, error}= useQuery(GET_POST)
 
   const data = React.useMemo(()=>{
-    if(getPost){
-      return getPost.map((post)=>({id:post.id,
+    if(preData){
+      return preData.getPost.map((post)=>({id:post.id,
         name:user.givenName + " " + user.familyName,
       nickName: user.nickName,
       photoUrl: user.photoUrl,
@@ -40,9 +40,9 @@ export default function General(props) {
       }))
     }
     return undefined
-  },[getPost])
+  },[preData])
 
- 
+  console.log(preData)
   return (loading? <Loading/>
   :
   <>
@@ -84,8 +84,8 @@ export default function General(props) {
   );
 }
 
-
-/* const data=props.route.params.screen=="cohorte"? [{id:1,
+/* 
+const data=props.route.params.screen=="cohorte"? [{id:1,
   name:user.givenName + " " + user.familyName,
 nickName: user.nickName,
 photoUrl: user.photoUrl,
@@ -105,4 +105,4 @@ photoUrl: user.photoUrl,
 title: "Redux",
 content: "Quien me explica?"
 }
-] */
+]  */
