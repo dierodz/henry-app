@@ -27,7 +27,22 @@ const GET_POST = gql`
 export default function General(props) {
   const { user } = useSelector((state) => state.auth);
   const [text, setText] = React.useState("");
-  const { data: preData, loading, error } = useQuery(GET_POST);
+  const { data: preData, loading, error, subscribeToMore, refetch } = useQuery(
+    GET_POST
+  );
+
+  React.useEffect(() => {
+    subscribeToMore({
+      document: subscribePost,
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log(prev, subscriptionData);
+        if (!subscriptionData.data) return prev;
+        return Object.assign({}, prev, {
+          getPost: [...preData.getPost, subscriptionData.data.subscribePost],
+        });
+      },
+    });
+  }, [subscribeToMore]);
 
   const data = React.useMemo(() => {
     if (preData) {
