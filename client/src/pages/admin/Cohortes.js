@@ -70,7 +70,8 @@ function Cohortes() {
   }, [preData]);
 
   function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if(string){
+      return string.charAt(0).toUpperCase() + string.slice(1)};
   }
   const tableData = useMemo(
     () => ({

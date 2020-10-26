@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Post } from "pages/Posts/Post";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { useHistory } from "react-router-dom";
@@ -99,9 +100,10 @@ function GroupStudentPP(className) {
   );
 
   return (
-    <div className={className} style={{ height: "50vh", width: "100%" }}>
+    /*<div className={className} style={{ height: "50vh", width: "100%" }}>
       <Tabla loading={loading} data={tableData} />
-    </div>
+    </div>*/
+    <Post/>
   );
 }
 
