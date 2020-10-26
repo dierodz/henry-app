@@ -22,6 +22,7 @@ export const GET_POST = gql`
       tittle
       content
       user {
+        id
         givenName
         familyName
         nickName

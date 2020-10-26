@@ -1,14 +1,14 @@
 import { useQuery } from "@apollo/client";
-import { GROUP_POSTS } from "apollo/querys/posts";
 import PostCard from "components/PostCard";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { GET_POST, SUBSCRIBE_POST } from "apollo/Mutations/postSub";
+import Loading from "components/Loading";
 
 export const Post = () => {
   const { id } = useParams();
   //suscripciones
-  const { cohorteId, groupId } = React.useMemo(() => ({ groupId: parseInt(id) }), [id]);
+  const { groupId } = React.useMemo(() => ({ groupId: parseInt(id) }), [id]);
 
   const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
     variables: { where: { groupId } },
@@ -16,7 +16,7 @@ export const Post = () => {
 
   //use effect para la suscripcion
 
-  React.useEffect(() => {
+  useEffect(() => {
     subscribeToMore({
       document: SUBSCRIBE_POST,
       variables: { groupId },
@@ -30,27 +30,38 @@ export const Post = () => {
     });
   }, [groupId, subscribeToMore]);
 
-  // mapeo de los datos recibidos  
-  const data = React.useMemo(() => {
-
-    if (preData) {
-      return preData.getPost.map(({ id, tittle, content, user }) => ({
-        id,
-        name:
-          user.givenName?.charAt(0).toUpperCase() +
-          user.givenName?.slice(1) +
-          " " +
-          (user.familyName?.charAt(0).toUpperCase() + user.familyName.slice(1)),
-        nickName: user.nickName,
-        photoUrl: user.photoUrl,
-        title: tittle,
-        content,
+  // mapeo de los datos recibidos
+  const data = useMemo(() => {
+    if (preData && preData) {
+      const laData = preData.getPost.map((post) => ({
+        id: post?.id,
+        // name: `${
+        //   post?.user.givenName?.charAt(0).toUpperCase() +
+        //   post?.user.givenName?.slice(1)
+        // } ${
+        //   post?.user.familyName?.charAt(0).toUpperCase() +
+        //   post?.user.familyName?.slice(1)
+        // }`,
+        // nickName: post?.user.nickName,
+        // photoUrl: post?.user.photoUrl,
+        title: post?.tittle,
+        content: post?.content,
+        userId: post?.user?.id,
       }));
+
+      laData.pop();
+
+      return laData;
     }
-    return undefined;
   }, [preData]);
 
-  console.log(data)
+  if (!loading) {
+    console.log(data);
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     // <Tabla
@@ -62,6 +73,7 @@ export const Post = () => {
     //   onChangePage={2}
     //   onChangeRowsPerPage={2}
     // />
+    // <h1>hola</h1>
     <>{data && data.map((post) => <PostCard key={post.id} {...post} />)}</>
   );
 };
