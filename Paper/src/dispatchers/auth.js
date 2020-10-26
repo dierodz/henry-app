@@ -2,46 +2,39 @@ import Axios from "axios";
 import AsyncStorage from "@react-native-community/async-storage";
 import { authSetError, login, logout } from "../actions/auth";
 
-import { REACT_APP_API_REMOTE } from "@env";
+import { REACT_APP_API_REMOTE, ANDROID_OAUTH_CLIENT } from "@env";
 import { finishLoading, startLoading } from "../actions/ui";
-import GoogleSignIn from "expo-google-sign-in";
+import * as Google from "expo-google-app-auth";
 
-// export const googleInitGoogle = () => {
-//   return async (dispatch) => {
-//     await
-//   }
-// }
-
-export const googleInitAsync = async () => {
-  await GoogleSignIn.initAsync({
-    clientId:
-      "80624130355-2ejfuk9es2ncdal1enjuspmuscufhq51.apps.googleusercontent.com",
-  });
-  _syncUserWithStateAsync();
+const config = {
+  androidClientId: ANDROID_OAUTH_CLIENT,
+  scopes: ["profile", "email"],
 };
 
-export const googleSignInAsync = () => {
+export const GoogleInitialize = () => {
   return async (dispatch) => {
     try {
-      await GoogleSignIn.askForPlayServicesAsync();
-      const { type, user, auth } = await GoogleSignIn.signInAsync();
-      // if (type === "success") {
-      //   _syncUserWithStateAsync();
-      //   console.log(user);
-      // }
-      console.log(type, user, auth);
-    } catch ({ message }) {
-      alert("login: Error:" + message);
+      const { type, user } = await Google.logInAsync(config);
+
+      if (type === "success") {
+        const { data } = await Axios.post(
+          `${REACT_APP_API_REMOTE}/auth/mobile/google`,
+          {
+            user,
+          }
+        );
+
+        const { user, token } = data;
+        await AsyncStorage.setItem("token", token);
+        dispatch(login(user.id, user, token));
+        dispatch(finishLoading());
+      }
+
+      console.log("user", user);
+    } catch (error) {
+      console.log(error);
     }
   };
-};
-
-export const _syncUserWithStateAsync = async () => {
-  const user = await GoogleSignIn.signInSilentlyAsync();
-};
-
-export const signOutAsync = async () => {
-  await GoogleSignIn.signOutAsync();
 };
 
 export const signOut = () => {

@@ -1,7 +1,8 @@
 const router = require("express").Router(),
    jwt = require("jsonwebtoken"),
    passport = require("passport"),
-   { getUserById } = require("../controllers/userController");
+   { getUserById } = require("../controllers/userController"),
+   { googleLogin } = require("../controllers/mobileAuthController");
 
 router.route("/me").get(async function (req, res) {
    if (req.user) {
@@ -36,6 +37,17 @@ router.route("/google").get(
       scope: ["profile", "email"],
    })
 );
+
+router.route("/mobile/google").post((req, res) => {
+   const { user } = req.body;
+   const response = googleLogin(user);
+   if (!response) {
+      return res.status(400).json({ message: "El usuario no está registrado" });
+   }
+
+   const token = jwt.sign({ uid: user.id }, process.env.SECRET);
+   res.json({ user: response, token });
+});
 
 router.route("/google/callback").get(function (req, res, next) {
    passport.authorize("google", function (err, user) {

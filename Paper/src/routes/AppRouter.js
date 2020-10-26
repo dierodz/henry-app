@@ -6,9 +6,7 @@ import { signInWithToken, initialize, signOut } from "../dispatchers/auth";
 import DrawerRoutes from "./DrawerRoutes/DrawerRoutes";
 import LogRoutes from "./LogRoutes/LogRoutes";
 
-import LoadingScreen from "../components/Loading/Loading"
-
-
+import LoadingScreen from "../components/Loading/Loading";
 
 const AppRouter = ({ handleTheme }) => {
   const dispatch = useDispatch();
@@ -29,8 +27,7 @@ const AppRouter = ({ handleTheme }) => {
   }, []);
 
   if (loading) {
-    return   <LoadingScreen />
-    ;
+    return <LoadingScreen />;
   }
 
   return (
