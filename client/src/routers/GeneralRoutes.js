@@ -23,6 +23,7 @@ import ContentDetail from "pages/admin/ContentDetail";
 import GroupStudentPP from "pages/alumnos/components/GroupStudentPP";
 import Group from "pages/admin/Group"
 import { Post } from "pages/Posts/Post";
+import ModuleStudent from "pages/alumnos/components/modules";
 
 
 const GeneralRoutes = () => {
@@ -80,7 +81,7 @@ const GeneralRoutes = () => {
           />
           <Route exact path="/student/groups" component={GroupStudent} />
           <Route exact path="/group/:id/posts" component={Post} />
-          {/*<Route exact path="/student/modules" component={Modules} /> */}
+          <Route exact path="/student/modules/" component={ModuleStudent} />
           <Route exact path="/student/groups/:id" component={GroupStudentPP} />
         </Switch>
       </div>

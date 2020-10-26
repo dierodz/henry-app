@@ -10,6 +10,7 @@ import {
 
 import ViewComfyRoundedIcon from "@material-ui/icons/ViewComfyRounded";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
 import "../../styles/components/NavBar.scss";
 import useStyles from "./NavBar.styles";
@@ -56,6 +57,11 @@ function NavBar({ show, children }) {
                   title="Grupos"
                   icon={GroupWorkIcon}
                   to="/student/groups"
+                />
+                <NavBarItem
+                  title="Checkpoint"
+                  icon={LibraryBooksIcon}
+                  to="/student/checkpoint"
                 />
               </>
             )}
