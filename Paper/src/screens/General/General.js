@@ -3,34 +3,49 @@ import { View,FlatList } from "react-native";
 import { IconButton, TextInput} from "react-native-paper";
 import { useSelector } from "react-redux";
 import PostCard from "../../components/PostCard/PostCard"
+import { gql, useQuery } from "@apollo/client"
+import Loading from "../../components/Loading/Loading";
 
+const subscribePost= gql`
+  subscription {
+    subscribePost {
+      id
+      title
+      content
+    }
+  }
+`
+const getPost = gql`
+query  {
+  getPost {
+    id
+    title
+    content
+  }
+}
+`
 export default function General(props) {
   const { user } = useSelector((state) => state.auth);
   const [text, setText] = React.useState('');
+  const {data:{getPost}, loading, error}= useQuery(getPost)
 
-  const data=props.route.params.screen=="cohorte"? [{id:1,
-    name:user.givenName + " " + user.familyName,
-  nickName: user.nickName,
-  photoUrl: user.photoUrl,
-  title: "Fiesta de fin de año",
-  content: "Gente que les parece organizar una fiesta para fin de año?"
-}
-] : [{id:2,
-  name:user.givenName + " " + user.familyName,
-nickName: user.nickName,
-photoUrl: user.photoUrl,
-title: "Libreria de React-native",
-content: "Tengo dudas con el tema de hoy"
-},{id:3,
-  name:user.givenName + " " + user.familyName,
-nickName: user.nickName,
-photoUrl: user.photoUrl,
-title: "Redux",
-content: "Quien me explica?"
-}
-]
-  return (
-    <>
+  const data = React.useMemo(()=>{
+    if(getPost){
+      return getPost.map((post)=>({id:post.id,
+        name:user.givenName + " " + user.familyName,
+      nickName: user.nickName,
+      photoUrl: user.photoUrl,
+      title: post.title,
+      content: post.content
+      }))
+    }
+    return undefined
+  },[getPost])
+
+ 
+  return (loading? <Loading/>
+  :
+  <>
     <View
       style={{
         flex: 1,
@@ -68,3 +83,26 @@ content: "Quien me explica?"
     </>
   );
 }
+
+
+/* const data=props.route.params.screen=="cohorte"? [{id:1,
+  name:user.givenName + " " + user.familyName,
+nickName: user.nickName,
+photoUrl: user.photoUrl,
+title: "Fiesta de fin de año",
+content: "Gente que les parece organizar una fiesta para fin de año?"
+}
+] : [{id:2,
+name:user.givenName + " " + user.familyName,
+nickName: user.nickName,
+photoUrl: user.photoUrl,
+title: "Libreria de React-native",
+content: "Tengo dudas con el tema de hoy"
+},{id:3,
+name:user.givenName + " " + user.familyName,
+nickName: user.nickName,
+photoUrl: user.photoUrl,
+title: "Redux",
+content: "Quien me explica?"
+}
+] */
