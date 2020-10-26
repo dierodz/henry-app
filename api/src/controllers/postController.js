@@ -71,8 +71,8 @@ const deletePost = async (id) => {
 };
 
 //Este controller retorna todos los posts
-const getAllPosts = async () => {
-   return await Post.findAll();
+const getAllPosts = async ({ where, limit, offset, order }) => {
+   return await Post.findAll({ where, limit, offset, order });
 };
 
 // Este controller retorna todos los posts que ha hecho una persona

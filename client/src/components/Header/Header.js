@@ -11,6 +11,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
 import useStyles from "./useStyles";
+import {Avatar} from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "dispatchers/auth";
@@ -109,7 +110,7 @@ export default function Header({ handleShowMenu }) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+        <Avatar src={user.photoUrl || "/Imagenes/user.png"} />
         </IconButton>
         <p>Perfil</p>
       </MenuItem>
@@ -155,7 +156,7 @@ export default function Header({ handleShowMenu }) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar src={user.photoUrl || "/Imagenes/user.png"} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
