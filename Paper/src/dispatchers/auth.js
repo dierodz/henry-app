@@ -13,6 +13,7 @@ const config = {
 
 export const GoogleInitialize = () => {
   return async (dispatch) => {
+    dispatch(startLoading());
     try {
       const { type, user } = await Google.logInAsync(config);
 
@@ -24,15 +25,16 @@ export const GoogleInitialize = () => {
           }
         );
 
-        const { user, token } = data;
-        await AsyncStorage.setItem("token", token);
-        dispatch(login(user.id, user, token));
-        dispatch(finishLoading());
+        if (data) {
+          const { user, token } = data;
+          await AsyncStorage.setItem("token", token);
+          dispatch(login(user.id, user, token));
+          dispatch(finishLoading());
+        }
       }
-
-      console.log("user", user);
     } catch (error) {
       console.log(error);
+      dispatch(finishLoading());
     }
   };
 };
