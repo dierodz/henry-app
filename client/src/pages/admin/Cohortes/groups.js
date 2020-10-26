@@ -57,13 +57,13 @@ function Groups({
     [queryLoading, componentLoading, createLoading, addLoading]
   );
 
-
   const data = useMemo(
-    () => preData?.groups.map ((grupo) => {
-      const grupototal = {...grupo, qty: grupo.students.length}
-      return grupototal;
-    }) || componentData?.cohortes[0].groups,
-        [preData, componentData]
+    () =>
+      preData?.groups.map((grupo) => {
+        const grupototal = { ...grupo, qty: grupo.students.length };
+        return grupototal;
+      }) || componentData?.cohortes[0].groups,
+    [preData, componentData]
   );
 
   const { push } = useHistory();
