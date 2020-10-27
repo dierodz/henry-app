@@ -10,7 +10,7 @@ export default function Participantes({ route }) {
   let id = route.params.id;
   let type = route.params.screen;
 
-  const { loading, error, data, refetch } = useQuery(GET_USERS_GROUP, {
+  const { loading, data } = useQuery(GET_USERS_GROUP, {
     variables: {
       where: {
         [type]: {
@@ -28,7 +28,7 @@ export default function Participantes({ route }) {
     <View style={{ flex: 1 }}>
       <ScrollView style={{ width: "100%" }}>
         <View style={{ flex: 1, alignItems: "center", padding: 20 }}>
-          {data && data.users.length != 0 ? (
+          {data && data.users && data.users.length != 0 ? (
             data.users.map((e) => (
               <Card
                 onPress={() =>
