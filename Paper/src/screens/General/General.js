@@ -1,26 +1,35 @@
 import * as React from "react";
 import { View, FlatList } from "react-native";
-import { IconButton, TextInput, FAB, Portal, Modal, Card, Button } from "react-native-paper";
+import {
+  TextInput,
+  FAB,
+  Portal,
+  Modal,
+  Card,
+  Button,
+} from "react-native-paper";
 import PostCard from "../../components/PostCard/PostCard";
 import { useQuery, useMutation } from "@apollo/client";
 import Loading from "../../components/Loading/Loading";
-import {GET_POST,SUBSCRIBE_POST} from "../../apollo/subscribes/post"
-import {CREATE_POST} from "../../apollo/mutations/post"
-import {  useSelector } from "react-redux";
-import { useTheme } from 'react-native-paper';
+import { GET_POST, SUBSCRIBE_POST } from "../../apollo/subscribes/post";
+import { CREATE_POST } from "../../apollo/mutations/post";
+import { useSelector } from "react-redux";
+import { useTheme } from "react-native-paper";
 
-
-export default function General({route}) {
-  const { user } = useSelector((state) => state.auth); 
+export default function General({ route }) {
+  const { user } = useSelector((state) => state.auth);
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
-  const { cohorteId, groupId } = React.useMemo(() => ({groupId:route.params.id }), [route.params.id]);
+  const { cohorteId, groupId } = React.useMemo(
+    () => ({ groupId: route.params.id }),
+    [route.params.id]
+  );
   const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
     variables: { where: { cohorteId, groupId } },
   });
-  const [createPost, resultCreate] = useMutation(CREATE_POST);
+  const [createPost] = useMutation(CREATE_POST);
   const [visible, setVisible] = React.useState(false);
-  const {colors} = useTheme()
+  const { colors } = useTheme();
 
   React.useEffect(() => {
     subscribeToMore({
@@ -75,52 +84,55 @@ export default function General({route}) {
         />
         <Portal>
           <Modal
-          contentContainerStyle={{ alignItems: "center" }}
-          visible={visible} 
-          onDismiss={()=>setVisible(false)}>
-            <Card style={{width:"80%"}}>
-                <TextInput
-                    label="Título"
-                  placeholder="Título"
-                  value={title}
-                  onChangeText={(text) => setTitle(text)}
-                />
-                <TextInput
-                  label="Contenido"
-                  placeholder="Contenido"
-                  multiline={true}
-                  value={content}
-                  onChangeText={(text) => setContent(text)}
-                />
-                <Button 
-                icon="send" 
-                mode="contained" 
-                onPress={async() => {
-                  await createPost(({
-                    variables:{
-                      tittle:title,
-                      content:content,
-                      userId:user.id,
-                      groupId:route.params.id
-                    }
-                  }));
-                  setVisible(false)
+            contentContainerStyle={{ alignItems: "center" }}
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+          >
+            <Card style={{ width: "80%" }}>
+              <TextInput
+                label="Título"
+                placeholder="Título"
+                value={title}
+                onChangeText={(text) => setTitle(text)}
+              />
+              <TextInput
+                label="Contenido"
+                placeholder="Contenido"
+                multiline={true}
+                value={content}
+                onChangeText={(text) => setContent(text)}
+              />
+              <Button
+                icon="send"
+                mode="contained"
+                onPress={async () => {
+                  await createPost({
+                    variables: {
+                      tittle: title,
+                      content: content,
+                      userId: user.id,
+                      groupId: route.params.id,
+                    },
+                  });
+                  setVisible(false);
                   setTitle("");
-                  setContent("")
-                }}>
-                  Enviar
-                </Button>
+                  setContent("");
+                }}
+              >
+                Enviar
+              </Button>
             </Card>
           </Modal>
-      </Portal>
+        </Portal>
       </View>
       <FAB
-        style={{position: 'absolute',
-        margin: 16,
-        right: 0,
-        bottom: 0,
-        backgroundColor:colors.primary
-      }}
+        style={{
+          position: "absolute",
+          margin: 16,
+          right: 0,
+          bottom: 0,
+          backgroundColor: colors.primary,
+        }}
         small
         icon="plus"
         onPress={() => setVisible(true)}
@@ -128,31 +140,3 @@ export default function General({route}) {
     </>
   );
 }
-
-/* <View style={{ width: "100%", bottom: 0, flexDirection: "row" }}>
-        
-      </View> 
-      
-      right={
-            <TextInput.Icon
-              name={() => (
-                <IconButton
-                  style={{ alignSelf: "center" }}
-                  width="100%"
-                  icon="send"
-                  size={20}
-                  onPress={async() => {
-                    await createPost(({
-                      variables:{
-                        content:text,
-                        userId:user.id,
-                        groupId:route.params.id
-                      }
-                    }));
-                    setText("");
-                  }}
-                />
-              )}
-            />
-          }
-      */

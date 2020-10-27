@@ -14,4 +14,6 @@ export const GET_USERS_GROUP= gql`
           }
         }
       }
-    `;
+    }
+  }
+`;

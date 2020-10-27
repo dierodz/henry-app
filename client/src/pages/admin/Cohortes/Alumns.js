@@ -11,7 +11,6 @@ import { MailOutlineRounded, FileCopyRounded } from "@material-ui/icons";
 import { useCopyToClipboard } from "react-use";
 import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
-import { hooks } from "shared";
 
 function Alumns({
   className,
@@ -184,12 +183,11 @@ function Alumns({
       copyToClipboard,
       push,
       cohorte.id,
-      inviteMutation,
       deleteMutation,
+      onRefetch,
+      inviteMutation,
     ]
   );
-
-  console.log(result);
 
   return (
     <div className={className} style={{ height: "50vh", width: "100%" }}>
@@ -199,7 +197,6 @@ function Alumns({
         count={count}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={rowsPerPageOptions}
         onChangePage={(_, page) => onChangePage(page)}
         onChangeRowsPerPage={(e) => onChangeRowsPerPage(e.target.value)}
       />{" "}

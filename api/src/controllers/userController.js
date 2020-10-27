@@ -90,7 +90,6 @@ const getAllUsers = async ({ where, limit, offset, order }) => {
          order,
          include: localInclude,
       });
-      console.log(users);
       return users;
    } catch (error) {
       console.error(error);

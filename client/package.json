@@ -30,7 +30,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "sass": "^1.26.11",
-    "shared": "link:../shared"
+    "shared": "file:../shared"
   },
   "scripts": {
     "start": "react-scripts start",

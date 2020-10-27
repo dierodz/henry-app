@@ -15,7 +15,6 @@ const contents = async (_, { id, topicName, where, limit, offset, order }) => {
 
 const contentMutations = {
    createContent: async (_, { input }) => {
-      console.log(input);
       return await createContent({ ...input });
    },
 

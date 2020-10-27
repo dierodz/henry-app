@@ -27,7 +27,7 @@ const getPost = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await returnPost(id);
       return [result];
-   } else return await returnAllPosts(where, limit, offset, order);
+   } else return await returnAllPosts({ where, limit, offset, order });
 };
 
 const subscribePost = {
@@ -66,7 +66,6 @@ const getUserPosts = async (_, { userId }) => {
 };
 
 const getGroupPosts = async (_, { groupId }) => {
-   console.log(groupId);
    const posts = await returnGroupPosts(groupId);
    return posts;
 };

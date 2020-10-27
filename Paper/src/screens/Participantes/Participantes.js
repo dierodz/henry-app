@@ -36,12 +36,25 @@ export default function Participantes({route, navigation}) {
             : 
                 <Card style={{ width: "100%",marginBottom:15 }}>
                 <Card.Title
-                  title={"SIN ELEMENTOS"}
+                  title={e.givenName + " " + e.familyName}
+                  subtitle={e.nickName}
+                  left={(props) => {
+                    if (e.photoUrl)
+                      return (
+                        <Avatar.Image {...props} source={{ uri: e.photoUrl }} />
+                      );
+                    return (
+                      <Avatar.Text
+                        {...props}
+                        label={e.givenName[0] + e.familyName[0]}
+                      />
+                    );
+                  }}
                 />
                 </Card>
             }
             <ModalAlumns navigation={navigation} modalChange={modalChange} setModalChange={setModalChange} />
         </View>
-      </ScrollView >
+      </ScrollView>
     </View>
 }
