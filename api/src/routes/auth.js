@@ -38,14 +38,14 @@ router.route("/google").get(
    })
 );
 
-router.route("/mobile/google").post((req, res) => {
+router.route("/mobile/google").post(async (req, res) => {
    const { user } = req.body;
-   const response = googleLogin(user);
+   const response = await googleLogin(user);
    if (!response) {
       return res.status(400).json({ message: "El usuario no está registrado" });
    }
 
-   const token = jwt.sign({ uid: user.id }, process.env.SECRET);
+   const token = jwt.sign({ uid: response.id }, process.env.SECRET);
    res.json({ user: response, token });
 });
 
