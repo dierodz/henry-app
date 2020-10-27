@@ -37,8 +37,7 @@ export default function ParticipantesRoutes({route}) {
         name="Participantes" 
         component={Participantes} />
         {data&&data.users.map((user)=>{
-           let hash = useChat([userMe.user.givenName+" "+userMe.user.familyName,
-            user.givenName+" "+user.familyName ],
+           let hash = useChat(
             [userMe.user.id,user.id])
             return(
           <ParticipantesStack.Screen 

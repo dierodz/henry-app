@@ -1,52 +1,6 @@
 import * as React from 'react';
 import { Card, Avatar, Modal, Button, Portal } from "react-native-paper";
-import {  useSelector } from "react-redux";
-import Chat from "../../hooks/useChat"
-import { useQuery, useMutation } from "@apollo/client";
-import { gql } from "@apollo/client";
-/* 
-const GET_CHAT= gql`
-        query groups($name:String){
-            groups(name:$name){
-            id
-            name
-        }
-        }
-    `;
 
-   const CREATE_CHAT= gql` 
-   mutation createGroup($name: String) {
-      createGroup(input: { name: $name}) {
-        id
-        name
-      }
-  }`
-  const { user } = useSelector((state) => state.auth);
-  let [groupName,setGroupName]= React.useState("")
-React.useEffect( ()=>{
-       async function prueba(){
-          if(groupName.length>0){
-                  console.log("entra al if")
-                  const {data,error,loading} =  useQuery(GET_CHAT, {variables: {"name":groupName}})
-                  console.log("sigue")
-              if(!loading){
-                      console.log("creo")
-                      const [createChat, resultCreate] = useMutation(CREATE_CHAT);
-                      createChat(({variables:{name:groupName}}))
-              }else{
-                  console.log("ya esta");
-              }
-          }}
-          prueba() 
-          modalChange?
-          setGroupName(Chat(
-              [user.givenName+" "+user.familyName,modalChange.givenName+" "+modalChange.familyName ],
-              [user.id,modalChange.id]))
-          :
-          setGroupName("")
-     
-  },[modalChange]) 
-      const {data,error,loading} =  useQuery(GET_CHAT, {variables: {"name":groupName}}) */
 
 export default function ModalAlumns({ modalChange, setModalChange, navigation }) {
 
