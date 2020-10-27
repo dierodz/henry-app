@@ -5,42 +5,43 @@ import { useParams } from "react-router-dom";
 import { GET_POST, SUBSCRIBE_POST } from "apollo/Mutations/postSub";
 import Loading from "components/Loading";
 
-
 export const Post = () => {
-
-    
   const { id } = useParams();
   //suscripciones
   const { groupId } = React.useMemo(() => ({ groupId: parseInt(id) }), [id]);
-  //const groupId =  parseInt(id) 
-
+  //const groupId =  parseInt(id)
 
   const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
-    variables:  { groupId } 
+    variables: { groupId },
   });
-  console.log('predata',preData, groupId,loading, subscribeToMore);
+  console.log("predata", preData, groupId, loading, subscribeToMore);
   //use effect para la suscripcion
 
-  useEffect(() => {
-    subscribeToMore({
-      document: SUBSCRIBE_POST,
-      variables: { groupId },
-      updateQuery: (prev, { subscriptionData }) => {
-        console.log('hola', prev, subscriptionData);
-        if (!subscriptionData.data) return prev;
-        return Object.assign({}, prev, {
-          getGroupPosts: [...prev.getGroupPosts, subscriptionData.data.subscribePost],
-        });
-
-      },
-    });
-  }, [groupId, subscribeToMore], preData);
+  useEffect(
+    () => {
+      subscribeToMore({
+        document: SUBSCRIBE_POST,
+        variables: { groupId },
+        updateQuery: (prev, { subscriptionData }) => {
+          console.log("hola", prev, subscriptionData);
+          if (!subscriptionData.data) return prev;
+          return Object.assign({}, prev, {
+            getGroupPosts: [
+              ...prev.getGroupPosts,
+              subscriptionData.data.subscribePost,
+            ],
+          });
+        },
+      });
+    },
+    [groupId, subscribeToMore],
+    preData
+  );
 
   // mapeo de los datos recibidos
   const data = useMemo(() => {
     if (preData && preData) {
-
-  console.log('prev', preData)
+      console.log("prev", preData);
       const laData = preData.getGroupPosts.map((post) => ({
         id: post?.id,
         // name: `${
@@ -56,8 +57,6 @@ export const Post = () => {
         content: post?.content,
         userId: post?.user?.id,
       }));
-
-      laData.pop();
 
       return laData;
     }
