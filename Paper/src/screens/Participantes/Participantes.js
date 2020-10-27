@@ -1,38 +1,25 @@
 import * as React from 'react';
 import { View, ScrollView } from 'react-native';
-import { useQuery } from "@apollo/client";
 import { Avatar,Card } from "react-native-paper";
 import ModalAlumns from "../../components/ModalAlumns/ModalAlumns"
-import Loading from "../../components/Loading/Loading"
-import {GET_USERS_GROUP} from "../../apollo/querys/groups"
 
-export default function Participantes({route}) {
 
+export default function Participantes({route, navigation}) {
     let id = route.params.id
     let type= route.params.screen
-    const { loading, error, data, refetch,  } = useQuery(GET_USERS_GROUP, {
-        variables: {
-            "where": {
-              [type]: {
-                "id": id
-              }
-            }
-          },
-    })
-    
+    let data = route.params.user
+
     let [modalChange, setModalChange] = React.useState(false)
-    return loading? 
-    <Loading/>
-    :
-    <View style={{flex:1}}>
+    return <View style={{flex:1}}>
       <ScrollView style={{width:"100%" }}>
         <View style={{ flex: 1, alignItems: 'center', padding:20 }}>
-            { data.users.length!=0?data.users.map((e) => (
+            { data.length!=0?data.map((e) => (
                 <Card onPress={() => (setModalChange({
                     givenName: e.givenName,
                     familyName: e.familyName,
                     nickName: e.nickName,
-                    url: e.photoUrl
+                    url: e.photoUrl,
+                    id:e.id
                 }))
                 } key={e.id+e.givenName+type+id} style={{ width: "100%", marginBottom: 10 }}>
                     <Card.Title
@@ -53,7 +40,7 @@ export default function Participantes({route}) {
                 />
                 </Card>
             }
-            <ModalAlumns modalChange={modalChange} setModalChange={setModalChange} />
+            <ModalAlumns navigation={navigation} modalChange={modalChange} setModalChange={setModalChange} />
         </View>
       </ScrollView >
     </View>
