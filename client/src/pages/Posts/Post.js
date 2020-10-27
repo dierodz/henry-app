@@ -16,7 +16,7 @@ export const Post = () => {
 
 
   const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
-    variables:  groupId 
+    variables:  { groupId } 
   });
   console.log('predata',preData, groupId,loading, subscribeToMore);
   //use effect para la suscripcion
@@ -29,7 +29,7 @@ export const Post = () => {
         console.log('hola', prev, subscriptionData);
         if (!subscriptionData.data) return prev;
         return Object.assign({}, prev, {
-          getPost: [...prev.getPost, subscriptionData.data.subscribePost],
+          getGroupPosts: [...prev.getGroupPosts, subscriptionData.data.subscribePost],
         });
 
       },
@@ -41,7 +41,7 @@ export const Post = () => {
     if (preData && preData) {
 
   console.log('prev', preData)
-      const laData = preData.getPost.map((post) => ({
+      const laData = preData.getGroupPosts.map((post) => ({
         id: post?.id,
         // name: `${
         //   post?.user.givenName?.charAt(0).toUpperCase() +

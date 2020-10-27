@@ -51,7 +51,7 @@ export const SUBSCRIBE_POST = gql`
   }`  
 ;*/
 
-export const GET_POST = gql`
+/*export const GET_POST = gql`
 query getPost($groupId: Int) {
     getGroupPosts(groupId: $groupId) {
       id
@@ -66,4 +66,14 @@ query getPost($groupId: Int) {
         photoUrl
      }    
     }
-   }` 
+   }` */
+
+   export const GET_POST = gql`
+   query getGroupPosts($groupId: Int) {
+    getGroupPosts(groupId: $groupId) {
+      id
+      tittle
+      content
+      userId
+    }
+  }` 
