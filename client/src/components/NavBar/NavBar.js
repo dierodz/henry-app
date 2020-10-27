@@ -10,6 +10,7 @@ import {
 
 import ViewComfyRoundedIcon from "@material-ui/icons/ViewComfyRounded";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
 import "../../styles/components/NavBar.scss";
 import useStyles from "./NavBar.styles";
@@ -35,28 +36,33 @@ function NavBar({ show, children }) {
       }}
     >
       <List>
-        {user && user.roles.find((role) => role.name === "student") && (
-          <>
-            <NavBarItem
-              title="Cohortes"
-              icon={ClassRounded}
-              to={
-                user.cohortes.length > 0 &&
-                `/student/cohorte/${user.cohortes[0].id}`
-              }
-            />
-            <NavBarItem
-              title="Modulos"
-              icon={AssignmentIndRounded}
-              to="/student/modules"
-            />
-            <NavBarItem
-              title="Grupos"
-              icon={GroupWorkIcon}
-              to="/student/groups"
-            />
-          </>
-        )}
+      {user && user.roles.find((role) =>  role.name === "student") && (
+              <>
+                <NavBarItem
+                  title="Cohortes"
+                  icon={ClassRounded}
+                  to={
+                    user.cohortes.length > 0 &&
+                    `/student/cohorte/${user.cohortes[0].id}`
+                  }
+                />
+                <NavBarItem
+                  title="Modulos"
+                  icon={AssignmentIndRounded}
+                  to="/student/modules"
+                />
+                <NavBarItem
+                  title="Grupos"
+                  icon={GroupWorkIcon}
+                  to="/student/groups"
+                />
+                <NavBarItem
+                  title="Checkpoint"
+                  icon={LibraryBooksIcon}
+                  to="/student/checkpoint"
+                />
+              </>
+            )}
         <Divider />
         {user && user.roles.find((role) => role.name !== "student") && (
           <>

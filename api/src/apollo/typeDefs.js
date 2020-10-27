@@ -23,6 +23,8 @@ const typeDefs = gql`
       topicName: String
       durationTime: Int
       readme: String
+      lessons: [Lesson]
+      moduleId: Int
    }
 
    input contentInput {
@@ -30,6 +32,7 @@ const typeDefs = gql`
       durationTime: Int
       readme: String!
       moduleId: Int!
+      link: String
    }
 
    enum GroupTypes {
@@ -92,8 +95,7 @@ const typeDefs = gql`
    type Lesson {
       id: Int
       link: String
-      name: String
-      readme: String
+      contentId: Int
    }
 
    type MatesScore {
@@ -348,7 +350,9 @@ const typeDefs = gql`
       deletePost(id: Int): DeleteResolve!
 
       #Mutaciones para Lessons
-      createLesson(link: String, name: String, readme: String): [Lesson!]
+      createLesson(link: String!, contentId: Int!): Lesson!
+      updateLesson(id: Int!, link: String!): Lesson!
+      deleteLesson(id: Int!): DeleteResolve!
    }
 `;
 

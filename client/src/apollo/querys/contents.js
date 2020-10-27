@@ -7,6 +7,11 @@ export const CONTENTS = gql`
       topicName
       durationTime
       readme
+      moduleId
+      lessons {
+        id
+        link
+      }
     }
   }
 `;
@@ -18,6 +23,11 @@ export const CONTENT_ID = gql`
       topicName
       durationTime
       readme
+      moduleId
+      lessons {
+        id
+        link
+      }
     }
   }
 `;
