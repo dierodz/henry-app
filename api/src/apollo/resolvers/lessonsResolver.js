@@ -2,6 +2,8 @@ const {
    getAllClases,
    getLessonById,
    createLesson,
+   updateLesson: updLesson,
+   deleteLesson,
 } = require("../../controllers/vimeoController");
 
 const lessonsQuery = {
@@ -14,8 +16,14 @@ const lessonsQuery = {
 };
 
 const lessonsMutations = {
-   createLesson: async (_, { link, readme, name }) => {
-      return await createLesson({ link, readme, name });
+   createLesson: async (_, { link, contentId }) => {
+      return await createLesson({ link, contentId });
+   },
+   updateLesson: async (_, { id, link }) => {
+      return await updLesson({ id, link });
+   },
+   deleteLesson: async (_, { id }) => {
+      return await deleteLesson(id);
    },
 };
 

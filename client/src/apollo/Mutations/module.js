@@ -23,3 +23,12 @@ export const DELETE_MODULE = gql`
     }
   }
 `;
+
+export const GET_ALL_MODULES = gql`
+  mutation getAllModule($name: String, $description: String) {
+    getAllModule(name: $name, description: $description) {
+      names
+      description
+    }
+  }
+`;

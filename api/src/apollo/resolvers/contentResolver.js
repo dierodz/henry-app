@@ -15,7 +15,6 @@ const contents = async (_, { id, topicName, where, limit, offset, order }) => {
 
 const contentMutations = {
    createContent: async (_, { input }) => {
-      console.log(input);
       return await createContent({ ...input });
    },
 
@@ -24,7 +23,7 @@ const contentMutations = {
    },
 
    deleteContent: async (_, { id }) => {
-      return await deleteTopic({ id });
+      return await deleteTopic(id);
    },
 };
 

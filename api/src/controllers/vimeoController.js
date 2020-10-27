@@ -1,7 +1,9 @@
 const { Lesson } = require("../db");
+const { getOneTopic } = require("./contentController");
 
 //Vimeo Api
 let Vimeo = require("vimeo").Vimeo;
+
 let client = new Vimeo(
    "cd76cadcc03e452c4fe561aa8401dcbba33d5f1c",
    "UMKTV+hzJ/UjgD6JuFZoIM+HuF9YYRPnNwRl7qVKW0zdI8oSun1pS7fwF+zxbvekxns+DZnnWZ1fb2gJIu1QmfI0OTv20hcFoT1iwp6hcRKlM82vSL5H8ruJulpWdphE",
@@ -41,26 +43,28 @@ const getLessonById = async (id) => {
    return clases;
 };
 
-const createLesson = async ({ name, link, readme }) => {
-   return await Lesson.create({ name, link, readme });
+const createLesson = async ({ link, contentId }) => {
+   const content = await getOneTopic({ id: contentId });
+   const lesson = await Lesson.create({ link });
+
+   await content.addLesson(lesson);
+
+   return lesson;
 };
 
-const updateLesson = async ({ name, link, readme, id }) => {
-   const lesson = Lesson.findOne({ where: { id } });
+const updateLesson = async ({ link, id }) => {
+   const lesson = await Lesson.findOne({ where: { id } });
 
-   return await lesson.update({ name, link, readme });
+   return await lesson.update({ link });
 };
 
 const deleteLesson = async (id) => {
-   const lesson = Lesson.findOne({ where: { id } });
+   const lesson = await Lesson.findOne({ where: { id } });
 
    await lesson.destroy();
 
    return { message: "Se removio correctamente." };
 };
-// const createReadme = async () =>{
-
-// }
 
 module.exports = {
    // asignarClase,

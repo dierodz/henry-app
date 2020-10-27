@@ -6,11 +6,12 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 const PmTabTop = createMaterialTopTabNavigator()
 
 
-export default function PmRoutes(props) {
+export default function PmRoutes({route}) {
+
     return (
       <PmTabTop.Navigator>
-        <PmTabTop.Screen name="Pm" initialParams={{screen:"Pm"}} component={General} />
-        <PmTabTop.Screen name="Participantes" initialParams={{screen:"Pm"}} component={Participantes} />
+        <PmTabTop.Screen initialParams={{id: route.params.id, screen:"Group"}} name="Pm"  component={General} />
+        <PmTabTop.Screen initialParams={{id: route.params.id, screen:"Group"}}  name="Participantes" component={Participantes} />
       </PmTabTop.Navigator>
     );
   }
