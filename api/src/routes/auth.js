@@ -45,7 +45,7 @@ router.route("/mobile/google").post(async (req, res) => {
       return res.status(400).json({ message: "El usuario no está registrado" });
    }
 
-   const token = jwt.sign({ uid: user.id }, process.env.SECRET);
+   const token = jwt.sign({ uid: response.id }, process.env.SECRET);
    res.json({ user: response, token });
 });
 

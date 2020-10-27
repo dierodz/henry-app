@@ -26,9 +26,9 @@ export const GoogleInitialize = () => {
         );
 
         if (data) {
-          const { user, token } = data;
+          const { user: userDb, token } = data;
           await AsyncStorage.setItem("token", token);
-          dispatch(login(user.id, user, token));
+          dispatch(login(userDb.id, userDb, token));
           dispatch(finishLoading());
         }
       }
@@ -101,16 +101,4 @@ export const signInWithToken = (token) => {
       dispatch(finishLoading());
     }
   };
-};
-
-export const signInWithGoogle = () => {
-  if (window) {
-    window.location = `${REACT_APP_API_REMOTE}/auth/google`;
-  }
-};
-
-export const signInWithGithub = () => {
-  if (window) {
-    window.location = `${REACT_APP_API_REMOTE}/auth/github`;
-  }
 };

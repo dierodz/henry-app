@@ -10,6 +10,7 @@ import { useQuery } from "@apollo/client";
 import Loading from "../../components/Loading/Loading";
 import { GET_COHORTE_USER } from "../../apollo/querys/cohorte";
 import { useSelector } from "react-redux";
+import { GET_USERS_GROUP } from "../../apollo/querys/groups";
 
 const Drawer = createDrawerNavigator();
 
@@ -17,7 +18,7 @@ export default function DrawerRoutes(props) {
   const handleTheme = props.handleTheme;
   const { user } = useSelector((state) => state.auth);
 
-  const { loading, error, data, refetch } = useQuery(GET_COHORTE_USER, {
+  const { loading, data } = useQuery(GET_COHORTE_USER, {
     variables: {
       where: {
         id: user.id,
@@ -25,14 +26,37 @@ export default function DrawerRoutes(props) {
     },
   });
 
-  return loading ? (
+  const standUp = useQuery(GET_USERS_GROUP, {
+    variables: {
+      where: {
+        id: user.id,
+        Group: {
+          type: "standup",
+        },
+      },
+    },
+  });
+
+  const pairProgramming = useQuery(GET_USERS_GROUP, {
+    variables: {
+      where: {
+        id: user.id,
+        Group: {
+          type: "pp",
+        },
+      },
+    },
+  });
+
+  return loading || standUp.loading || pairProgramming.loading ? (
     <Loading />
   ) : (
     <Drawer.Navigator
       drawerContent={(props) => (
         <DrawerLayout
           {...props}
-          cohortes={data && data?.users[0]?.cohortes}
+          pairProgramming={user.groups}
+          cohortes={user.cohortes}
           handleTheme={handleTheme}
         />
       )}
@@ -47,14 +71,23 @@ export default function DrawerRoutes(props) {
             component={CohorteRoutes}
           />
         ))}
-      <Drawer.Screen name="PmRoutes" component={PmRoutes} />
+      <Drawer.Screen
+        initialParams={{
+          id: user.groups[0].id,
+          name: user.groups[0].name,
+        }}
+        name="PmRoutes"
+        component={PmRoutes}
+      />
       <Drawer.Screen name="CalendarioRoutes" component={CalendarioRoutes} />
       <Drawer.Screen name="PerfilRoutes" component={PerfilRoutes} />
-      {[
-        { id: 1, title: "Grupo1" },
-        { id: 2, title: "Grupo2" },
-      ].map((e) => (
-        <Drawer.Screen key={e.id} name={e.title} component={GruposRoutes} />
+      {user.groups.map((e) => (
+        <Drawer.Screen
+          initialParams={{ id: e.id }}
+          key={e.id}
+          name={e.name}
+          component={GruposRoutes}
+        />
       ))}
     </Drawer.Navigator>
   );
