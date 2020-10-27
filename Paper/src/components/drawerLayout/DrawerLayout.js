@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
@@ -16,12 +15,15 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import UserImage from "../userImage/UserImage";
+import { List } from "react-native-paper";
 
 export default function DrawerLayout(props) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   const paperTheme = useTheme();
+  const cohortes = props.cohortes;
+  const pairProgramming = props.pairProgramming;
+
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.drawerContent}>
@@ -34,27 +36,29 @@ export default function DrawerLayout(props) {
             {user.cohortes.length === 0 ? "" : user.cohortes[0].name}
           </Caption>
         </View>
-        <ProgressBar progress={0.5} />
-
+        <ProgressBar progress={0.3} />
         <Drawer.Section style={styles.drawerSection}>
-          <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="school" color={color} size={size} />
-            )}
-            label="Cohorte"
-            onPress={() => props.navigation.navigate("CohorteRoutes")}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
+          <List.Accordion
+            style={{ marginHorizontal: 10 }}
+            titleStyle={{ marginLeft: 24, fontSize: 14, fontWeight: "500" }}
+            title="Cohortes"
+            left={(props) => (
               <MaterialCommunityIcons
-                name="account-group-outline"
-                color={color}
-                size={size}
+                name="school"
+                color={props.color}
+                size={24}
               />
             )}
-            label="Grupos"
-            onPress={() => props.navigation.navigate("GruposRoutes")}
-          />
+          >
+            {cohortes &&
+              cohortes.map((e) => (
+                <List.Item
+                  key={e.id}
+                  title={e.name}
+                  onPress={() => props.navigation.navigate(e.name)}
+                />
+              ))}
+          </List.Accordion>
           <DrawerItem
             icon={({ color, size }) => (
               <MaterialCommunityIcons name="coffee" color={color} size={size} />
@@ -62,7 +66,29 @@ export default function DrawerLayout(props) {
             label="PM"
             onPress={() => props.navigation.navigate("PmRoutes")}
           />
+          <List.Accordion
+            style={{ marginHorizontal: 10 }}
+            titleStyle={{ marginLeft: 24, fontSize: 14, fontWeight: "500" }}
+            title="Grupos"
+            left={(props) => (
+              <MaterialCommunityIcons
+                name="account-group-outline"
+                color={props.color}
+                size={24}
+              />
+            )}
+          >
+            {pairProgramming &&
+              pairProgramming.map((e) => (
+                <List.Item
+                  key={e.id}
+                  title={e.name}
+                  onPress={() => props.navigation.navigate(e.name)}
+                />
+              ))}
+          </List.Accordion>
         </Drawer.Section>
+
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
             icon={({ color, size }) => (
@@ -73,7 +99,7 @@ export default function DrawerLayout(props) {
               />
             )}
             label="Calendario"
-            onPress={() => {}}
+            onPress={() => props.navigation.navigate("CalendarioRoutes")}
           />
         </Drawer.Section>
 
@@ -89,13 +115,6 @@ export default function DrawerLayout(props) {
             label="Mi Perfil"
             onPress={() => props.navigation.navigate("PerfilRoutes")}
           />
-          {/* <DrawerItem
-            icon={({ color, size }) => (
-              <MaterialCommunityIcons name="tune" color={color} size={size} />
-            )}
-            label="Configuración"
-            onPress={() => {}}
-          /> */}
         </Drawer.Section>
         <Drawer.Section title="Estilo">
           <TouchableRipple onPress={() => props.handleTheme()}>

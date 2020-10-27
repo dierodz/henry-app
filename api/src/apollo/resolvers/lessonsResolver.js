@@ -1,10 +1,25 @@
-const { getAllClases } = require("../../controllers/vimeoController");
+const {
+   getAllClases,
+   getLessonById,
+   createLesson,
+} = require("../../controllers/vimeoController");
 
-const lessons = async (_, {}) => {
-   return await getAllClases();
- };
+const lessonsQuery = {
+   lessons: async (_, { id, where, limit, offset, order }) => {
+      if (id) {
+         return await getLessonById(id);
+      }
+      return await getAllClases(where, limit, offset, order);
+   },
+};
 
+const lessonsMutations = {
+   createLesson: async (_, { link, readme, name }) => {
+      return await createLesson({ link, readme, name });
+   },
+};
 
- module.exports = {
-    lessons
- };
+module.exports = {
+   lessonsQuery,
+   lessonsMutations,
+};

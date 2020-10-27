@@ -1,0 +1,15 @@
+.cohorteDetailItem {
+    display: flex;
+    flex-direction: column;
+    margin: 0 5px 5px 5px;
+    width: 90%;
+}
+.cohorteDetailItem p {
+    font-size: 130%;
+    margin-bottom: 10px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.cohorteDetailItem span {
+    font-size: 100%;
+    font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

@@ -1,57 +1,86 @@
-import React, { useEffect, useMemo } from "react";
-import { useMutation } from "@apollo/client";
+import React, { useEffect, useMemo, useState } from "react";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { useHistory } from "react-router-dom";
 import { CREATE_GROUP } from "apollo/Mutations/groups";
 import { ADD_GROUP_TO_COHORTE } from "apollo/Mutations/cohortes";
-import { hooks } from "shared";
+import { GROUPS, COUNT_GROUPS } from "apollo/querys/groups";
 
-const { useGroups } = hooks;
+function Groups({
+  className,
+  cohorte,
+  data: componentData,
+  loading: componentLoading,
+  onRefetch,
+}) {
+  const [
+    execute,
+    { loading: queryLoading, error, data: preData, refetch: preRefetch },
+  ] = useLazyQuery(GROUPS);
 
-function Groups({ className, cohorte, onRefetch }) {
-  const {
-    fetch,
-    refetch,
-    result,
-    count,
-    loading: fetchLoading,
-    rowsPerPageOptions,
-    rowsPerPage,
-    onChangePage,
-    onChangeRowsPerPage,
-    page,
-  } = useGroups({
-    where: { cohorteId: cohorte.id },
-    order: ["name"],
-  });
-  useEffect(() => {
-    fetch();
-  }, [rowsPerPage, page, fetch]);
+  const [executeCount, { data: count }] = useLazyQuery(COUNT_GROUPS);
 
   const [createGroup, { loading: createLoading }] = useMutation(CREATE_GROUP);
   const [addGroupToCohorte, { loading: addLoading }] = useMutation(
     ADD_GROUP_TO_COHORTE
   );
 
-  const loading = useMemo(() => fetchLoading || createLoading || addLoading, [
-    fetchLoading,
-    createLoading,
-    addLoading,
-  ]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  function onChangePage(_, page) {
+    setPage(page);
+  }
+  function onChangeRowsPerPage(e) {
+    setRowsPerPage(e.target.value);
+  }
+
+  const variables = useMemo(
+    () => ({
+      where: cohorte ? { cohorteId: cohorte.id } : undefined,
+      limit: rowsPerPage,
+      offset: rowsPerPage * page,
+    }),
+    [rowsPerPage, page, cohorte]
+  );
+
+  useEffect(() => {
+    if (cohorte) {
+      execute({
+        variables,
+      });
+      executeCount({ variables });
+    }
+  }, [cohorte, execute, executeCount, variables]);
+
+  const loading = useMemo(
+    () => queryLoading || componentLoading || createLoading || addLoading,
+    [queryLoading, componentLoading, createLoading, addLoading]
+  );
+
+  const data = useMemo(
+    () =>
+      preData?.groups.map((grupo) => {
+        const grupototal = { ...grupo, qty: grupo.students.length };
+        return grupototal;
+      }) || componentData?.cohortes[0].groups,
+    [preData, componentData]
+  );
 
   const { push } = useHistory();
   const tableData = useMemo(
     () => ({
       loading,
-      data: result,
+      error,
+      data: data,
       columns: [
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
+        { key: "qty", label: "Cant Alumnos", align: "left" },
       ],
       addButtonLabel: "Crear grupo",
       actions: {
         view: {
-          onSubmit: (id) => push(`/group/${id}`),
+          onSubmit: (id) => push(`/admin/group/${id}`),
         },
         create: {
           initialValues: {
@@ -70,7 +99,7 @@ function Groups({ className, cohorte, onRefetch }) {
                 },
               });
             }
-            if (cohorte) refetch();
+            if (cohorte) preRefetch();
             else onRefetch && onRefetch();
           },
           inputs: [{ key: "name", label: "Nombre" }],
@@ -78,14 +107,15 @@ function Groups({ className, cohorte, onRefetch }) {
       },
     }),
     [
+      data,
+      error,
       loading,
       push,
       createGroup,
       addGroupToCohorte,
       onRefetch,
-      refetch,
+      preRefetch,
       cohorte,
-      result,
     ]
   );
 
@@ -94,12 +124,11 @@ function Groups({ className, cohorte, onRefetch }) {
       <Tabla
         loading={loading}
         data={tableData}
-        count={count}
+        count={count?.countGroups || undefined}
         page={page}
         rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={rowsPerPageOptions}
-        onChangePage={(_, page) => onChangePage(page)}
-        onChangeRowsPerPage={(e) => onChangeRowsPerPage(e.target.value)}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangeRowsPerPage}
       />
     </div>
   );

@@ -1,4 +1,26 @@
 const {
+   createPost,
+   getPost,
+   editPost,
+   deletePost,
+   getCohortePosts,
+   getUserPosts,
+   getGroupPosts,
+   subscribePost,
+} = require("./resolvers/postResolver");
+const {
+   mateReview,
+   createReview,
+   updateReview,
+   deleteReview,
+} = require("./resolvers/mateReviewResolver");
+const {
+   matesScore,
+   deleteMatesScore,
+   updateMatesScore,
+   createMatesScore,
+} = require("./resolvers/mateScoreResolver");
+const {
    cohortesQuery,
    cohorteResolver,
 } = require("./resolvers/cohorteResolver");
@@ -9,13 +31,8 @@ const {
    deleteCheckPoint,
    createCheckPoint,
 } = require("./resolvers/checkPointResolver");
-const { contents } = require("./resolvers/contentResolver");
-const {
-   modules,
-   createModule,
-   updateModule,
-   deleteModule,
-} = require("./resolvers/moduleResolver");
+const { contents, contentMutations } = require("./resolvers/contentResolver");
+const { moduleMutations, moduleQuerys } = require("./resolvers/moduleResolver");
 const {
    roles,
    deleteRole,
@@ -39,19 +56,33 @@ const {
    getInstructorOfGrups,
 } = require("../controllers/groupController");
 
-const { lessons } = require("./resolvers/lessonsResolver");
+const {
+   lessonsQuery,
+   lessonsMutations,
+} = require("./resolvers/lessonsResolver");
 
 const resolvers = {
+   Subscription: {
+      subscribePost,
+   },
    Query: {
       checkPoints,
       ...cohortesQuery,
       contents,
-      modules,
+      ...moduleQuerys,
       roles,
       scores,
+      matesScore,
+      mateReview,
+      getPost,
+      getCohortePosts,
+      getUserPosts,
+      getGroupPosts,
       ...groupQuerys,
       ...userQuerys,
+      ...lessonsQuery,
    },
+
    Mutation: {
       //Mutations for Cohortes
       ...cohorteResolver,
@@ -62,9 +93,7 @@ const resolvers = {
       updateCheckPoint,
       deleteCheckPoint,
       // Mutations fot Modules
-      createModule,
-      updateModule,
-      deleteModule,
+      ...moduleMutations,
       // Mutations for Roles,
       createRole,
       updateRole,
@@ -75,6 +104,22 @@ const resolvers = {
       deleteScore,
       // Mutaciones para groups
       ...groupResolver,
+      //mutations para mateScores
+      deleteMatesScore,
+      updateMatesScore,
+      createMatesScore,
+      //mutations para reviews
+      createReview,
+      updateReview,
+      deleteReview,
+      //mutation para posts
+      createPost,
+      editPost,
+      deletePost,
+
+      //Mutaciones de contenidos
+      ...contentMutations,
+      ...lessonsMutations,
    },
 
    Cohorte: {
@@ -98,6 +143,11 @@ const resolvers = {
 
       students: async ({ id }) => {
          return await getStudentOfGrups(id);
+      },
+   },
+   Post: {
+      user: async ({ userId }) => {
+         return await getUserById(userId);
       },
    },
 };

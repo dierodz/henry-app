@@ -1,55 +1,67 @@
 import * as React from "react";
-import { View } from "react-native";
-import { Text,IconButton,  Card, Title, Avatar, TextInput} from "react-native-paper";
-import { useSelector } from "react-redux";
-import Hyperlink from 'react-native-hyperlink'
+import { View, FlatList } from "react-native";
+import PostCard from "../../components/PostCard/PostCard";
+import { useQuery } from "@apollo/client";
+import Loading from "../../components/Loading/Loading";
+import {GET_POST,SUBSCRIBE_POST} from "../../apollo/subscribes/post"
 
 
-export default function Cohorte({ navigation }) {
-  const { user } = useSelector((state) => state.auth);
-  const [text, setText] = React.useState('');
+export default function Cohorte({route}) {
+  const { cohorteId, groupId } = React.useMemo(() => ({ cohorteId: route.params.id }), [route.params.id ]);
+  const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
+    variables: { where: { cohorteId, groupId } },
+  });
 
-  return (
-    <>
-    <View
-      style={{
-        flex: 1,
-        padding: 20,
-        alignItems: "center",
-      }}
-    >
-      <Card style={{ width: "100%" }}>
-        <Card.Title
-          title={user.givenName + " " + user.familyName}
-          subtitle={user.nickName}
-          left={(props) => <Avatar.Image {...props} source={{uri:user.photoUrl}} />}
-        />
-        <Card.Content>
-          <Title>Libreria de React-native</Title>
-          <Hyperlink linkDefault={ true } linkStyle={ { color: '#2980b9', fontSize: 16 } }>
-           <Text>Les paso la libreria de react native: https://reactnative.dev/</Text>
-          </Hyperlink>
-        </Card.Content>
-      </Card>
-    </View>
-    <View style={{ width:"100%", bottom:0,flexDirection:"row" } } >
-    <TextInput
-        style={{ width:"100%", bottom:0, flex:1, } } 
-      label="Posteá!"
-      placeholder="Posteá!"
-      value={text}
-      onChangeText={text => setText(text)}
-      right={<TextInput.Icon name={() =><IconButton
-        style={{alignSelf:"center"} } 
-        width="100%"
-        icon="send"
-        size={20}
-        onPress={() => {alert(text)
-          setText('')
+  React.useEffect(() => {
+    subscribeToMore({
+      document: SUBSCRIBE_POST,
+      variables: { cohorteId, groupId },
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log(prev, subscriptionData);
+        if (!subscriptionData.data) return prev;
+        return Object.assign({}, prev, {
+          getPost: [...prev.getPost, subscriptionData.data.subscribePost],
+        });
+      },
+    });
+  }, [subscribeToMore]);
+
+  const data = React.useMemo(() => {
+    if (preData) {
+      return preData.getPost.map(({ id, tittle, content, user }) => ({
+        id,
+        name:
+          user.givenName.charAt(0).toUpperCase() +
+          user.givenName.slice(1) +
+          " " +
+          (user.familyName.charAt(0).toUpperCase() + user.familyName.slice(1)),
+        nickName: user.nickName,
+        photoUrl: user.photoUrl,
+        title: tittle,
+        content,
+      }));
+    }
+    return undefined;
+  }, [preData]);
+
+  return loading ? (
+    <Loading />
+  ) : (
+      <View
+        style={{
+          flex: 1,
+          padding: 20,
+          alignItems: "center",
         }}
-        />}/>}
-    />
-    </View>
-    </>
+      >
+        <FlatList
+          style={{ width: "100%" }}
+          data={data}
+          renderItem={PostCard}
+          keyExtractor={(props) => {
+            return props.id.toString();
+          }}
+        />
+      </View>
   );
 }
