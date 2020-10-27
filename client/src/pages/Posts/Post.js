@@ -5,15 +5,20 @@ import { useParams } from "react-router-dom";
 import { GET_POST, SUBSCRIBE_POST } from "apollo/Mutations/postSub";
 import Loading from "components/Loading";
 
+
 export const Post = () => {
+
+    
   const { id } = useParams();
   //suscripciones
   const { groupId } = React.useMemo(() => ({ groupId: parseInt(id) }), [id]);
+  //const groupId =  parseInt(id) 
+
 
   const { data: preData, loading, subscribeToMore } = useQuery(GET_POST, {
-    variables: { where: { groupId } },
+    variables:  groupId 
   });
-
+  console.log('predata',preData, groupId,loading, subscribeToMore);
   //use effect para la suscripcion
 
   useEffect(() => {
@@ -21,18 +26,21 @@ export const Post = () => {
       document: SUBSCRIBE_POST,
       variables: { groupId },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log(prev, subscriptionData);
+        console.log('hola', prev, subscriptionData);
         if (!subscriptionData.data) return prev;
         return Object.assign({}, prev, {
           getPost: [...prev.getPost, subscriptionData.data.subscribePost],
         });
+
       },
     });
-  }, [groupId, subscribeToMore]);
+  }, [groupId, subscribeToMore], preData);
 
   // mapeo de los datos recibidos
   const data = useMemo(() => {
     if (preData && preData) {
+
+  console.log('prev', preData)
       const laData = preData.getPost.map((post) => ({
         id: post?.id,
         // name: `${
