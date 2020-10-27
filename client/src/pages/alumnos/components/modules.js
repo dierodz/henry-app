@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 const ModuleStudent = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const { id } = useParams();
   const variables = { id: parseInt(id) };
 
@@ -14,19 +14,30 @@ const ModuleStudent = () => {
   });
 
   const data = useMemo(() => {
-    if (preData) {
-      return preData.modules[0].contents;
-    }
+    if (Array.isArray(preData?.modules)) {
+      return preData.modules.map((module) => {
+        return {
+          ...module,
+        };
+      });
+    } else return preData;
   }, [preData]);
-
+ 
   const tableData = useMemo(
     () => ({
       loading,
       error,
       data,
       columns: [
-        { key: "topicName", label: "Nombre del contenido", align: "left" },
+        { key: "name", label: "Modulo", align: "left" },
       ],
+      actions: {
+        view: {
+          onSubmit: (id) => {
+          history.push("/student/modules/" + id);
+          },
+        },
+      }
     }),
     [data, error, loading]
   );

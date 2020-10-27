@@ -6,11 +6,11 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import { Link } from "react-router-dom";
 import "../../styles/components/Header.scss";
 import useStyles from "./useStyles";
+import { Avatar } from "@material-ui/core";
 
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "dispatchers/auth";
@@ -48,7 +48,6 @@ export default function Header({ handleShowMenu }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -63,7 +62,8 @@ export default function Header({ handleShowMenu }) {
       <div className="userMenu">
         <img alt="userImg" src={user.photoUrl || "/Imagenes/user.png"}></img>
         <p className="userName">
-          {user.givenName && capitalizeFirstLetter(user.givenName)} {user.familyName && capitalizeFirstLetter(user.familyName)}
+          {user.givenName && capitalizeFirstLetter(user.givenName)}{" "}
+          {user.familyName && capitalizeFirstLetter(user.familyName)}
         </p>
         <button className="perfilBtn" onClick={() => history.push("/profile")}>
           Perfil
@@ -109,7 +109,7 @@ export default function Header({ handleShowMenu }) {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar src={user.photoUrl || "/Imagenes/user.png"} />
         </IconButton>
         <p>Perfil</p>
       </MenuItem>
@@ -155,7 +155,7 @@ export default function Header({ handleShowMenu }) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar src={user.photoUrl || "/Imagenes/user.png"} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

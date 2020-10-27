@@ -25,7 +25,6 @@ function NavBar({ show, children }) {
     () => (show ? classes.drawerOpen : classes.drawerClose),
     [show, classes]
   );
-
   return (
     <Drawer
       open={true}
@@ -36,7 +35,6 @@ function NavBar({ show, children }) {
         paper: [classShow, classes.drawerPaper].join(" "),
       }}
     >
-
       <List>
       {user && user.roles.find((role) =>  role.name === "student") && (
               <>

@@ -13,6 +13,7 @@ function GroupStudent(className) {
   const { loading: queryLoading, error, data, refetch } = useQuery(USER_FULL, {
     variables,
   });
+data && console.log(user);
 
   const [createGroup, resultCreate] = useMutation(CREATE_GROUP);
   const [removeGroup, resultDelete] = useMutation(DELETE_GROUP);
@@ -61,8 +62,7 @@ function GroupStudent(className) {
                 studentId: data && data.users[0].id,
               },
             };
-            console.log(datos);
-            await createGroup({
+               await createGroup({
               variables: {
                 name: datos.variables.name,
                 type: datos.variables.type,
@@ -71,22 +71,21 @@ function GroupStudent(className) {
             });
           },
         },
-        delete: {
+       delete: {
           onSubmit: async (values) => {
-            const datos = {
-              variables: {
-                id: values,
-              },
-            };
-            console.log(datos);
-            await removeGroup({
-              variables: {
-                id: parseInt(datos.variables.id),
-              },
-            });
-          },
-        },
-
+                    const datos = {
+                      variables: {
+                        id: values,
+                      },
+                    };
+                    await removeGroup({
+                      variables: {
+                        id: parseInt(datos.variables.id),
+                      },
+                    });
+                  },
+                },
+                
         view: {
           onSubmit: (id) => push(`/student/groups/${id}`),
         },
@@ -108,7 +107,7 @@ function GroupStudent(className) {
   }, [resultDelete, refetch]);
 
   return (
-    <div className={className} style={{ height: "50vh", width: "100%" }}>
+    <div className={className} style={{ height: "100%", width: "100%" }}>
       <Tabla loading={loading} data={tableData} />
     </div>
   );

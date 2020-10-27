@@ -229,7 +229,7 @@ const ContentDetail = ({ moduleId }) => {
 
       {/* VISTA PREVIA DEL MARKDONW */}
 
-      {/* <MEDitor.Markdown source={value} /> */}
+      {/* <MEDitor.Markdown source={readme} /> */}
 
       {/* REPRODUCTOR CLASE GLABADA */}
     </div>

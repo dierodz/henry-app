@@ -20,10 +20,13 @@ import GroupStudent from "pages/alumnos/components/GroupStudent";
 import ModuleScreen from "pages/admin/ModuleScreen";
 import ContentsScreen from "pages/admin/ContentsScreen";
 import ContentDetail from "pages/admin/ContentDetail";
+import InstructorCohortes from "pages/admin/InstructorCohortes";
 import GroupStudentPP from "pages/alumnos/components/GroupStudentPP";
 import Group from "pages/admin/Group"
 import { Post } from "pages/Posts/Post";
 import ModuleStudent from "pages/alumnos/components/modules";
+import ContentsModule from "pages/alumnos/components/contentModule";
+import ContentDetailStudent from "pages/alumnos/components/ContentStudentDetail";
 
 
 const GeneralRoutes = () => {
@@ -65,6 +68,7 @@ const GeneralRoutes = () => {
           <Route exact path="/admin/pm" component={PM} />
           <Route exact path="/admin/alumns" component={Alumns} />
           <Route exact path="/admin/group/:id" component={Group} />
+          <Route exact path="/admin/instructor/:id/cohortes" component={InstructorCohortes} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/profile/:id" component={Profile} />
           <Route path="/auth/signin" component={LoginScreen} />
@@ -82,7 +86,9 @@ const GeneralRoutes = () => {
           <Route exact path="/student/groups" component={GroupStudent} />
           <Route exact path="/group/:id/posts" component={Post} />
           <Route exact path="/student/modules/" component={ModuleStudent} />
+          <Route exact path="/student/modules/:id" component={ContentsModule} />
           <Route exact path="/student/groups/:id" component={GroupStudentPP} />
+          <Route exact path="/student/modules/content/:id" component={ContentDetailStudent}/>
         </Switch>
       </div>
     </>
