@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Post } from "pages/Posts/Post";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
@@ -9,6 +9,15 @@ import {
 } from "apollo/Mutations/users";
 import { GROUPS } from "apollo/querys/groups";
 import { useParams } from "react-router-dom";
+import Alumns from "./Cohortes/Alumns";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
+import PeopleIcon from '@material-ui/icons/People';
 
 function GroupStudentPP(className) {
   let { id } = useParams();
@@ -100,11 +109,39 @@ function GroupStudentPP(className) {
 
   return (
     <>
-      <div className={className} style={{ height: "50vh", width: "100%" }}>
-        <Tabla loading={loading} data={tableData} />
+     <div className={className} style={{ height: "10vh", width: "10vh", marginLeft: "92%"}}>
+        <AlumnsComponent tableData={tableData} />
       </div>
 
       <Post />
+    </>
+  );
+}
+
+function AlumnsComponent(tableData) {
+  console.log(tableData)
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setShow(true)} style={{borderRadius: 80 }} >
+      <PeopleIcon style={{ fontSize: 40}} label="Alumnos" />
+      </Button>
+      <Dialog
+        open={show}
+        onClose={() => setShow(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Alumnos</DialogTitle>
+        <DialogContent>
+          <Tabla data={tableData.tableData} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setShow(false)} color="primary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
