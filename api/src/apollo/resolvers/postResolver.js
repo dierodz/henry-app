@@ -66,7 +66,6 @@ const getUserPosts = async (_, { userId }) => {
 };
 
 const getGroupPosts = async (_, { groupId }) => {
-   console.log(groupId);
    const posts = await returnGroupPosts(groupId);
    return posts;
 };
