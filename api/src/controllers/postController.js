@@ -1,7 +1,9 @@
-const { Post } = require("../db");
+const { Post, Group, Cohorte, parseWhere } = require("../db");
 const { getUserById } = require("./userController");
 const { getEspecificCohorte } = require("./cohorteController");
 const { getOneGroup } = require("./groupController");
+
+const include = [Cohorte, Group];
 
 // Este controller crea un post y los setea a usuario y cohorte
 const createPost = async (tittle, content, userId, cohorteId, groupId) => {
@@ -72,7 +74,22 @@ const deletePost = async (id) => {
 
 //Este controller retorna todos los posts
 const getAllPosts = async ({ where, limit, offset, order }) => {
-   return await Post.findAll({ where, limit, offset, order });
+   let localInclude = [...include];
+   if (where["Cohorte"]) {
+      localInclude[0] = { model: Cohorte, where: parseWhere(where.Cohorte) };
+      delete where.Cohorte;
+   }
+   if (where["Group"]) {
+      localInclude[1] = { model: Group, where: parseWhere(where.Group) };
+      delete where.Group;
+   }
+   return await Post.findAll({
+      where,
+      limit,
+      offset,
+      order,
+      include: localInclude,
+   });
 };
 
 // Este controller retorna todos los posts que ha hecho una persona
