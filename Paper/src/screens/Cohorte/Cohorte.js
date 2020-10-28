@@ -17,7 +17,6 @@ export default function Cohorte({route}) {
       document: SUBSCRIBE_POST,
       variables: { cohorteId, groupId },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log(prev, subscriptionData);
         if (!subscriptionData.data) return prev;
         return Object.assign({}, prev, {
           getPost: [...prev.getPost, subscriptionData.data.subscribePost],
