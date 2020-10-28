@@ -39,7 +39,7 @@ const ModuleStudent = () => {
         },
       }
     }),
-    [data, error, loading]
+    [data, error, loading, history]
   );
 
   return (

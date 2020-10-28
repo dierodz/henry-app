@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import MEDitor from "@uiw/react-md-editor";
 
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { CONTENT_ID } from "apollo/querys/contents";
 import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { MODULES } from "apollo/querys/modules";
 
 const ContentDetailStudent = ({ moduleId }) => {
 
@@ -17,14 +15,14 @@ const ContentDetailStudent = ({ moduleId }) => {
     link: "",
   });
 
-  const modules = useQuery(MODULES);
-  const history = useHistory();
-  const { topicName, durationTime, link } = values;
+  
+  
+  const {link} = values;
   const { id } = useParams();
   const variables = {
     id: id && parseInt(id),
   };
-  const { data, refetch } = useQuery(CONTENT_ID, { variables });
+  const { data } = useQuery(CONTENT_ID, { variables });
 
   useEffect(() => {
     if (!isNaN(id)) {
@@ -43,12 +41,14 @@ const ContentDetailStudent = ({ moduleId }) => {
       }
     }
   }, [data, id]);
-
+  console.log(link);
   return (
     <div className="container">
       <div style={{ padding: "50px 0 0 0" }} />
       <iframe 
-        src="https://player.vimeo.com/video/426051769"
+        X-Frame-Options
+        title="Video"
+        src={link}
         width="640" 
         height="360" 
         frameborder="0" 
