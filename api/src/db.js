@@ -16,6 +16,7 @@ const LessonModels = require("./models/Lesson");
 
 const matesScoreModels = require("./models/ClassmatesScore");
 const mateReviewModels = require("./models/MateReview");
+const postModels = require("./models/Posts")
 
 // ======================= FIN Importación de modelos =======================
 
@@ -48,6 +49,7 @@ const Group_users = group_userModels(sequelize, DataTypes);
 const MatesScoreType = matesScoreModels(sequelize, DataTypes);
 const MateReview = mateReviewModels(sequelize, DataTypes);
 const Lesson = LessonModels(sequelize, DataTypes);
+const Post = postModels(sequelize, DataTypes);
 // =================== FIN Creación de entidades en la BD ===================
 
 // ==========================================================================
@@ -85,6 +87,7 @@ Group.belongsToMany(User, { through: Group_users });
 // Relación calificación y opinión con el tipo
 MatesScoreType.hasMany(MateReview);
 MateReview.belongsTo(MatesScoreType);
+
 // Relación entre cohortes y grupos
 Cohorte.hasMany(Group);
 Group.belongsTo(Cohorte);
@@ -96,6 +99,19 @@ Lesson.belongsTo(Content);
 // Relacion usuarios y reviews
 User.hasMany(MateReview);
 MateReview.belongsTo(User);
+
+// Relacion entre posts y usuarios
+User.hasMany(Post)
+Post.belongsTo(User)
+
+// Relación entre cohortes y posts
+Cohorte.hasMany(Post)
+Post.belongsTo(Cohorte)
+
+// Relación grupos y posts
+Group.hasMany(Post)
+Post.belongsTo(Group)
+
 // =================== FIN Relaciones entre las enteidades ==================
 
 // ==========================================================================
@@ -170,4 +186,5 @@ module.exports = {
    MatesScoreType,
    MateReview,
    Lesson,
+   Post,
 };

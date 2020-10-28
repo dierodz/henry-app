@@ -1,89 +1,56 @@
-// import React, { useEffect, useState } from 'react'
-// import { useMutation, useQuery } from "@apollo/client";
-// import {
-//     CREATE_MODULE,
-// } from "../mutations/module";
+import { useQuery } from "@apollo/client";
+import { MODULES } from "apollo/querys/modules";
+import { Tabla } from "components/Tabla";
+import React, { useMemo } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
-// import { MODULES } from "../querys/module";
+const ModuleStudent = () => {
+  const history = useHistory();
+  const { id } = useParams();
+  const variables = { id: parseInt(id) };
 
-// function Modules() {
+  const { loading, error, data: preData } = useQuery(MODULES, {
+    variables,
+  });
 
-//     return (
-//         <Grid container spacing={1}>
-//   <Grid container item xs={12} spacing={3}>
-//     <FormRow />
-//   </Grid>
-//   <Grid container item xs={12} spacing={3}>
-//     <FormRow />
-//   </Grid>
-//   <Grid container item xs={12} spacing={3}>
-//     <FormRow />
-//   </Grid>
-// </Grid>
-//     )
-// }
+  const data = useMemo(() => {
+    if (Array.isArray(preData?.modules)) {
+      return preData.modules.map((module) => {
+        return {
+          ...module,
+        };
+      });
+    } else return preData;
+  }, [preData]);
 
-// export default Modules;
-
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Hidden from '@material-ui/core/Hidden';
-import withWidth from '@material-ui/core/withWidth';
-import Typography from '@material-ui/core/Typography';
-
-import { useMutation, useQuery } from "@apollo/client";
-import {
-    CREATE_MODULE,
-} from "../mutations/module";
-
-import { MODULES } from "../querys/module";
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    flex: '1 0 auto',
-    margin: theme.spacing(1),
-  },
-}));
-
-function BreakpointUp(props) {
-  const classes = useStyles();
-  const { width } = props;
+  const tableData = useMemo(
+    () => ({
+      loading,
+      error,
+      data,
+      columns: [{ key: "name", label: "Modulo", align: "left" }],
+      actions: {
+        view: {
+          onSubmit: (id) => {
+            history.push("/student/modules/" + id);
+          },
+        },
+      },
+    }),
+    [data, error, history, loading]
+  );
 
   return (
-    <div className={classes.root}>
-      <div className={classes.container}>
-        <Hidden xlUp>
-        <Paper className={classes.paper}> <a href={"www.google.com"}>MODULO 1</a></Paper>   
-        </Hidden>
-        <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 2</Paper>
-        </Hidden>
-        <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 3</Paper>
-        </Hidden>
-        <Hidden xlUp>
-          <Paper className={classes.paper}>MODULO 4</Paper>
-        </Hidden>
-      </div>
-    </div>
+    <Tabla
+      loading={loading}
+      data={tableData}
+      count={undefined}
+      page={1}
+      rowsPerPage={4}
+      onChangePage={2}
+      onChangeRowsPerPage={2}
+    />
   );
-}
-
-BreakpointUp.propTypes = {
-  width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
 };
 
-export default withWidth()(BreakpointUp);
+export default ModuleStudent;

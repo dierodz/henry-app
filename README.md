@@ -49,3 +49,30 @@ src: donde se encuentra todo el código
         |-- pages: estilos de componentes pages individuales
 ````
  
+# MIS DATOS .ENV
+
+## API
+DB_USER=postgres
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_NAME=henryapp
+PORT=3001
+API=http://localhost:3001
+CALLBACK_URL_BASE=http://localhost:3000
+SECRET=secretString
+GOOGLE_CLIENT_ID=673167318191-gj1jnrkak2o41iagst0cbs25ig75vma7.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=0KD85N4VYKGNaRYZ7O9AA6V1
+GITHUB_APP_ID=df6e7ee66a040ab4df83
+GITHUB_APP_SECRET=137fdb71729cc95537401bb1ebde92de2717c58d
+MAILGUN_API_KEY=470e5443f31dbabfba1b7a3a6df9a490-cb3791c4-65cef2fc
+MAILGUN_DOMAIN=mail.gardenry.shop
+
+
+## CLIENT
+REACT_APP_API=http://192.168.1.61:3001
+
+## PAPER
+<!-- # REACT_APP_API_REMOTE=http://api.gardenry.shop:3002 -->
+ANDROID_OAUTH_CLIENT=80624130355-2ejfuk9es2ncdal1enjuspmuscufhq51.apps.googleusercontent.com
+REACT_APP_API_REMOTE=http://192.168.1.61:3001
+SW_APP_API_REMOTE=ws://192.168.1.61:3001/graphql

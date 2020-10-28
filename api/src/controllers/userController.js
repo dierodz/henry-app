@@ -1,4 +1,4 @@
-const { User, Role, Cohorte, parseWhere, Group } = require("../db");
+const { User, Role, Cohorte, Group, parseWhere } = require("../db");
 const { sendEmail } = require("../mailModels/sendEmail");
 
 const include = [Role, Cohorte, Group];
@@ -77,28 +77,23 @@ const getAllUsers = async ({ where, limit, offset, order }) => {
          localInclude[1] = { model: Cohorte, where: parseWhere(where.Cohorte) };
          delete where.Cohorte;
       }
+      if (where["Group"]) {
+         localInclude[1] = { model: Group, where: parseWhere(where.Group) };
+         delete where.Group;
+      }
    }
-   const users = await User.findAll({
-      where,
-      limit,
-      offset,
-      order,
-      include: localInclude,
-   });
-
-   if (users.length < 1) {
-      throw {
-         name: "ApiFindError",
-         type: "Users Error",
-         error: {
-            message: "there are no users in the database",
-            type: "data not found",
-            code: 404,
-         },
-      };
+   try {
+      const users = await User.findAll({
+         where,
+         limit,
+         offset,
+         order,
+         include: localInclude,
+      });
+      return users;
+   } catch (error) {
+      console.error(error);
    }
-
-   return users;
 };
 
 const getUserById = async (id) => {
@@ -202,7 +197,7 @@ const updateUser = async (id, user) => {
    } else if (role) {
       const dbRole = await Role.findOne({ where: { name: role } });
 
-      await sendUser.setRoles(dbRole);
+      await sendUser.addRoles(dbRole);
    }
 
    return await getUserById(sendUser.id);
@@ -216,9 +211,7 @@ const deleteUserById = async (id) => {
 };
 
 const setRoleToUser = async (email, roles) => {
-   console.log(email);
    const user = await getUserByEmail(email);
-   // console.log(user)
    const role = await Role.findOne({ where: { name: roles } });
 
    await user.addRoles(role);
@@ -299,6 +292,13 @@ const countUsers = async ({ where }) => {
             { model: Cohorte, where: parseWhere(where.Cohorte) },
          ];
          delete where.Cohorte;
+      }
+      if (where["Group"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Group, where: parseWhere(where.Group) },
+         ];
+         delete where.Group;
       }
    }
    const result = await User.count({

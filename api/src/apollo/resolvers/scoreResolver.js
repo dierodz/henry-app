@@ -6,11 +6,11 @@ const {
    updateScore: updateOneScore,
 } = require("../../controllers/scoresController");
 
-const scores = async (_, { id }) => {
+const scores = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await getScoreById(id);
       return [result];
-   } else return await getScores();
+   } else return await getScores(where, limit, offset, order);
 };
 
 const createScore = async (_, { score }) => {

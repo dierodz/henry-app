@@ -6,25 +6,28 @@ const {
    editMatesScore,
 } = require("../../controllers/classmateScoreController");
 
-const matesScore = async (_, {id} ) => {
+const matesScore = async (_, { id, where, limit, offset, order }) => {
    if (id) {
-      console.log('I am a idiot', id)
       const result = await getOneMatesScore(id);
       return [result];
-   } else return await getAllMatesScore();
+   } else return await getAllMatesScore(where, limit, offset, order);
 };
 
 const createMatesScore = async (_, { name }) => {
-   console.log('llegué hasta aquí', name);
    return await createOneMatesScore(name);
 };
 
 const updateMatesScore = async (_, { id, name }) => {
-   return await editMatesScore(id, {name});
+   return await editMatesScore(id, { name });
 };
 
 const deleteMatesScore = async (_, { id, name }) => {
    return await deleteOneMatesScore({ id, name });
 };
 
-module.exports = { matesScore, createMatesScore, updateMatesScore, deleteMatesScore };
+module.exports = {
+   matesScore,
+   createMatesScore,
+   updateMatesScore,
+   deleteMatesScore,
+};

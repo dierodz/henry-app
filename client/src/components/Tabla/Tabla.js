@@ -32,6 +32,7 @@ export default function Tabla({
   count,
   page,
   rowsPerPage,
+  rowsPerPageOptions,
   onChangePage,
   onChangeRowsPerPage,
 }) {
@@ -90,7 +91,9 @@ export default function Tabla({
                     <Button
                       variant="outlined"
                       startIcon={<Add />}
-                      onClick={handleAddClickOpen}
+                      onClick={
+                        data.actions.create.onClick || handleAddClickOpen
+                      }
                     >
                       {data.addButtonLabel}
                     </Button>
@@ -163,7 +166,7 @@ export default function Tabla({
                   <StyledAddButton
                     size="large"
                     startIcon={<Add />}
-                    onClick={handleAddClickOpen}
+                    onClick={data.actions.create.onClick || handleAddClickOpen}
                   >
                     {data.addButtonLabel}
                   </StyledAddButton>
@@ -182,7 +185,7 @@ export default function Tabla({
       </TableContainer>
       {count && (
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50]}
+          rowsPerPageOptions={rowsPerPageOptions}
           component="div"
           count={count}
           rowsPerPage={rowsPerPage}

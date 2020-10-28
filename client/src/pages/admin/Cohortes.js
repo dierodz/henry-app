@@ -19,7 +19,7 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 
-function Cohortes({ className }) {
+function Cohortes() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   function onChangePage(_, page) {
@@ -57,19 +57,21 @@ function Cohortes({ className }) {
         return {
           ...item,
           name: item.name.toUpperCase(),
-          instructorDisplay: `${capitalizeFirstLetter(item.instructor.givenName) || ""} ${
-            capitalizeFirstLetter(item.instructor.familyName) || ""
-          }`,
+          instructorDisplay: `${
+            capitalizeFirstLetter(item.instructor.givenName) || ""
+          } ${capitalizeFirstLetter(item.instructor.familyName) || ""}`,
           instructor: item.instructor.id,
           groups: item.groups.length,
           alumns: item.users.length,
+          users: item.users,
         };
       });
     } else return preData;
   }, [preData]);
 
   function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if(string){
+      return string.charAt(0).toUpperCase() + string.slice(1)};
   }
   const tableData = useMemo(
     () => ({
@@ -96,7 +98,7 @@ function Cohortes({ className }) {
       actions: {
         create: {
           initialValues: {
-            name: undefined,
+            name: "",
             instructor: undefined,
             startDate: new Date(),
           },
