@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Post } from "pages/Posts/Post";
 import { useMutation, useQuery } from "@apollo/client";
 import { Tabla } from "components/Tabla";
 import { useHistory } from "react-router-dom";
@@ -17,7 +18,6 @@ function GroupStudentPP(className) {
     variables,
   });
 
-  data && console.log(data.groups[0].students);
   const [addUsersToGroups, { loading: addLoading }] = useMutation(
     ADD_USER_TO_GROUP
   );
@@ -62,7 +62,7 @@ function GroupStudentPP(className) {
                 userId: values,
               },
             };
-            console.log(datos);
+
             await removeUserOfGroup({
               variables: {
                 id: parseInt(datos.variables.id),
@@ -99,9 +99,13 @@ function GroupStudentPP(className) {
   );
 
   return (
-    <div className={className} style={{ height: "50vh", width: "100%" }}>
-      <Tabla loading={loading} data={tableData} />
-    </div>
+    <>
+      <div className={className} style={{ height: "50vh", width: "100%" }}>
+        <Tabla loading={loading} data={tableData} />
+      </div>
+
+      <Post />
+    </>
   );
 }
 

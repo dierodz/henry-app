@@ -30,7 +30,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "sass": "^1.26.11",
-    "shared": "file:../shared"
+    "shared": "file:../shared",
+    "subscriptions-transport-ws": "^0.9.18"
   },
   "scripts": {
     "start": "react-scripts start",
