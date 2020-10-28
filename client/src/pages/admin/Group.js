@@ -9,7 +9,6 @@ import {
 } from "apollo/Mutations/users";
 import { GROUPS } from "apollo/querys/groups";
 import { useParams } from "react-router-dom";
-import Alumns from "./Cohortes/Alumns";
 import {
   Button,
   Dialog,
@@ -17,7 +16,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import PeopleIcon from '@material-ui/icons/People';
+import PeopleIcon from "@material-ui/icons/People";
 
 function GroupStudentPP(className) {
   let { id } = useParams();
@@ -109,7 +108,10 @@ function GroupStudentPP(className) {
 
   return (
     <>
-     <div className={className} style={{ height: "10vh", width: "10vh", marginLeft: "92%"}}>
+      <div
+        className={className}
+        style={{ height: "10vh", width: "10vh", marginLeft: "92%" }}
+      >
         <AlumnsComponent tableData={tableData} />
       </div>
 
@@ -119,12 +121,11 @@ function GroupStudentPP(className) {
 }
 
 function AlumnsComponent(tableData) {
-  console.log(tableData)
   const [show, setShow] = useState(false);
   return (
     <>
-      <Button onClick={() => setShow(true)} style={{borderRadius: 80 }} >
-      <PeopleIcon style={{ fontSize: 40}} label="Alumnos" />
+      <Button onClick={() => setShow(true)} style={{ borderRadius: 80 }}>
+        <PeopleIcon style={{ fontSize: 40 }} label="Alumnos" />
       </Button>
       <Dialog
         open={show}

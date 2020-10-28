@@ -51,7 +51,6 @@ const ContentDetail = ({ moduleId }) => {
   useEffect(() => {
     if (!isNaN(id)) {
       if (data && data) {
-        console.log(data);
         setReadme(data.contents[0].readme);
         setValues((state) => {
           return {
@@ -92,7 +91,6 @@ const ContentDetail = ({ moduleId }) => {
     });
 
     if (link) {
-      console.log(id, link);
       createLesson({
         variables: {
           link,
@@ -138,7 +136,6 @@ const ContentDetail = ({ moduleId }) => {
   }, [refetch, resultCreateLesson]);
 
   const handleDelete = () => {
-    console.log(id);
     deleteContent({
       variables: {
         id: parseInt(id),

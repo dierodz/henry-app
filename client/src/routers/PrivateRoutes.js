@@ -17,7 +17,6 @@ const PrivateRoutes = ({
   ...rest
 }) => {
   localStorage.setItem("lastPath", rest.path);
-  console.log(isAuthenticated);
 
   return (
     <Route

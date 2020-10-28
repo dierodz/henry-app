@@ -13,12 +13,12 @@ import { USER_FULL } from "apollo/querys/users";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 400,
-    margin: 7
+    width: "100vh",
+    margin: "7px auto",
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "5%", // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     backgroundColor: red[500],
+  },
+  content: {
+    textTransform: "capitalize",
   },
 }));
 
@@ -48,6 +51,7 @@ export default function PostCard({ id, tittle, content, userId }) {
   return (
     <Card className={classes.root}>
       <CardHeader
+        className={classes.content}
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
             {user && user.photoUrl ? (
@@ -57,7 +61,13 @@ export default function PostCard({ id, tittle, content, userId }) {
                 alt={tittle}
               />
             ) : (
-              <h5> {user && user.givenName[0].toUpperCase()} </h5>
+              <h5>
+                {" "}
+                {user &&
+                  user.givenName[0].toUpperCase() +
+                    " " +
+                    user.familyName[0].toUpperCase()}{" "}
+              </h5>
             )}
           </Avatar>
         }
@@ -66,7 +76,7 @@ export default function PostCard({ id, tittle, content, userId }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={user && user.givenName}
+        title={user && user.givenName + " " + user.familyName}
         subheader={tittle}
       />
       <CardContent>

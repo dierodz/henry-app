@@ -27,7 +27,6 @@ const ContentDetailStudent = ({ moduleId }) => {
   useEffect(() => {
     if (!isNaN(id)) {
       if (data && data) {
-        console.log(data);
         setReadme(data.contents[0].readme);
         setValues((state) => {
           return {
@@ -41,7 +40,6 @@ const ContentDetailStudent = ({ moduleId }) => {
       }
     }
   }, [data, id]);
-  console.log(link);
   return (
     <div className="container">
       <div style={{ padding: "50px 0 0 0" }} />
