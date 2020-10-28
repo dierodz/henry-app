@@ -35,7 +35,7 @@ export default function Clases({route, navigation}) {
                 left={props => <List.Icon {...props} icon="folder" />}>
                   {modulo.contents.length!=0?
                    modulo.contents.map((clase)=>(
-                    <List.Item key={clase.id} onPress={()=> navigation.navigate(clase.topicName)} title={clase.topicName} />
+                    <List.Item key={clase.id} onPress={()=> navigation.navigate(clase.topicName)} title={clase.topicName.charAt(0).toUpperCase()+clase.topicName.slice(1)} />
                   )):
                   <List.Item title="Sin Clases" />
                   }
