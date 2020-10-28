@@ -20,7 +20,7 @@ const ContentDetail = ({ moduleId }) => {
   const [createMutation, resultCreate] = useMutation(CREATE_CONTENT);
   const [updateMutation, resultUpdate] = useMutation(UPDATE_CONTENT);
   const [createLesson, resultCreateLesson] = useMutation(CREATE_LESSON);
-  const [deleteContent] = useMutation(DELETE_CONTENT);
+  const [deleteContent, resultDeleteContent] = useMutation(DELETE_CONTENT);
   const [readme, setReadme] = React.useState("### Escribe el Readme");
   const [values, setValues] = useState({
     topicName: "",
@@ -73,7 +73,6 @@ const ContentDetail = ({ moduleId }) => {
         durationTime: parseInt(values.durationTime),
         moduleId: parseInt(values.moduleId),
         readme,
-        link: 'https://player.vimeo.com/video/' + values.link,
       },
     });
 
