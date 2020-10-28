@@ -23,6 +23,8 @@ const typeDefs = gql`
       topicName: String
       durationTime: Int
       readme: String
+      lessons: [Lesson]
+      moduleId: Int
    }
 
    input contentInput {
@@ -30,6 +32,7 @@ const typeDefs = gql`
       durationTime: Int
       readme: String!
       moduleId: Int!
+      link: String
    }
 
    enum GroupTypes {
@@ -92,8 +95,7 @@ const typeDefs = gql`
    type Lesson {
       id: Int
       link: String
-      name: String
-      readme: String
+      contentId: Int
    }
 
    type MatesScore {
@@ -113,13 +115,25 @@ const typeDefs = gql`
       tittle: String
       content: String
       userId: Int
+      user: User
       cohorteId: Int
       groupId: Int
    }
 
+   type Subscription {
+      subscribePost(cohorteId: Int, groupId: Int): Post
+   }
+
    type Query {
-      checkPoints(id: Int, name: String): [CheckPoint]
-      countCohortes(where: JSON): Int
+      checkPoints(
+         id: Int
+         name: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [CheckPoint]
+      countCohortes(where: JSON, limit: Int, offset: Int, order: JSON): Int
       cohortes(
          id: Int
          where: JSON
@@ -127,8 +141,15 @@ const typeDefs = gql`
          offset: Int
          order: JSON
       ): [Cohorte]
-      contents(topicName: String, id: Int): [Content]
-      countGroups(where: JSON): Int
+      contents(
+         topicName: String
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Content]
+      countGroups(where: JSON, limit: Int, offset: Int, order: JSON): Int
       groups(
          id: Int
          name: String
@@ -137,19 +158,85 @@ const typeDefs = gql`
          offset: Int
          order: JSON
       ): [Group]
-      modules(id: Int): [Module]
-      roles(id: Int): [Role]
-      scores(id: Int): [Score]
+      modules(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Module]
+      roles(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [Role]
+      scores(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Score]
       users(id: Int, where: JSON, limit: Int, offset: Int, order: JSON): [User]
-      countUsers(where: JSON): Int
-      getUserRol(role: String): [User]
-      matesScore(id: Int, name: String): [MatesScore]
-      mateReview(id: Int, score: Int, commentary: String): [MateReview]
-      getPost(id: Int): [Post]
-      getCohortePosts(cohorteId: Int): [Post]
-      getUserPosts(userId: Int): [Post]
-      getGroupPosts(groupId: Int): [Post]
-      lessons(id: Int, name: String, link: String, readme: String): [Lesson]
+      countUsers(where: JSON, limit: Int, offset: Int, order: JSON): Int
+      getUserRol(
+         role: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [User]
+      matesScore(
+         id: Int
+         name: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [MatesScore]
+      mateReview(
+         id: Int
+         score: Int
+         commentary: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [MateReview]
+      getPost(
+         id: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Post]
+      getCohortePosts(
+         cohorteId: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Post]
+      getUserPosts(
+         userId: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Post]
+      getGroupPosts(
+         groupId: Int
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Post]
+      lessons(
+         id: Int
+         name: String
+         link: String
+         readme: String
+         where: JSON
+         limit: Int
+         offset: Int
+         order: JSON
+      ): [Lesson]
    }
 
    # Estos son los datos que acepta un usuario
@@ -263,7 +350,9 @@ const typeDefs = gql`
       deletePost(id: Int): DeleteResolve!
 
       #Mutaciones para Lessons
-      createLesson(link: String, name: String, readme: String): [Lesson!]
+      createLesson(link: String!, contentId: Int!): Lesson!
+      updateLesson(id: Int!, link: String!): Lesson!
+      deleteLesson(id: Int!): DeleteResolve!
    }
 `;
 

@@ -6,11 +6,11 @@ const {
    editRole,
 } = require("../../controllers/roleController");
 
-const roles = async (_, { id }) => {
+const roles = async (_, { id, where, limit, offset, order }) => {
    if (id) {
       const result = await getOneRole(id);
       return [result];
-   } else return await getAllRoles();
+   } else return await getAllRoles(where, limit, offset, order);
 };
 
 const createRole = async (_, { name }) => {
@@ -18,7 +18,7 @@ const createRole = async (_, { name }) => {
 };
 
 const updateRole = async (_, { id, name }) => {
-   return await editRole(id, {name});
+   return await editRole(id, { name });
 };
 
 const deleteRole = async (_, { id, name }) => {

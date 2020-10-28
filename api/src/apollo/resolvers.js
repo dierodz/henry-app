@@ -1,11 +1,12 @@
 const {
-   createPost, 
-   getPost, 
-   editPost, 
+   createPost,
+   getPost,
+   editPost,
    deletePost,
-   getCohortePosts, 
+   getCohortePosts,
    getUserPosts,
    getGroupPosts,
+   subscribePost,
 } = require("./resolvers/postResolver");
 const {
    mateReview,
@@ -61,6 +62,9 @@ const {
 } = require("./resolvers/lessonsResolver");
 
 const resolvers = {
+   Subscription: {
+      subscribePost,
+   },
    Query: {
       checkPoints,
       ...cohortesQuery,
@@ -115,7 +119,7 @@ const resolvers = {
 
       //Mutaciones de contenidos
       ...contentMutations,
-      ...lessonsMutations
+      ...lessonsMutations,
    },
 
    Cohorte: {
@@ -139,6 +143,11 @@ const resolvers = {
 
       students: async ({ id }) => {
          return await getStudentOfGrups(id);
+      },
+   },
+   Post: {
+      user: async ({ userId }) => {
+         return await getUserById(userId);
       },
    },
 };

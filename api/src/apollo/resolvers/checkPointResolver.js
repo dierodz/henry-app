@@ -6,11 +6,11 @@ const {
    deleteCheck,
 } = require("../../controllers/checkPointController");
 
-const checkPoints = async (_, { id, name }) => {
+const checkPoints = async (_, { id, name, where, limit, offset, order }) => {
    if (id || name) {
       const result = await getOneCheck({ id, name });
       return [result];
-   } else return await getAllCheck();
+   } else return await getAllCheck(where, limit, offset, order);
 };
 
 const createCheckPoint = async (_, { name }) => {

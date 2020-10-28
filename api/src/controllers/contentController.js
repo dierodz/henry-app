@@ -1,14 +1,34 @@
-const { Content, Module } = require("../db");
+const { Content, Module, Lesson } = require("../db");
+
+const include = [Lesson];
 
 // Creo topic de la carrera ej: topic: JavaScript 1 | duration: 1 clase
-const createContent = async ({ topicName, durationTime, moduleId, readme }) => {
+const createContent = async ({
+   topicName,
+   durationTime,
+   moduleId,
+   readme,
+   link,
+}) => {
    let topic = await Content.create({
       topicName,
       durationTime,
       readme,
    });
+
+   let lesson = null;
+
+   if (link) {
+      lesson = await Lesson.create({ link });
+   }
+
    const module = await Module.findOne({ where: { id: moduleId } });
    await module.addContent(topic);
+
+   if (lesson) {
+      topic.addLesson(lesson);
+   }
+
    return topic;
 };
 
@@ -32,7 +52,7 @@ const deleteTopic = async (id) => {
 
 // Muestra todos los topic que hay en 'x' carrera
 const getAllTopics = async () => {
-   const topics = await Content.findAll();
+   const topics = await Content.findAll({ include });
    const copytopics = [...topics];
 
    if (topics.length < 1) {
@@ -50,12 +70,13 @@ const getAllTopics = async () => {
 };
 
 const getOneTopic = async ({ id, topicName }) => {
-   const where = {};
+   let where = {};
 
-   if (id) {
-      where.id = id;
-   } else {
+   if (topicName) {
       where.topicName = topicName;
+   } else {
+      where = {};
+      where.id = id;
    }
 
    const topic = await Content.findOne({ where });

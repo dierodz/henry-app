@@ -47,7 +47,8 @@ function CohortesDetail({ className }) {
   }, [resultDelete, refetch]);
 
   function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if(string){
+      return string.charAt(0).toUpperCase() + string.slice(1)}
   }
   return (
     <Container style={{ paddingTop: "1rem" }}>
@@ -120,7 +121,7 @@ function CohortesDetail({ className }) {
             <Card variant="outlined" style={{ position: "relative" }}>
               <CardHeader title="Alumnos" />
               <CardContent>
-                <Alumns cohorte={data && data.cohortes[0]} loading={loading} />
+                <Alumns cohorte={data && data.cohortes[0]} loading={loading} onRefetch={refetch} />
               </CardContent>
             </Card>
           </Grid>

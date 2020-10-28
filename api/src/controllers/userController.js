@@ -77,28 +77,23 @@ const getAllUsers = async ({ where, limit, offset, order }) => {
          localInclude[1] = { model: Cohorte, where: parseWhere(where.Cohorte) };
          delete where.Cohorte;
       }
+      if (where["Group"]) {
+         localInclude[1] = { model: Group, where: parseWhere(where.Group) };
+         delete where.Group;
+      }
    }
-   const users = await User.findAll({
-      where,
-      limit,
-      offset,
-      order,
-      include: localInclude,
-   });
-
-   if (users.length < 1) {
-      throw {
-         name: "ApiFindError",
-         type: "Users Error",
-         error: {
-            message: "there are no users in the database",
-            type: "data not found",
-            code: 404,
-         },
-      };
+   try {
+      const users = await User.findAll({
+         where,
+         limit,
+         offset,
+         order,
+         include: localInclude,
+      });
+      return users;
+   } catch (error) {
+      console.error(error);
    }
-
-   return users;
 };
 
 const getUserById = async (id) => {
@@ -297,6 +292,13 @@ const countUsers = async ({ where }) => {
             { model: Cohorte, where: parseWhere(where.Cohorte) },
          ];
          delete where.Cohorte;
+      }
+      if (where["Group"]) {
+         localInclude = [
+            ...localInclude,
+            { model: Group, where: parseWhere(where.Group) },
+         ];
+         delete where.Group;
       }
    }
    const result = await User.count({

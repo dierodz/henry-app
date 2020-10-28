@@ -16,7 +16,6 @@ function GroupStudentPP(className) {
     variables,
   });
 
-  data && console.log(data);
   const [addUsersToGroups, { loading: addLoading }] = useMutation(
     ADD_USER_TO_GROUP
   );
@@ -48,6 +47,7 @@ function GroupStudentPP(className) {
         view: {
           onSubmit: (id) => push(`/profile/${id}`),
         },
+
         delete: {
           initialValues: {
             studentId: "",
@@ -61,7 +61,7 @@ function GroupStudentPP(className) {
                 userId: values,
               },
             };
-            console.log(datos);
+            
             await removeUserOfGroup({
               variables: {
                 id: parseInt(datos.variables.id),

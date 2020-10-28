@@ -56,8 +56,13 @@ function Groups({
     () => queryLoading || componentLoading || createLoading || addLoading,
     [queryLoading, componentLoading, createLoading, addLoading]
   );
+
   const data = useMemo(
-    () => preData?.groups || componentData?.cohortes[0].groups,
+    () =>
+      preData?.groups.map((grupo) => {
+        const grupototal = { ...grupo, qty: grupo.students.length };
+        return grupototal;
+      }) || componentData?.cohortes[0].groups,
     [preData, componentData]
   );
 
@@ -70,11 +75,12 @@ function Groups({
       columns: [
         { key: "name", label: "Nombre", align: "left" },
         { key: "type", label: "Tipo de grupo", align: "left" },
+        { key: "qty", label: "Cant Alumnos", align: "left" },
       ],
       addButtonLabel: "Crear grupo",
       actions: {
         view: {
-          onSubmit: (id) => push(`/group/${id}/posts`),
+          onSubmit: (id) => push(`/admin/group/${id}`),
         },
         create: {
           initialValues: {
