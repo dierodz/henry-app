@@ -14,11 +14,7 @@ import { USER_FULL } from "apollo/querys/users";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100vh",
-    margin: "7px auto",
-  },
-  media: {
-    height: 0,
-    paddingTop: "5%", // 16:9
+    margin: "1rem auto",
   },
   expand: {
     transform: "rotate(0deg)",

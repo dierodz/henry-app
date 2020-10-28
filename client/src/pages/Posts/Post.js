@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import PostCard from "components/PostCard";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GET_POST, SUBSCRIBE_POST } from "apollo/Mutations/postSub";
 import Loading from "components/Loading";
@@ -10,6 +10,8 @@ import { CREATE_POST } from "apollo/Mutations/posts";
 import { useSelector } from "react-redux";
 
 export const Post = () => {
+  const ref = useRef(null);
+
   const { id } = useParams();
   const classes = useStyles();
   const { user } = useSelector((state) => state.auth);
@@ -43,6 +45,12 @@ export const Post = () => {
     [groupId, subscribeToMore],
     preData
   );
+
+  useEffect(() => {
+    if (ref.current) {
+      window.scroll({ top: ref.current.clientHeight });
+    }
+  }, [preData, ref]);
 
   const formik = useFormik({
     initialValues: {
@@ -94,7 +102,7 @@ export const Post = () => {
   }
 
   return (
-    <div>
+    <div ref={ref}>
       <div className={classes.Postcontainer}>
         {data && data.map((post) => <PostCard key={post.id} {...post} />)}
       </div>
@@ -169,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     marginBottom: theme.spacing(1, 0, 1),
-    width: "20%",
+    width: "15%",
     height: "140px",
   },
   icons: {
@@ -189,7 +197,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "60px",
   },
   input: {
-    width: "90%",
+    width: "85%",
     paddingRight: "10px",
     paddingBottom: "7px",
   },
