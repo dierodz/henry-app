@@ -22,24 +22,22 @@ const ModuleStudent = () => {
       });
     } else return preData;
   }, [preData]);
- 
+
   const tableData = useMemo(
     () => ({
       loading,
       error,
       data,
-      columns: [
-        { key: "name", label: "Modulo", align: "left" },
-      ],
+      columns: [{ key: "name", label: "Modulo", align: "left" }],
       actions: {
         view: {
           onSubmit: (id) => {
-          history.push("/student/modules/" + id);
+            history.push("/student/modules/" + id);
           },
         },
-      }
+      },
     }),
-    [data, error, loading]
+    [data, error, history, loading]
   );
 
   return (
