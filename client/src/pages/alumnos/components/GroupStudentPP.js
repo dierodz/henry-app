@@ -98,7 +98,7 @@ function GroupStudentPP(className) {
   );
 
   return (
-    <div className={className} style={{ height: "50vh", width: "100%" }}>
+    <div className={className} style={{ height: "100vh", width: "100%" }}>
       <Tabla loading={loading} data={tableData} />
     </div>
   );
