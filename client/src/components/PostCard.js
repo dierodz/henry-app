@@ -13,7 +13,8 @@ import { USER_FULL } from "apollo/querys/users";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    width: 400,
+    margin: 7
   },
   media: {
     height: 0,

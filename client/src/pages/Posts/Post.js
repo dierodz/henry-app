@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: '10px'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -30,6 +31,28 @@ const useStyles = makeStyles((theme) => ({
   icons: {
     margin: theme.spacing(3, 0, 2),
   },
+  dialogo: {
+    width: "68vh",
+    height: '50vh',
+    display: 'inline-block',
+    alignItems: 'center',
+    flexDirection: 'column',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    position: 'relative',
+    scrollPadding: 'auto',
+    overflowY: 'scroll',
+    scrollHeight: '50'
+
+
+  },
+contenido: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+
+}
 }));
 
 export const Post = () => {
@@ -118,8 +141,14 @@ export const Post = () => {
 
   return (
     <>
-      {data && data.map((post) => <PostCard key={post.id} {...post} />)}
-      <Container component="main" maxWidth="xs">
+    <div className={classes.contenido} >
+    <div className={classes.dialogo}  >
+      {data && data.map((post) => 
+        <PostCard key={post.id} {...post} />)}
+       </div>
+       </div>
+      <Container component="main" maxWidth="xs"  >
+
         <div className={classes.paper}>
           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
