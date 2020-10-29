@@ -7,3 +7,11 @@ export const CREATE_LESSON = gql`
     }
   }
 `;
+
+export const UPDATE_LESSON = gql`
+  mutation updateLesson($id: Int!, $link: String!) {
+    updateLesson(id: $id, link: $link) {
+      id
+    }
+  }
+`;

@@ -1,17 +1,10 @@
 import React from "react";
-import {/*  useMutation, */ useQuery } from "@apollo/client";
+import { /*  useMutation, */ useQuery } from "@apollo/client";
 // import { Tabla } from "components/Tabla";
 import { COHORTE_BY_ID } from "apollo/querys/cohortes";
-import { useParams/* , useRouteMatch */ } from "react-router-dom";
-import Groups from "pages/alumnos/Cohortes/groups";
+import { useParams /* , useRouteMatch */ } from "react-router-dom";
 import Alumns from "pages/alumnos/Cohortes/Alumns";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  Grid,
-} from "@material-ui/core";
+import { Card, CardContent, CardHeader, Grid } from "@material-ui/core";
 import Loading from "components/Loading";
 import "styles/components/CohortesDetailAlumno.scss";
 
@@ -20,7 +13,7 @@ function CohortesDetailAlumno({ className }) {
 
   const variables = { id: parseInt(id) };
 
-  const { loading, /* error, */ data, refetch } = useQuery(COHORTE_BY_ID, {
+  const { loading, /* error, */ data } = useQuery(COHORTE_BY_ID, {
     variables,
   });
 
@@ -45,12 +38,12 @@ function CohortesDetailAlumno({ className }) {
   // );
 
   function capitalizeFirstLetter(string) {
-    if(string){ 
-          return string.charAt(0).toUpperCase() + string.slice(1)
-        }
+    if (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
   }
-data && console.log(data)
- 
+  data && console.log(data);
+
   return (
     <div style={{ paddingTop: "1rem", width: "100%" }}>
       {loading ? (
@@ -66,10 +59,8 @@ data && console.log(data)
                     height: "15vh",
                     width: "100%",
                     display: "flex",
-
                   }}
                 >
-
                   <div className="cohorteDetailItem">
                     <p>Nombre del cohorte: </p>
                     <span>{data.cohortes[0].name.toUpperCase()}</span>

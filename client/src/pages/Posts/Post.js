@@ -8,6 +8,7 @@ import { Button, makeStyles, TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import { CREATE_POST } from "apollo/Mutations/posts";
 import { useSelector } from "react-redux";
+import SendIcon from "@material-ui/icons/Send";
 
 export const Post = () => {
   const ref = useRef(null);
@@ -132,7 +133,7 @@ export const Post = () => {
                 color="primary"
                 className={classes.submit}
               >
-                Postea
+                <SendIcon />
               </Button>
             </div>
           </form>
