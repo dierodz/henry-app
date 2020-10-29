@@ -12,30 +12,19 @@ const ClasesTabTop = createStackNavigator()
 
 export default function ClasesRoutes({route}) {
 
-/*     let [heightTab, setHeightTab] = React.useState(5)
-    let [prueba, setPrueba] = React.useState(false)
-    
-    ScreenOrientation.addOrientationChangeListener((e)=>{
-        setPrueba(true)
-        e.orientationInfo.orientation ===1? setHeightTab(20):setHeightTab(5)
-        setPrueba(false)
-        }
-    )
-     */
-
     const { loading, error, data, refetch } = useQuery(GET_MODULES, {
         variables: { id: route.params.id },
     }) 
    
-    return loading?
+    return loading&&data==undefined?
       <Loading/>
       :
       <ClasesTabTop.Navigator >
-        <ClasesTabTop.Screen  options={{headerShown:false}} initialParams={{modules:data.cohortes[0].modules}} name="Clases" component={Clases} />
-        {data&&data.cohortes[0].modules.map((modulo)=>(
+        <ClasesTabTop.Screen  options={{headerShown:false}} initialParams={data&&data.cohortes[0]? {modules: data.cohortes[0].modules}:{modules:[]}} name="Clases" component={Clases} />
+         {data&&data.cohortes&&data.cohortes[0].modules.map((modulo)=>(
             modulo.contents.map((clase)=>(
                 <ClasesTabTop.Screen options={{ headerStyle:{height:40}}} key={clase.id} initialParams={{id:clase.id, readme: clase.readme, durationTime:clase.durationTime}} name={clase.topicName} component={ContentRoutes} />
             ))
-        ))}
+        ))} 
       </ClasesTabTop.Navigator>
   }

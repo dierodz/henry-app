@@ -36,7 +36,7 @@ export default function DrawerLayout(props) {
             {user.cohortes.length === 0 ? "" : user.cohortes[0].name}
           </Caption>
         </View>
-        <ProgressBar progress={0.3} />
+        <ProgressBar progress={user.cohortes.length === 0 ? 0: user.cohortes[0].startDate.slice(0)} />
         <Drawer.Section style={styles.drawerSection}>
           <List.Accordion
             style={{ marginHorizontal: 10 }}
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 20,
     fontWeight: "bold",
+    textTransform:"capitalize"
   },
   caption: {
     fontSize: 14,

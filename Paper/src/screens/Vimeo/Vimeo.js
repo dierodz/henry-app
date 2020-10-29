@@ -5,6 +5,7 @@ import { Video } from 'expo-av';
 import Slider from '@react-native-community/slider';
 import { useTheme } from 'react-native-paper';
 
+
 export default function Vimeo({route}) {
   const {colors} = useTheme()
 

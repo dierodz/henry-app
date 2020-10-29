@@ -17,7 +17,6 @@ const Drawer = createDrawerNavigator();
 export default function DrawerRoutes(props) {
   const handleTheme = props.handleTheme;
   const { user } = useSelector((state) => state.auth);
-
   const { loading, data } = useQuery(GET_COHORTE_USER, {
     variables: {
       where: {
@@ -54,7 +53,7 @@ export default function DrawerRoutes(props) {
       drawerContent={(props) => (
         <DrawerLayout
           {...props}
-          pairProgramming={user.groups}
+          pairProgramming={user.groups.filter((e)=>e.type==="pp")}
           cohortes={user.cohortes}
           handleTheme={handleTheme}
         />
@@ -72,15 +71,15 @@ export default function DrawerRoutes(props) {
         ))}
       <Drawer.Screen
         initialParams={{
-          id: user.groups[0].id,
-          name: user.groups[0].name,
+          id: user.groups.filter((e)=>e.type==="standup")[0].id,
+          name: user.groups.filter((e)=>e.type==="standup")[0].name,
         }}
         name="PmRoutes"
         component={PmRoutes}
       />
       <Drawer.Screen name="CalendarioRoutes" component={CalendarioRoutes} />
       <Drawer.Screen name="PerfilRoutes" component={PerfilRoutes} />
-      {user.groups.map((e) => (
+      {user.groups.filter((e)=> e.type==="pp").map((e) => (
         <Drawer.Screen
           initialParams={{ id: e.id }}
           key={e.id}

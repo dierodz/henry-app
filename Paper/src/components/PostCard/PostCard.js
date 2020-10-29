@@ -11,7 +11,6 @@ export default function PostCard ({item}){
           left={(props) => <Avatar.Image {...props} source={{uri:item.photoUrl}} />}
         />
         <Card.Content>
-          <Title>{item.title}</Title>
           <Hyperlink linkDefault={ true } linkStyle={ { color: '#2980b9', fontSize: 16 } }>
           <Text>{item.content}</Text>
           </Hyperlink>

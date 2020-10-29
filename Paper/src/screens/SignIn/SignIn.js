@@ -62,7 +62,6 @@ export default function SignIn({ navigation }) {
         <TextInput
           mode="outlined"
           label="Email"
-          value={input.email}
           onChangeText={(email) => handleChange("email", email)}
           style={{ marginBottom: 5 }}
         />
@@ -72,7 +71,6 @@ export default function SignIn({ navigation }) {
         <TextInput
           mode="outlined"
           label="Password"
-          value={input.password}
           onChangeText={(password) => {
             !isPrivate && setPrivate(true);
             handleChange("password", password);
@@ -103,7 +101,7 @@ export default function SignIn({ navigation }) {
         >
           Sign-In
         </Button>
-        <Caption style={{ marginBottom: 10 }}>Recupera tu contraseña</Caption>
+        {/* <Caption style={{ marginBottom: 10 }}>Recupera tu contraseña</Caption>
         <Button
           style={{ marginBottom: 20 }}
           mode="outlined"
@@ -118,7 +116,7 @@ export default function SignIn({ navigation }) {
           onPress={() => navigation.navigate("SignUp")}
         >
           ¡Registrate!
-        </Button>
+        </Button> */}
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <IconButton
             icon={({ color }) => (

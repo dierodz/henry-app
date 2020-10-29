@@ -19,11 +19,12 @@ export default function Participantes({route, navigation}) {
                     familyName: e.familyName,
                     nickName: e.nickName,
                     url: e.photoUrl,
-                    id:e.id
+                    id:e.id,
+                    email: e.email
                 }))
                 } key={e.id+e.givenName+type+id} style={{ width: "100%", marginBottom: 10 }}>
                     <Card.Title
-                        title={e.givenName + " " + e.familyName}
+                        title={e.givenName.charAt(0).toUpperCase()+e.givenName.slice(1) + " " + e.familyName.charAt(0).toUpperCase()+e.familyName.slice(1)}
                         subtitle={e.nickName}
                         left={(props) =>{
                             if(e.photoUrl)return <Avatar.Image {...props} source={{ uri: e.photoUrl }}/>

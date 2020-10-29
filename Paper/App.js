@@ -20,6 +20,7 @@ export default function App() {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme;
   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL)
+  console.log(ScreenOrientation)
 
   const handleTheme = () => {
     setIsDarkTheme((isDark) => !isDark);

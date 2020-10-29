@@ -1,7 +1,12 @@
 import * as React from "react";
 import { View, StyleSheet} from "react-native";
-import {Headline, Subheading,Text,IconButton,HelperText,  Card, Title, Avatar, Paragraph,TextInput,Button,Portal,Modal} from "react-native-paper";
+import {HelperText,  Card, Title, Avatar, Paragraph,TextInput,Button,Portal,Modal} from "react-native-paper";
 import { useSelector } from "react-redux";
+import {  useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useDispatch } from "react-redux";
+import { signInWithToken } from "../../dispatchers/auth";
+
 
 export function validate(input) {
   let error={}
@@ -14,6 +19,9 @@ export function validate(input) {
 
 export default function Perfil({ navigation }){
     const { user } = useSelector((state) => state.auth);
+    const { token } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+
     let [modalChange, setModalChange] = React.useState(false)
     let [input, setInput] = React.useState({name:"", 
       lastName:"",  
@@ -25,6 +33,20 @@ export default function Perfil({ navigation }){
       email:false,
       nickName:false
     })
+
+     const UPDATE_USER= gql`
+     mutation updateUser($id:Int,$input:UserInput){
+      updateUser(id:$id,input:$input){
+        id
+      }
+    }
+    `;
+
+    const [updateUser, resultUpdateUser] = useMutation(UPDATE_USER);
+
+    React.useEffect(()=>{
+      if(resultUpdateUser.called)dispatch(signInWithToken(token));
+    },[resultUpdateUser])
 
     function handleChange(inputName, inputContent){
       setErrors(validate({...input,[inputName]:inputContent}))
@@ -77,25 +99,21 @@ export default function Perfil({ navigation }){
             <TextInput
               style={styles.input}
               label="Nombre"
-              value={input.name}
               onChangeText={text => handleChange("name",text)}
             />
             <TextInput
               style={styles.input}
               label="Apellido"
-              value={input.lastName}
               onChangeText={text => handleChange("lastName",text)}
             />
             <TextInput
             style={styles.input}
             label="NickName"
-            value={input.nickName}
             onChangeText={text => handleChange("nickName",text)}
           />
           <TextInput
           style={styles.input}
             label="Email"
-            value={input.email}
             onChangeText={text => handleChange("email",text)}
           />
           <HelperText type="error" visible={errors.email}>
@@ -103,7 +121,23 @@ export default function Perfil({ navigation }){
           </HelperText>
             </Card.Content>
             <Card.Actions>
-              <Button onPress={()=>console.log(input)}>Modificar</Button>
+              <Button onPress={async () => {
+                  await updateUser({
+                    variables: {
+                      id:user.id,
+                      input:{
+                      givenName: input.name?input.name:user.givenName,
+                      familyName: input.lastName? input.lastName: user.familyName,
+                      nickName: input.nickName? input.nickName:user.nickName,
+                    }},
+                  });
+                  setInput({name:"", 
+                  lastName:"",  
+                  email:"",
+                  nickName:""
+                });
+                setModalChange(false)
+                }}>Modificar</Button>
             </Card.Actions>
          </Card>
           </Modal>

@@ -8,7 +8,8 @@ const PmTabTop = createMaterialTopTabNavigator()
 
 
 export default function PmRoutes({route}) {
-
+    console.log(route.params);
+    
     return (
       <PmTabTop.Navigator>
         <PmTabTop.Screen initialParams={{id: route.params.id, screen:"Group"}} name="Pm"  component={General} />

@@ -17,7 +17,7 @@ export default function CohorteRoutes({route}) {
       <CohorteTabTop.Navigator>
         <CohorteTabTop.Screen initialParams={{id: route.params.id}} name="Cohorte"  component={Cohorte} />
         <CohorteTabTop.Screen initialParams={{id: route.params.id}} name="Clases" component={ClasesRoutes} />
-        <CohorteTabTop.Screen initialParams={{id: route.params.id,screen:"Cohorte"}} name="General" component={General} />
+        <CohorteTabTop.Screen initialParams={{id: 1,screen:"Cohorte"}} name="General" component={General} />
         <CohorteTabTop.Screen initialParams={{id: route.params.id,screen:"Cohorte"}} name="Alumnos" component={ParticipantesRoutes} />
       </CohorteTabTop.Navigator>
     );

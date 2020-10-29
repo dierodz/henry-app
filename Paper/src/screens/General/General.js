@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Keyboard } from "react-native";
 import {
   TextInput,
   FAB,
@@ -7,6 +7,7 @@ import {
   Modal,
   Card,
   Button,
+  IconButton
 } from "react-native-paper";
 import PostCard from "../../components/PostCard/PostCard";
 import { useQuery, useMutation } from "@apollo/client";
@@ -18,8 +19,11 @@ import { useTheme } from "react-native-paper";
 
 export default function General({ route }) {
   const { user } = useSelector((state) => state.auth);
+  console.log(user)
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
+  let [text, setText] = React.useState("")
+
   const { cohorteId, groupId } = React.useMemo(
     () => ({ groupId: route.params.id }),
     [route.params.id]
@@ -28,15 +32,18 @@ export default function General({ route }) {
     variables: { where: { cohorteId, groupId } },
   });
   const [createPost] = useMutation(CREATE_POST);
+  
   const [visible, setVisible] = React.useState(false);
   const { colors } = useTheme();
+  const flatListRef = React.useRef()
+
 
   React.useEffect(() => {
+
     subscribeToMore({
       document: SUBSCRIBE_POST,
       variables: { cohorteId, groupId },
       updateQuery: (prev, { subscriptionData }) => {
-        console.log(prev, subscriptionData);
         if (!subscriptionData.data) return prev;
         return Object.assign({}, prev, {
           getPost: [...prev.getPost, subscriptionData.data.subscribePost],
@@ -46,6 +53,7 @@ export default function General({ route }) {
   }, [subscribeToMore]);
 
   const data = React.useMemo(() => {
+    
     if (preData) {
       return preData.getPost.map(({ id, tittle, content, user }) => ({
         id,
@@ -63,6 +71,7 @@ export default function General({ route }) {
     return undefined;
   }, [preData]);
 
+
   return loading ? (
     <Loading />
   ) : (
@@ -75,6 +84,7 @@ export default function General({ route }) {
         }}
       >
         <FlatList
+        ref={flatListRef}
           style={{ width: "100%" }}
           data={data}
           renderItem={PostCard}
@@ -82,7 +92,42 @@ export default function General({ route }) {
             return props.id.toString();
           }}
         />
-        <Portal>
+            </View>
+
+
+<View style={{ width: "100%", bottom: 0, flexDirection: "row" }}>
+    <TextInput
+      style={{ width: "100%", bottom: 0, flex: 1 }}
+      label="Posteá!"
+      value={text}
+      onChangeText={(text) => setText(text)}
+      right={
+          <TextInput.Icon
+            name={() => (
+              <IconButton
+                style={{ alignSelf: "center" }}
+                width="100%"
+                icon="send"
+                size={20}
+                onPress={async() => {
+                   await createPost(({
+                    variables:{
+                      content:text,
+                      userId:user.id,
+                      groupId: route.params.id,
+                    }
+                  }));
+                  await setText("");
+                  Keyboard.dismiss() 
+                  flatListRef.current.scrollToEnd()
+                }}
+              />
+            )}
+          />
+        }
+      />
+    </View>
+       {/*  <Portal>
           <Modal
             contentContainerStyle={{ alignItems: "center" }}
             visible={visible}
@@ -92,14 +137,12 @@ export default function General({ route }) {
               <TextInput
                 label="Título"
                 placeholder="Título"
-                value={title}
                 onChangeText={(text) => setTitle(text)}
               />
               <TextInput
                 label="Contenido"
                 placeholder="Contenido"
                 multiline={true}
-                value={content}
                 onChangeText={(text) => setContent(text)}
               />
               <Button
@@ -136,7 +179,7 @@ export default function General({ route }) {
         small
         icon="plus"
         onPress={() => setVisible(true)}
-      />
+      /> */}
     </>
   );
 }
