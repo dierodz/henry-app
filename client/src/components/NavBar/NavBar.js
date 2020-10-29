@@ -36,6 +36,13 @@ function NavBar({ show, children }) {
       }}
     >
       <List>
+        <NavBarItem
+          title="Dashboard"
+          icon={DashboardRounded}
+          to="/group/1/posts"
+          exact
+        />
+
         {user && user.roles.find((role) => role.name === "student") && (
           <>
             <NavBarItem
@@ -61,12 +68,6 @@ function NavBar({ show, children }) {
         <Divider />
         {user && user.roles.find((role) => role.name !== "student") && (
           <>
-            <NavBarItem
-              title="Dashboard"
-              icon={DashboardRounded}
-              to="/"
-              exact
-            />
             <NavBarItem
               title="Cohortes"
               icon={ClassRounded}

@@ -54,14 +54,10 @@ export const Post = () => {
 
   const formik = useFormik({
     initialValues: {
-      tittle: "",
       content: "",
     },
     validate: (values) => {
       const errors = {};
-      if (!values.tittle) {
-        errors.tittle = "Required";
-      }
 
       if (!values.content) {
         errors.content = "Required";
@@ -88,7 +84,6 @@ export const Post = () => {
     if (preData && preData) {
       const laData = preData.getGroupPosts.map((post) => ({
         id: post?.id,
-        tittle: post?.tittle,
         content: post?.content,
         userId: post?.userId,
       }));
@@ -112,22 +107,6 @@ export const Post = () => {
           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <div className={classes.inputContainer}>
               <div className={classes.input}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="tittle"
-                  label="Titulo"
-                  name="tittle"
-                  autoFocus
-                  value={formik.values.tittle}
-                  onChange={formik.handleChange}
-                  error={formik.errors.tittle ? true : false}
-                  helperText={
-                    formik.errors.tittle ? "Introduce un título valido" : null
-                  }
-                />
                 <TextField
                   variant="outlined"
                   margin="normal"

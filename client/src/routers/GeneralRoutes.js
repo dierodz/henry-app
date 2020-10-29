@@ -88,6 +88,7 @@ const GeneralRoutes = () => {
           />
           <Route exact path="/student/groups" component={GroupStudent} />
           <Route exact path="/group/:id/posts" component={Post} />
+          <Route exact path="/group/1/posts" component={Post} />
           <Route exact path="/student/modules/" component={ModuleStudent} />
           <Route exact path="/student/modules/:id" component={ContentsModule} />
           <Route
