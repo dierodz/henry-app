@@ -49,29 +49,27 @@ function CohortesDetailAlumno({ className }) {
           return string.charAt(0).toUpperCase() + string.slice(1)
         }
   }
-
+data && console.log(data)
  
   return (
-    <Container style={{ paddingTop: "1rem" }}>
+    <div style={{ paddingTop: "1rem", width: "100%" }}>
       {loading ? (
         <Loading />
       ) : (
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
             <Card variant="outlined">
               <CardHeader title="Información" />
               <CardContent>
                 <div
                   style={{
-                    height: "50vh",
+                    height: "15vh",
                     width: "100%",
                     display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    justifyContent: "space-around",
-                    alignItems: "center",
+
                   }}
                 >
+
                   <div className="cohorteDetailItem">
                     <p>Nombre del cohorte: </p>
                     <span>{data.cohortes[0].name.toUpperCase()}</span>
@@ -105,18 +103,7 @@ function CohortesDetailAlumno({ className }) {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={6}>
-            <Card variant="outlined" style={{ position: "relative" }}>
-              <CardHeader title="Grupos" />
-              <CardContent>
-                <Groups
-                  cohorte={data.cohortes[0]}
-                  loading={loading}
-                  onRefetch={refetch}
-                />
-              </CardContent>
-            </Card>
-          </Grid>
+
           <Grid item xs={12}>
             <Card variant="outlined" style={{ position: "relative" }}>
               <CardHeader title="Alumnos" />
@@ -127,7 +114,7 @@ function CohortesDetailAlumno({ className }) {
           </Grid>
         </Grid>
       )}
-    </Container>
+    </div>
   );
 }
 
