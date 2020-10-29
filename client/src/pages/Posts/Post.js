@@ -1,38 +1,18 @@
 import { useMutation, useQuery } from "@apollo/client";
 import PostCard from "components/PostCard";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GET_POST, SUBSCRIBE_POST } from "apollo/Mutations/postSub";
 import Loading from "components/Loading";
-import { Button, Container, makeStyles, TextField } from "@material-ui/core";
+import { Button, makeStyles, TextField } from "@material-ui/core";
 import { useFormik } from "formik";
 import { CREATE_POST } from "apollo/Mutations/posts";
 import { useSelector } from "react-redux";
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  icons: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
+import SendIcon from "@material-ui/icons/Send";
 
 export const Post = () => {
+  const ref = useRef(null);
+
   const { id } = useParams();
   const classes = useStyles();
   const { user } = useSelector((state) => state.auth);
@@ -67,16 +47,18 @@ export const Post = () => {
     preData
   );
 
+  useEffect(() => {
+    if (ref.current) {
+      window.scroll({ top: ref.current.clientHeight });
+    }
+  }, [preData, ref]);
+
   const formik = useFormik({
     initialValues: {
-      tittle: "",
       content: "",
     },
     validate: (values) => {
       const errors = {};
-      if (!values.tittle) {
-        errors.tittle = "Required";
-      }
 
       if (!values.content) {
         errors.content = "Required";
@@ -103,7 +85,6 @@ export const Post = () => {
     if (preData && preData) {
       const laData = preData.getGroupPosts.map((post) => ({
         id: post?.id,
-        title: post?.tittle,
         content: post?.content,
         userId: post?.userId,
       }));
@@ -117,55 +98,101 @@ export const Post = () => {
   }
 
   return (
-    <>
-      {data && data.map((post) => <PostCard key={post.id} {...post} />)}
-      <Container component="main" maxWidth="xs">
+    <div ref={ref}>
+      <div className={classes.Postcontainer}>
+        {data && data.map((post) => <PostCard key={post.id} {...post} />)}
+      </div>
+
+      <div className={classes.container}>
         <div className={classes.paper}>
           <form className={classes.form} onSubmit={formik.handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="tittle"
-              label="Titulo"
-              name="tittle"
-              autoFocus
-              value={formik.values.tittle}
-              onChange={formik.handleChange}
-              error={formik.errors.tittle ? true : false}
-              helperText={
-                formik.errors.tittle ? "Introduce un título valido" : null
-              }
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="content"
-              label="Contenido"
-              type={"text"}
-              id="content"
-              value={formik.values.content}
-              onChange={formik.handleChange}
-              error={formik.errors.content ? true : false}
-              helperText={
-                formik.errors.content ? "Debes ingresar el contenido" : null
-              }
-            ></TextField>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Crear
-            </Button>
+            <div className={classes.inputContainer}>
+              <div className={classes.input}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="content"
+                  label="Contenido"
+                  type={"text"}
+                  id="content"
+                  value={formik.values.content}
+                  onChange={formik.handleChange}
+                  error={formik.errors.content ? true : false}
+                  helperText={
+                    formik.errors.content ? "Debes ingresar el contenido" : null
+                  }
+                ></TextField>
+              </div>
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                <SendIcon />
+              </Button>
+            </div>
           </form>
         </div>
-      </Container>
-    </>
+      </div>
+    </div>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "0px",
+  },
+  form: {
+    // width: "100vh", // Fix IE 11 issue.
+    marginTop: theme.spacing(0),
+  },
+  submit: {
+    marginBottom: theme.spacing(1, 0, 1),
+    width: "15%",
+    height: "60px",
+  },
+  icons: {
+    margin: theme.spacing(0, 0, 0),
+  },
+  contenido: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    paddingBottom: "20px 0",
+    alignItems: "center",
+    width: "100vh",
+    marginLeft: "60px",
+  },
+  input: {
+    width: "85%",
+    paddingRight: "10px",
+    paddingBottom: "7px",
+  },
+  container: {
+    position: "fixed",
+    background: "white",
+    zIndex: 1,
+    right: 0,
+    bottom: 0,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    wrap: "wrap",
+  },
+  Postcontainer: {
+    marginBottom: "124px",
+  },
+}));

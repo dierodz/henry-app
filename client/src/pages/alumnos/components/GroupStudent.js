@@ -13,7 +13,6 @@ function GroupStudent(className) {
   const { loading: queryLoading, error, data, refetch } = useQuery(USER_FULL, {
     variables,
   });
-data && console.log(user);
 
   const [createGroup, resultCreate] = useMutation(CREATE_GROUP);
   const [removeGroup, resultDelete] = useMutation(DELETE_GROUP);

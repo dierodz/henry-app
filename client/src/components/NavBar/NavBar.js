@@ -10,7 +10,7 @@ import {
 
 import ViewComfyRoundedIcon from "@material-ui/icons/ViewComfyRounded";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+// import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 
 import "../../styles/components/NavBar.scss";
 import useStyles from "./NavBar.styles";
@@ -36,42 +36,38 @@ function NavBar({ show, children }) {
       }}
     >
       <List>
-      {user && user.roles.find((role) =>  role.name === "student") && (
-              <>
-                <NavBarItem
-                  title="Cohortes"
-                  icon={ClassRounded}
-                  to={
-                    user.cohortes.length > 0 &&
-                    `/student/cohorte/${user.cohortes[0].id}`
-                  }
-                />
-                <NavBarItem
-                  title="Modulos"
-                  icon={AssignmentIndRounded}
-                  to="/student/modules"
-                />
-                <NavBarItem
-                  title="Grupos"
-                  icon={GroupWorkIcon}
-                  to="/student/groups"
-                />
-                <NavBarItem
-                  title="Checkpoint"
-                  icon={LibraryBooksIcon}
-                  to="/student/checkpoint"
-                />
-              </>
-            )}
+        <NavBarItem
+          title="Dashboard"
+          icon={DashboardRounded}
+          to="/group/1/posts"
+          exact
+        />
+
+        {user && user.roles.find((role) => role.name === "student") && (
+          <>
+            <NavBarItem
+              title="Cohortes"
+              icon={ClassRounded}
+              to={
+                user.cohortes.length > 0 &&
+                `/student/cohorte/${user.cohortes[0].id}`
+              }
+            />
+            <NavBarItem
+              title="Modulos"
+              icon={AssignmentIndRounded}
+              to="/student/modules"
+            />
+            <NavBarItem
+              title="Grupos"
+              icon={GroupWorkIcon}
+              to="/student/groups"
+            />
+          </>
+        )}
         <Divider />
         {user && user.roles.find((role) => role.name !== "student") && (
           <>
-            <NavBarItem
-              title="Dashboard"
-              icon={DashboardRounded}
-              to="/"
-              exact
-            />
             <NavBarItem
               title="Cohortes"
               icon={ClassRounded}
@@ -97,7 +93,6 @@ function NavBar({ show, children }) {
               icon={ViewComfyRoundedIcon}
               to="/admin/modules"
             />
-            <Divider />
           </>
         )}
       </List>

@@ -45,7 +45,6 @@ function ModulesDetail({ className }) {
             // await CreateModule({
             //   variables: { ...values },
             // });
-            console.log(values);
           },
           submitButtonLabel: "Crear",
           title: "Crear modulo",

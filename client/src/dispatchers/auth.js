@@ -42,7 +42,6 @@ export const signInWithEmail = (username, password) => {
       }
     } catch ({ response }) {
       dispatch(signOut());
-      console.log(response);
       if (response.data) {
         dispatch(authSetError(response.data.message));
       }

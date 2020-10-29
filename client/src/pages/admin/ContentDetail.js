@@ -14,11 +14,12 @@ import { MODULES } from "apollo/querys/modules";
 import { TextField } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { Autocomplete } from "@material-ui/lab";
-import { CREATE_LESSON } from "apollo/Mutations/lesson";
+import { CREATE_LESSON, UPDATE_LESSON } from "apollo/Mutations/lesson";
 
 const ContentDetail = ({ moduleId }) => {
   const [createMutation, resultCreate] = useMutation(CREATE_CONTENT);
   const [updateMutation, resultUpdate] = useMutation(UPDATE_CONTENT);
+  const [updateLesson] = useMutation(UPDATE_LESSON);
   const [createLesson, resultCreateLesson] = useMutation(CREATE_LESSON);
   const [deleteContent] = useMutation(DELETE_CONTENT);
   const [readme, setReadme] = React.useState("### Escribe el Readme");
@@ -51,7 +52,6 @@ const ContentDetail = ({ moduleId }) => {
   useEffect(() => {
     if (!isNaN(id)) {
       if (data && data) {
-        console.log(data);
         setReadme(data.contents[0].readme);
         setValues((state) => {
           return {
@@ -73,7 +73,7 @@ const ContentDetail = ({ moduleId }) => {
         durationTime: parseInt(values.durationTime),
         moduleId: parseInt(values.moduleId),
         readme,
-        link: 'https://player.vimeo.com/video/' + values.link,
+        link: "https://player.vimeo.com/video/" + values.link,
       },
     });
 
@@ -91,12 +91,20 @@ const ContentDetail = ({ moduleId }) => {
       },
     });
 
-    if (link) {
-      console.log(id, link);
+    if (data && data.contents[0].lessons.length === 0) {
       createLesson({
         variables: {
-          link,
+          link: "https://player.vimeo.com/video/" + values.link,
           contentId: parseInt(id),
+        },
+      });
+    } else {
+      updateLesson({
+        variables: {
+          id: data.contents[0].lessons[0].id,
+          link: values.link.includes("https://player.vimeo.com/video/")
+            ? values.link
+            : "https://player.vimeo.com/video/" + values.link,
         },
       });
     }
@@ -138,7 +146,6 @@ const ContentDetail = ({ moduleId }) => {
   }, [refetch, resultCreateLesson]);
 
   const handleDelete = () => {
-    console.log(id);
     deleteContent({
       variables: {
         id: parseInt(id),

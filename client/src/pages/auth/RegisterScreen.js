@@ -1,45 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import Icon from '@material-ui/core/Icon';
+import React, { useEffect, useState } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import IconButton from "@material-ui/core/IconButton";
+import Icon from "@material-ui/core/Icon";
 import { useFormik } from "formik";
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { useHistory } from "react-router-dom";
-import {
-  signInWithGithub,
-  signInWithGoogle,
-} from "dispatchers/auth";
-import { useQuery } from 'hooks';
-import jwt from 'jsonwebtoken';
-
+import { signInWithGoogle } from "dispatchers/auth";
+import { useQuery } from "hooks";
+import jwt from "jsonwebtoken";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -49,12 +45,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RegisterScreen() {
   const classes = useStyles();
-  const history = useHistory()
-  const { token } = useQuery()
+  const history = useHistory();
+  const { token } = useQuery();
   useEffect(() => {
-    if (!token) history.push('/auth/signin')
-    else if (JSON.parse(localStorage.getItem("token"))) history.push('/')
-  }, [history, token])
+    if (!token) history.push("/auth/signin");
+    else if (JSON.parse(localStorage.getItem("token"))) history.push("/");
+  }, [history, token]);
   const [initialValues] = useState(() => {
     const values = {
       firstName: "",
@@ -62,46 +58,51 @@ export default function RegisterScreen() {
       nickName: "",
       email: "",
       password: "",
-      passwordConfirm: ""
-    }
+      passwordConfirm: "",
+    };
     try {
-      const result = jwt.decode(token)
-      if (result !== null) return { ...values, ...result }
+      const result = jwt.decode(token);
+      if (result !== null) return { ...values, ...result };
     } catch {
-      history.push('/auth/signin')
+      history.push("/auth/signin");
     }
-    history.push('/auth/signin')
-    return values
-  })
+    history.push("/auth/signin");
+    return values;
+  });
 
-  const [visibilityPass, setVisibilityPass] = React.useState({ pass1: false, pass2: false });
+  const [visibilityPass, setVisibilityPass] = React.useState({
+    pass1: false,
+    pass2: false,
+  });
   const handleClickShowPassword = (e) => {
-    setVisibilityPass({ ...visibilityPass, [e]: !visibilityPass[e] })
+    setVisibilityPass({ ...visibilityPass, [e]: !visibilityPass[e] });
   };
-
 
   const formik = useFormik({
     initialValues,
     validate: (values) => {
-      setVisibilityPass({ pass1: false, pass2: false })
+      setVisibilityPass({ pass1: false, pass2: false });
       const errors = {};
-      if (!values.firstName) errors.firstName = "Required"
-      if (!values.lastName) errors.lastName = "Required"
-      if (!values.nickName) errors.nickName = "Required"
-      if (!values.email) errors.email = "Required"
-      else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Invalid email address"
+      if (!values.firstName) errors.firstName = "Required";
+      if (!values.lastName) errors.lastName = "Required";
+      if (!values.nickName) errors.nickName = "Required";
+      if (!values.email) errors.email = "Required";
+      else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
+      ) {
+        errors.email = "Invalid email address";
       }
       if (!values.password) errors.password = "Required";
-      else if (values.password.length <= 8) errors.password = "Must be more than 8 characters";
-      if (values.password !== values.passwordConfirm) errors.passwordConfirm = "Required"
+      else if (values.password.length <= 8)
+        errors.password = "Must be more than 8 characters";
+      if (values.password !== values.passwordConfirm)
+        errors.passwordConfirm = "Required";
       return errors;
     },
     onSubmit: async (values) => {
-      alert(values.firstName)
-    }
+      alert(values.firstName);
+    },
   });
-
 
   return (
     <Container component="main" maxWidth="xs">
@@ -129,7 +130,9 @@ export default function RegisterScreen() {
                 value={formik.values.firstName}
                 onChange={formik.handleChange}
                 error={formik.errors.firstName ? true : false}
-                helperText={formik.errors.firstName ? "Debes ingresar tu nombre" : null}
+                helperText={
+                  formik.errors.firstName ? "Debes ingresar tu nombre" : null
+                }
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -144,8 +147,9 @@ export default function RegisterScreen() {
                 value={formik.values.lastName}
                 onChange={formik.handleChange}
                 error={formik.errors.lastName ? true : false}
-                helperText={formik.errors.lastName ? "Debes ingresar tu apellido" : null}
-
+                helperText={
+                  formik.errors.lastName ? "Debes ingresar tu apellido" : null
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -160,7 +164,9 @@ export default function RegisterScreen() {
                 value={formik.values.nickName}
                 onChange={formik.handleChange}
                 error={formik.errors.nickName ? true : false}
-                helperText={formik.errors.nickName ? "Debes ingresar un apodo" : null}
+                helperText={
+                  formik.errors.nickName ? "Debes ingresar un apodo" : null
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -175,8 +181,9 @@ export default function RegisterScreen() {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 error={formik.errors.email ? true : false}
-                helperText={formik.errors.email ? "Debes ingresar un email valido" : null}
-
+                helperText={
+                  formik.errors.email ? "Debes ingresar un email valido" : null
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -192,7 +199,11 @@ export default function RegisterScreen() {
                 value={formik.values.password}
                 onChange={formik.handleChange}
                 error={formik.errors.password ? true : false}
-                helperText={formik.errors.password ? "La contraseña debe tener mas de 8 caracteres" : null}
+                helperText={
+                  formik.errors.password
+                    ? "La contraseña debe tener mas de 8 caracteres"
+                    : null
+                }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -220,7 +231,11 @@ export default function RegisterScreen() {
                 value={formik.values.passwordConfirm}
                 onChange={formik.handleChange}
                 error={formik.errors.passwordConfirm ? true : false}
-                helperText={formik.errors.passwordConfirm ? "Las contraseñas no coinciden" : null}
+                helperText={
+                  formik.errors.passwordConfirm
+                    ? "Las contraseñas no coinciden"
+                    : null
+                }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -257,23 +272,11 @@ export default function RegisterScreen() {
             container
             direction="column"
             justify="space-around"
-            alignItems="center">
+            alignItems="center"
+          >
             Tambien puede registrarte con:
-            <Grid
-              item
-              className={classes.icons}
-            >
-              <IconButton
-                onClick={() => signInWithGithub()}
-                color="primary"
-                aria-label="add to shopping cart"
-              >
-                <Icon className="fab fa-github" aria-hidden="true" />
-              </IconButton>
-              <IconButton
-                onClick={() => signInWithGoogle()}
-                color="primary"
-              >
+            <Grid item className={classes.icons}>
+              <IconButton onClick={() => signInWithGoogle()} color="primary">
                 <Icon className="fab fa-google" aria-hidden="true" />
               </IconButton>
             </Grid>
@@ -289,12 +292,12 @@ export default function RegisterScreen() {
       </div>
       <Box mt={5}>
         <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright © '}
+          {"Copyright © "}
           <Link color="inherit" href="https://www.soyhenry.com/">
             Henry
-            </Link>{' '}
+          </Link>{" "}
           {new Date().getFullYear()}
-          {'.'}
+          {"."}
         </Typography>
       </Box>
     </Container>

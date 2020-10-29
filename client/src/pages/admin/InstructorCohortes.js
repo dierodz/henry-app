@@ -16,8 +16,6 @@ function InstructorCohortes(datos) {
     { variables } || { variablesdos }
   );
 
-  preData && console.log(preData);
-
   const usercohorte = useMemo(() => {
     if (datos.datos && Array.isArray(preData?.users)) {
       const usuario = preData.users.find((user) => user.id === datos.datos)

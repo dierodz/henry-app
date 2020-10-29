@@ -23,7 +23,6 @@ import { useDispatch } from "react-redux";
 import {
   signInWithEmail,
   signInWithToken,
-  signInWithGithub,
   signInWithGoogle,
 } from "dispatchers/auth";
 import { useHistory } from "react-router-dom";
@@ -187,13 +186,6 @@ export default function LoginScreen() {
             alignItems="center"
           >
             <Grid item className={classes.icons}>
-              <IconButton
-                onClick={() => signInWithGithub()}
-                color="primary"
-                aria-label="add to shopping cart"
-              >
-                <Icon className="fab fa-github" aria-hidden="true" />
-              </IconButton>
               <IconButton onClick={() => signInWithGoogle()} color="primary">
                 <Icon className="fab fa-google" aria-hidden="true" />
               </IconButton>

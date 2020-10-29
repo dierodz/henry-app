@@ -24,9 +24,8 @@ export default function DrawerRoutes(props) {
         id: user.id,
       },
     },
-  });
-
-  const standUp = useQuery(GET_USERS_GROUP, {
+  })
+  const standUp=useQuery(GET_USERS_GROUP,{
     variables: {
       where: {
         id: user.id,
