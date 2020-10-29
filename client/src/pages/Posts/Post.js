@@ -157,7 +157,7 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     marginBottom: theme.spacing(1, 0, 1),
     width: "15%",
-    height: "140px",
+    height: "60px",
   },
   icons: {
     margin: theme.spacing(0, 0, 0),
@@ -192,6 +192,6 @@ const useStyles = makeStyles((theme) => ({
     wrap: "wrap",
   },
   Postcontainer: {
-    marginBottom: "200px",
+    marginBottom: "124px",
   },
 }));
