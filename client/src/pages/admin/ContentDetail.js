@@ -72,7 +72,7 @@ const ContentDetail = ({ moduleId }) => {
         durationTime: parseInt(values.durationTime),
         moduleId: parseInt(values.moduleId),
         readme,
-        link: 'https://player.vimeo.com/video/' + values.link,
+        link: "https://player.vimeo.com/video/" + values.link,
       },
     });
 
@@ -87,13 +87,14 @@ const ContentDetail = ({ moduleId }) => {
         durationTime: parseInt(values.durationTime),
         moduleId: parseInt(values.moduleId),
         readme,
+        link: "https://player.vimeo.com/video/" + values.link,
       },
     });
 
     if (link) {
       createLesson({
         variables: {
-          link,
+          link: "https://player.vimeo.com/video/" + values.link,
           contentId: parseInt(id),
         },
       });

@@ -10,6 +10,7 @@ import { red } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useQuery } from "@apollo/client";
 import { USER_FULL } from "apollo/querys/users";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PostCard({ id, tittle, content, userId }) {
+  const history = useHistory();
+
   const classes = useStyles();
   const { data: preData } = useQuery(USER_FULL, { variables: { id: userId } });
 
@@ -49,7 +52,11 @@ export default function PostCard({ id, tittle, content, userId }) {
       <CardHeader
         className={classes.content}
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
+          <Avatar
+            onClick={() => history.push(`/profile/${user.id}`)}
+            aria-label="recipe"
+            className={classes.avatar}
+          >
             {user && user.photoUrl ? (
               <img
                 src={user && user.photoUrl && user.photoUrl}
