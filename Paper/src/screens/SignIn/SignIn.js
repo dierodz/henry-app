@@ -1,17 +1,19 @@
 /* eslint-disable react/prop-types */
 import * as React from "react";
-import { View } from "react-native";
+import { View,Image } from "react-native";
 import {
   Avatar,
   TextInput,
   Button,
   Caption,
   IconButton,
-  HelperText
+  HelperText,
+  
 } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { GoogleInitialize, signInWithEmail } from "../../dispatchers/auth";
+import logo from "../../../assets/logo.png"
 
 export default function SignIn({ navigation }) {
   const dispatch = useDispatch();
@@ -55,10 +57,12 @@ export default function SignIn({ navigation }) {
           justifyContent: "center",
         }}
       >
-        <Avatar.Text
+        <Image style={{alignSelf:"center",marginBottom:40, paddingHorizontal:10, backgroundColor: "black",width:"100%", resizeMode:"contain" }} source={logo} />
+
+       {/*  <Avatar.Text
           style={{ alignSelf: "center", marginVertical: 30 }}
           label="H"
-        />
+        /> */}
         <TextInput
           mode="outlined"
           label="Email"

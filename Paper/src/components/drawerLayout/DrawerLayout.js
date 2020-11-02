@@ -23,6 +23,17 @@ export default function DrawerLayout(props) {
   const paperTheme = useTheme();
   const cohortes = props.cohortes;
   const pairProgramming = props.pairProgramming;
+  const fecha = new Date()
+
+  function progress(uno,dos) {
+    let mesUno= parseInt(uno.slice(5,7))  
+    let mesDos= dos.getMonth()+1  
+    let mesFin= mesUno>mesDos?
+    4-(12-mesUno+mesDos)
+    :
+    4-(mesDos-mesUno)
+   return (4-mesFin)/4
+  }
 
   return (
     <DrawerContentScrollView {...props}>
@@ -36,7 +47,7 @@ export default function DrawerLayout(props) {
             {user.cohortes.length === 0 ? "" : user.cohortes[0].name}
           </Caption>
         </View>
-        <ProgressBar progress={user.cohortes.length === 0 ? 0: user.cohortes[0].startDate.slice(0)} />
+        <ProgressBar progress={user.cohortes.length === 0 ? 0: progress(user.cohortes[0].startDate, fecha)} />
         <Drawer.Section style={styles.drawerSection}>
           <List.Accordion
             style={{ marginHorizontal: 10 }}
