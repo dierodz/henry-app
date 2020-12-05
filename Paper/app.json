@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Paper",
-    "slug": "Paper",
+    "name": "Henry App",
+    "slug": "henryapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,6 +21,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "App to control information into a study area"
   }
 }

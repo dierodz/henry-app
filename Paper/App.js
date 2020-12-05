@@ -17,14 +17,13 @@ import {client} from './src/apollo/client'
 
 export default function App() {
 
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const [isDarkTheme, setIsDarkTheme] = React.useState(true);
   const theme = isDarkTheme ? CombinedDarkTheme : CombinedDefaultTheme;
   ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL)
 
   const handleTheme = () => {
     setIsDarkTheme((isDark) => !isDark);
   };
-
   return (
     <ApolloProvider client={client}>
       <PaperProvider theme={theme}>
